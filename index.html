@@ -8,7 +8,7 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="Singletrack">
 <meta name="theme-color" content="#16261b">
-<meta name="description" content="A first-person mountain bike game: thirteen trails on one coastal BC mountain.">
+<meta name="description" content="A first-person mountain bike game: fourteen trails and a chairlift on one coastal BC mountain.">
 <title>Singletrack</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -31,7 +31,7 @@ body{margin:0;position:fixed;inset:0;width:100%;overflow:hidden;background:var(-
 /* if the page ever does end up zoomed, let the player pinch back out */
 html.zoomed,html.zoomed *{touch-action:auto!important}
 button{font:inherit;color:inherit;cursor:pointer}
-button:focus-visible{outline:3px solid var(--hi);outline-offset:3px}
+button:focus-visible,button.pad-focus:focus{outline:3px solid var(--hi);outline-offset:3px}
 
 .screen{position:fixed;inset:0;z-index:20;display:flex;
   padding:calc(env(safe-area-inset-top,0px) + 16px) calc(env(safe-area-inset-right,0px) + 16px) calc(env(safe-area-inset-bottom,0px) + 16px) calc(env(safe-area-inset-left,0px) + 16px);touch-action:pan-y}
@@ -92,6 +92,7 @@ button:focus-visible{outline:3px solid var(--hi);outline-offset:3px}
 .icon-btn svg{width:20px;height:20px}
 #speed{position:absolute;left:50%;transform:translateX(-50%);top:calc(env(safe-area-inset-top,0px) + 10px);text-align:center;font-family:var(--disp);text-shadow:0 1px 3px rgba(0,0,0,.7),0 0 14px rgba(0,0,0,.45);line-height:.9}
 #speed b{font-weight:800;font-size:40px;font-variant-numeric:tabular-nums;display:block}#speed span{font-weight:600;font-size:14px}
+#jspd{display:block;font-style:normal;margin-top:6px;padding:3px 9px 4px;border-radius:6px;background:var(--panel);font-weight:700;font-size:16px;white-space:nowrap;color:var(--jc,#fff);text-shadow:none}
 #jx{position:absolute;left:50%;transform:translateX(-50%);top:calc(env(safe-area-inset-top,0px) + 72px);background:var(--panel);padding:8px 10px 10px;pointer-events:auto;max-width:calc(100vw - 32px);border-top:3px solid var(--hi)}
 #jx p{margin:0 0 6px;font-size:13px;color:var(--soft);text-align:center}
 #jxList{display:flex;gap:6px;flex-wrap:wrap;justify-content:center}
@@ -103,6 +104,17 @@ button:focus-visible{outline:3px solid var(--hi);outline-offset:3px}
 #toast.on{opacity:1}#toast small{display:block;font-family:var(--body);font-weight:600;font-size:15px;margin-top:4px}
 #air{position:absolute;left:50%;top:calc(env(safe-area-inset-top,0px) + 58px);transform:translateX(-50%);font-family:var(--disp);font-weight:700;font-size:22px;color:var(--hi);text-shadow:0 1px 8px rgba(0,0,0,.6);opacity:0;transition:opacity .3s}
 #air.on{opacity:1}
+#liftHud{position:absolute;left:50%;bottom:calc(env(safe-area-inset-bottom,0px) + 18px);transform:translateX(-50%);width:min(420px,calc(100vw - 32px))}
+.lift-card{background:var(--panel);padding:10px 14px 12px;border-top:3px solid var(--hi);pointer-events:auto}
+.lift-row{display:flex;justify-content:space-between;align-items:center;gap:12px}
+.lift-row b{font-family:var(--disp);font-weight:800;font-size:22px}.lift-row>span{font-family:var(--disp);font-weight:700;font-size:18px;font-variant-numeric:tabular-nums}
+#liftBar{height:4px;background:var(--line);margin:8px 0 10px}#liftBar i{display:block;height:100%;width:0;background:var(--hi)}
+.lift-tip{font-size:14px;color:var(--soft)}#btnLiftSkip{padding:8px 16px;font-size:18px}
+#tilt{position:absolute;left:50%;top:calc(env(safe-area-inset-top,0px) + 84px);transform:translateX(-50%);background:var(--panel);border-radius:10px;padding:4px 10px 6px;text-align:center;--tc:#f3c13a}
+#tilt svg{width:140px;height:70px;display:block}
+#tiltGround{stroke:rgba(245,246,239,.55);stroke-width:4;stroke-linecap:round}
+#tiltBike circle,#tiltBike path{fill:none;stroke:var(--tc);stroke-width:4;stroke-linecap:round;stroke-linejoin:round}
+#tilt span{display:block;font-family:var(--disp);font-weight:700;font-size:15px;color:var(--tc);line-height:1}
 @media (prefers-reduced-motion:reduce){#toast,#air,#fade,#loadBar i{transition:none}}
 
 /* touch controls: sized from the screen, pulled in from the edges, scaled by the Button size setting */
@@ -134,6 +146,26 @@ button:focus-visible{outline:3px solid var(--hi);outline-offset:3px}
 .stats{font-size:15px;color:var(--soft);line-height:1.5;margin:0 0 18px}
 .card .row .btn{flex:1 1 140px}
 @media (max-height:460px){.card{padding:14px 18px}.card h2{font-size:28px;margin-bottom:8px}.bigtime{font-size:54px}.stack{gap:6px}.stack .btn{padding:8px 18px;font-size:18px}.toggle{padding:7px 2px}}
+#guide{align-items:flex-start;justify-content:center;background:rgba(8,16,10,.72);overflow-y:auto;z-index:42}
+.guide-card{max-width:780px;margin:auto}
+.guide-top{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:10px}.guide-top h2{margin:0}
+#guideTabs{margin-bottom:14px}
+.gpanel{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.05fr);gap:18px;align-items:start}
+.gpanel[data-t="keys"]{grid-template-columns:1fr}
+.gsvg{width:100%;height:auto;display:block;max-width:380px}
+.g-dev{fill:rgba(245,246,239,.06);stroke:rgba(245,246,239,.45);stroke-width:2}
+.g-ring{fill:none;stroke:rgba(245,246,239,.5);stroke-width:2}.g-knob{fill:rgba(245,246,239,.8)}
+.g-btn{fill:rgba(245,246,239,.12);stroke:rgba(245,246,239,.55);stroke-width:1.6}.g-hot{fill:rgba(243,193,58,.85);stroke:var(--hi)}
+.g-pill{fill:rgba(243,193,58,.18);stroke:var(--hi);stroke-width:1.4}
+.g-arrow{fill:none;stroke:var(--hi);stroke-width:2.6;stroke-linecap:round;stroke-linejoin:round}
+.g-lab{fill:var(--ink);font-family:var(--disp);font-weight:700;font-size:15px}.g-cap{fill:var(--soft);font-family:var(--body);font-size:12px}
+.g-sym{fill:var(--ink);font-size:11px;font-weight:700}.g-lead{stroke:rgba(245,246,239,.35);stroke-width:1.4;stroke-dasharray:3 3}
+dl.keys{display:grid;grid-template-columns:auto 1fr;gap:8px 14px;margin:0;font-size:15px;line-height:1.4}
+dl.keys dt{font-family:var(--disp);font-weight:700;font-size:16px;color:var(--hi);white-space:nowrap}dl.keys dd{margin:0;color:var(--ink)}
+.guide-h{font-family:var(--disp);font-weight:800;font-size:22px;margin:18px 0 6px}
+.tips{margin:0;padding-left:18px;display:grid;gap:7px;font-size:15px;line-height:1.45;color:var(--soft)}.tips b{color:var(--ink)}
+.chip{display:inline-block;background:var(--panel);color:#7fd36b;font-family:var(--disp);font-weight:700;padding:0 6px;border-radius:4px}
+@media (max-width:700px){.gpanel{grid-template-columns:1fr}.gsvg{max-width:340px;margin:0 auto}}
 #fade{position:fixed;inset:0;background:#000;opacity:0;pointer-events:none;z-index:30;transition:opacity .3s}
 </style>
 
@@ -148,8 +180,8 @@ button:focus-visible{outline:3px solid var(--hi);outline-offset:3px}
   <div class="menu-wrap">
     <div class="menu-card">
       <h1>Singletrack</h1>
-      <p class="lede">Thirteen trails on one coastal BC mountain. Pick a line at the top, then choose your way at every junction.</p>
-      <div class="row start-row"><button id="btnStart" class="btn primary">Ride to the top</button><button id="btnMap" class="btn">Trail map</button></div>
+      <p class="lede">Fourteen trails and a chairlift on one coastal BC mountain. Pick a line at the top, then choose your way at every junction.</p>
+      <div class="row start-row"><button id="btnStart" class="btn primary">Ride to the top</button><button id="btnMap" class="btn">Trail map</button><button id="btnGuide" class="btn">Controls</button></div>
       <ul class="trails" id="trailList"></ul>
       <div class="opt"><span class="opt-l" id="lblAssist">Steering assist</span>
         <div class="seg" role="radiogroup" aria-labelledby="lblAssist" id="segAssist"><button role="radio" data-v="0">Off</button><button role="radio" data-v="1">Light</button><button role="radio" data-v="2">Full</button></div>
@@ -164,6 +196,76 @@ button:focus-visible{outline:3px solid var(--hi);outline-offset:3px}
   </div>
 </div>
 
+<div id="guide" class="screen" hidden role="dialog" aria-labelledby="guideTitle">
+  <div class="card guide-card">
+    <div class="guide-top"><h2 id="guideTitle">Controls</h2><button class="btn" id="btnGuideClose">Close</button></div>
+    <div class="seg" role="tablist" id="guideTabs"><button role="tab" data-t="touch">Touch</button><button role="tab" data-t="pad">PS4 controller</button><button role="tab" data-t="keys">Keyboard</button></div>
+    <div class="gpanel" data-t="touch">
+      <svg viewBox="0 0 400 240" aria-hidden="true" class="gsvg">
+        <rect x="8" y="8" width="384" height="224" rx="22" class="g-dev"/>
+        <circle cx="92" cy="146" r="40" class="g-ring"/><circle cx="92" cy="146" r="16" class="g-knob"/>
+        <path d="M40 146h-12m128 0h-12M92 94v-10m0 124v-10" class="g-arrow"/><path d="M34 140 26 146 34 152M150 140 158 146 150 152M86 90 92 82 98 90M86 202 92 210 98 202" class="g-arrow"/>
+        <text x="92" y="76" class="g-lab" text-anchor="middle">Tilt forward</text><text x="92" y="226" class="g-lab" text-anchor="middle">Tilt back</text>
+        <circle cx="318" cy="128" r="28" class="g-btn"/><text x="318" y="133" class="g-lab" text-anchor="middle">Pedal</text>
+        <circle cx="318" cy="192" r="28" class="g-btn"/><text x="318" y="197" class="g-lab" text-anchor="middle">Brake</text>
+        <rect x="350" y="22" width="26" height="26" rx="5" class="g-btn"/><path d="M359 29v12m8-12v12" class="g-arrow"/>
+        <rect x="130" y="24" width="140" height="30" rx="6" class="g-pill"/><text x="200" y="44" class="g-lab" text-anchor="middle">Tap a line at junctions</text>
+        <text x="40" y="36" class="g-cap">Left thumb</text><text x="318" y="84" class="g-cap" text-anchor="middle">Right thumb</text>
+      </svg>
+      <dl class="keys">
+        <dt>Stick left / right</dt><dd>Steer. The stick appears wherever you put your thumb.</dd>
+        <dt>Stick up / down</dt><dd>In the air, push forward or pull back to tilt the bike for the landing.</dd>
+        <dt>Pedal</dt><dd>Pedal. Hold it on flat ground and out of slow corners.</dd>
+        <dt>Brake</dt><dd>Brake. Hold it when stopped to roll backward.</dd>
+        <dt>Junction buttons</dt><dd>Tap the line you want before the split.</dd>
+        <dt>Pause</dt><dd>Respawn, the chairlift, the trail map and settings.</dd>
+      </dl>
+    </div>
+    <div class="gpanel" data-t="pad" hidden>
+      <svg viewBox="0 0 420 262" aria-hidden="true" class="gsvg">
+        <rect x="92" y="18" width="70" height="16" rx="7" class="g-btn"/><text x="127" y="14" class="g-lab" text-anchor="middle">L2 brake</text>
+        <rect x="258" y="18" width="70" height="16" rx="7" class="g-btn g-hot"/><text x="293" y="14" class="g-lab" text-anchor="middle">R2 pedal</text>
+        <rect x="96" y="38" width="62" height="10" rx="5" class="g-btn"/><rect x="262" y="38" width="62" height="10" rx="5" class="g-btn"/>
+        <path d="M78 70C80 52 110 46 150 50H270C310 46 340 52 342 70L372 180C380 222 336 236 312 204L290 172H130L108 204C84 236 40 222 48 180Z" class="g-dev"/>
+        <path d="M98 88h14v-14h14v14h14v14h-14v14h-14v-14h-14z" class="g-btn"/>
+        <circle cx="312" cy="76" r="9" class="g-btn"/><circle cx="332" cy="96" r="9" class="g-btn"/><circle cx="312" cy="116" r="9" class="g-btn g-hot"/><circle cx="292" cy="96" r="9" class="g-btn"/>
+        <text x="312" y="80" class="g-sym" text-anchor="middle">△</text><text x="332" y="100" class="g-sym" text-anchor="middle">○</text><text x="312" y="120" class="g-sym" text-anchor="middle">✕</text><text x="292" y="100" class="g-sym" text-anchor="middle">□</text>
+        <circle cx="165" cy="140" r="21" class="g-ring"/><circle cx="165" cy="140" r="11" class="g-knob"/>
+        <circle cx="255" cy="140" r="21" class="g-ring"/><circle cx="255" cy="140" r="9" class="g-btn"/>
+        <rect x="160" y="70" width="18" height="9" rx="4" class="g-btn"/><rect x="242" y="70" width="18" height="9" rx="4" class="g-btn"/>
+        <path d="M165 162v72M255 162v72" class="g-lead"/><text x="150" y="252" class="g-lab" text-anchor="middle">Steer + tilt</text><text x="276" y="252" class="g-lab" text-anchor="middle">Look on the lift</text>
+        <text x="169" y="64" class="g-cap" text-anchor="middle">Share</text><text x="251" y="64" class="g-cap" text-anchor="middle">Options</text>
+      </svg>
+      <dl class="keys">
+        <dt>R2</dt><dd>Pedal. Squeeze gently for a soft push, fully to sprint. ✕ also pedals.</dd>
+        <dt>L2</dt><dd>Brake, as hard as you squeeze. □ also brakes.</dd>
+        <dt>Left stick</dt><dd>Steer. In the air, push forward or pull back to tilt the bike for the landing.</dd>
+        <dt>L1 / R1 or d-pad</dt><dd>Pick the left or right line at a junction.</dd>
+        <dt>△</dt><dd>Respawn on the trail. On the chairlift, skip to the top.</dd>
+        <dt>Options</dt><dd>Pause. Share opens the trail map.</dd>
+        <dt>Menus</dt><dd>D-pad or stick to move, ✕ to press, ○ to go back. The controller rumbles on landings, rocks and crashes.</dd>
+      </dl>
+    </div>
+    <div class="gpanel" data-t="keys" hidden>
+      <dl class="keys">
+        <dt>A / D or ← →</dt><dd>Steer</dd>
+        <dt>W or ↑</dt><dd>Pedal. In the air it tilts the bike forward.</dd>
+        <dt>S or ↓, Space</dt><dd>Brake. In the air S tilts the bike back.</dd>
+        <dt>R</dt><dd>Respawn on the trail</dd>
+        <dt>T</dt><dd>Straight to the top</dd>
+        <dt>Esc or P</dt><dd>Pause</dd>
+      </dl>
+    </div>
+    <h3 class="guide-h">On the mountain</h3>
+    <ul class="tips">
+      <li><b>Jump speed.</b> Before a big jump a chip under your speed shows the speed it was built for, like <span class="chip">Jump 52–56</span>. Green means you're on it. Blue, pedal. Orange, brake a little. Full assist handles it for you.</li>
+      <li><b>Landings.</b> In the air a gauge shows your bike against the landing. Match them and it turns green.</li>
+      <li><b>Junctions.</b> Trails split and join. Signs and buttons show where each line goes. Your time follows the lines you ride.</li>
+      <li><b>Chairlift.</b> Finish a run and choose Ride the chairlift, or roll into the loading area in the meadow. Two minutes to the top, drag to look around, skip any time.</li>
+      <li><b>Steering assist.</b> Off, you steer everything. Light helps round berms. Full follows the trail and sets jump speed.</li>
+    </ul>
+  </div>
+</div>
 <div id="mapView" class="screen" hidden><div class="mapbox"><canvas id="bigMap" aria-label="Trail map of the mountain"></canvas><button class="btn" id="btnMapClose">Close map</button></div></div>
 
 <div id="hud" hidden>
@@ -173,9 +275,12 @@ button:focus-visible{outline:3px solid var(--hi);outline-offset:3px}
     <canvas id="mini" width="248" height="248" aria-label="Map of the trails around you"></canvas>
     <button class="icon-btn" id="btnPause" aria-label="Pause"><svg viewBox="0 0 20 20" aria-hidden="true"><rect x="4" y="3" width="4" height="14" fill="currentColor"/><rect x="12" y="3" width="4" height="14" fill="currentColor"/></svg></button>
   </div>
-  <div id="speed"><b id="spd">0</b><span>km/h</span></div>
+  <div id="speed"><b id="spd">0</b><span>km/h</span><em id="jspd" hidden></em></div>
   <div id="jx" hidden><p id="jxTitle"></p><div id="jxList"></div></div>
   <div id="air"></div>
+  <div id="liftHud" hidden><div class="lift-card"><div class="lift-row"><b>Chairlift</b><span><span id="liftTime">2:00</span> to the top</span></div><div id="liftBar"><i></i></div>
+    <div class="lift-row"><span class="lift-tip">Drag to look around</span><button class="btn" id="btnLiftSkip">Skip to the top</button></div></div></div>
+  <div id="tilt" hidden aria-hidden="true"><svg viewBox="0 0 140 70"><line id="tiltGround" x1="-30" y1="46" x2="170" y2="46"/><g id="tiltBike"><circle cx="46" cy="40" r="10"/><circle cx="94" cy="40" r="10"/><path d="M46 40 62 26 86 26 94 40 M62 26 70 40 86 26 M84 20 88 26"/></g></svg><span id="tiltTxt">Match the landing</span></div>
   <div id="toast"></div>
 </div>
 
@@ -193,8 +298,10 @@ button:focus-visible{outline:3px solid var(--hi);outline-offset:3px}
     <div class="stack">
       <button class="btn primary" id="btnResume">Resume</button>
       <button class="btn" id="btnRespawn">Respawn on the trail</button>
-      <button class="btn" id="btnTop">Back to the top</button>
+      <button class="btn" id="btnLift">Ride the chairlift up</button>
+      <button class="btn" id="btnTop">Straight to the top</button>
       <button class="btn" id="btnPauseMap">Trail map</button>
+      <button class="btn" id="btnPauseGuide">Controls</button>
       <button class="btn" id="btnMenu">Main menu</button>
     </div>
     <div class="toggles">
@@ -215,7 +322,8 @@ button:focus-visible{outline:3px solid var(--hi);outline-offset:3px}
     <p class="best" id="finBest"></p>
     <p class="stats" id="finStats"></p>
     <div class="row">
-      <button class="btn primary" id="btnFinTop">Back to the top</button>
+      <button class="btn primary" id="btnFinTop">Ride the chairlift</button>
+      <button class="btn" id="btnFinSkip">Straight to the top</button>
       <button class="btn" id="btnFinAgain">Ride it again</button>
     </div>
   </div>
@@ -283,9 +391,9 @@ function terrGrad(x,z,e){e=e||3;return [(mountainH(x+e,z)-mountainH(x-e,z))/(2*e
 // ---------------- trail network ----------------
 // nodes: trailheads on the plateau, junctions mid-mountain, finishes in the bottom meadow
 const NODES={
-  thA:{x:-105,z:26,top:true},thB:{x:-38,z:26,top:true},thC:{x:30,z:26,top:true},thD:{x:98,z:26,top:true},
+  thA:{x:-105,z:26,top:true},thB:{x:-38,z:26,top:true},thC:{x:30,z:26,top:true},thD:{x:98,z:26,top:true},thE:{x:165,z:26,top:true},
   u1:{x:72,z:-262},ml:{x:-300,z:-440},mc:{x:-30,z:-522},mr:{x:252,z:-482},
-  fFern:{x:-372,z:-985,fin:true},fKing:{x:-178,z:-985,fin:true},fAir:{x:-52,z:-990,fin:true},fRoot:{x:84,z:-990,fin:true},fSlab:{x:214,z:-985,fin:true},fCedar:{x:366,z:-980,fin:true}
+  fFern:{x:-372,z:-985,fin:true},fKing:{x:-178,z:-985,fin:true},fAir:{x:-52,z:-990,fin:true},fRoot:{x:84,z:-990,fin:true},fSlab:{x:214,z:-985,fin:true},fCedar:{x:366,z:-980,fin:true},fFree:{x:478,z:-985,fin:true}
 };
 // styles: w half-width, sw shoulder, gT target grade, thMax max traverse angle, thS forced S-turn angle, rhythm S-turn spacing,
 // R turn radius range, mea meander, rough surface noise, bank max berm slope, spd pedal-in speed
@@ -298,6 +406,7 @@ const STYLES={
   slab:{w:1.3,sw:2.3,gT:0.17,thMax:1.1,thS:0.45,rhythm:[22,40],R:[7,12],mea:0.3,rough:0.04,bankMax:0.55},
   steep:{w:1.2,sw:2.2,gT:0.3,thMax:0.6,thS:0.35,rhythm:[18,34],R:[6,11],mea:0.3,rough:0.05,bankMax:0.45},
   link:{w:1.5,sw:2.2,gT:0.06,thMax:0.2,thS:0.25,rhythm:[30,50],R:[10,16],mea:0.2,rough:0.02,bankMax:0.7},
+  mega:{straight:true,w:2.1,sw:2.8,gT:0.14,thMax:0,thS:0,rhythm:[400,400],R:[30,30],mea:0,rough:0.006,bankMax:1.0,vmax:15.5,corners:[20,30]},
 };
 const DIFF={green:{label:'Green circle',word:'Easy',color:'#1f9d4a',symbol:'circle',rank:0},blue:{label:'Blue square',word:'Intermediate',color:'#1f63c8',symbol:'square',rank:1},
   black:{label:'Black diamond',word:'Advanced',color:'#000000',symbol:'diamond',rank:2},dbl:{label:'Double black',word:'Expert',color:'#000000',symbol:'double',rank:3}};
@@ -319,7 +428,7 @@ const SEGDEFS=[
   {id:'deadfall',name:'Deadfall',diff:'black',style:'tech',from:'u1',to:'mr',W:20,seed:18,desc:'Roots, rocks and off-camber turns',
     spine:[[72,-262],[124,-300],[168,-372],[222,-432],[252,-482]]},
   {id:'cedarU',name:'Cedar Line',diff:'blue',style:'natural',from:'thD',to:'mr',W:42,seed:19,desc:'Natural loam, roots and small drops',
-    spine:[[98,26],[98,-12],[210,-90],[336,-230],[336,-390],[252,-482]]},
+    spine:[[98,26],[98,-12],[186,-112],[330,-236],[336,-390],[252,-482]]},
   {id:'air',name:'Air Traffic',diff:'black',style:'bigjump',from:'mc',to:'fAir',W:20,seed:20,desc:'Big tables, gaps and step-downs',
     spine:[[-30,-522],[-22,-600],[-30,-710],[-46,-860],[-52,-990]]},
   {id:'root',name:'Root Canal',diff:'black',style:'tech',from:'mc',to:'fRoot',W:24,seed:21,desc:'Steep, rooty and tight',
@@ -328,6 +437,8 @@ const SEGDEFS=[
     spine:[[252,-482],[218,-560],[200,-705],[202,-850],[214,-985]]},
   {id:'cedarL',name:'Lower Cedar',diff:'blue',style:'natural',from:'mr',to:'fCedar',W:34,seed:23,desc:'Fast and flowy with a few roots',
     spine:[[252,-482],[318,-535],[368,-665],[382,-820],[366,-980]]},
+  {id:'freefall',name:'Freefall',diff:'dbl',style:'mega',from:'thE',to:'fFree',W:0,seed:31,desc:'Dead straight, huge tables and gaps. Watch your speed',
+    spine:[[165,26],[165,-12],[470,-207],[478,-985]]},
 ];
 
 function polyInfo(pts){const cum=[0];for(let i=1;i<pts.length;i++)cum.push(cum[i-1]+Math.hypot(pts[i][0]-pts[i-1][0],pts[i][1]-pts[i-1][1]));return cum;}
@@ -345,8 +456,23 @@ const psiOf=(tx,tz)=>Math.atan2(-tx,-tz);
 const LEADIN=20;
 function nodeDir(k){const outs=SEGDEFS.filter(d=>d.from===k);let x=0,z=0;for(const d of outs){const a=d.spine[0],b=d.spine[1];const l=Math.hypot(b[0]-a[0],b[1]-a[1]);x+=(b[0]-a[0])/l;z+=(b[1]-a[1])/l;}const l=Math.hypot(x,z)||1;return [x/l,z/l];}
 for(const k in NODES){if(SEGDEFS.filter(d=>d.from===k).length>1)NODES[k].dir=nodeDir(k);}
+function straightPath(def){ // straight legs joined by round berms of radius R (one per corner)
+  const sp=def.spine,st=STYLES[def.style];const out=[sp[0].slice()];
+  const dir=(a,b)=>{const dx=b[0]-a[0],dz=b[1]-a[1],l=Math.hypot(dx,dz);return [dx/l,dz/l,l];};
+  let cur=sp[0].slice();
+  for(let k=1;k<sp.length;k++){
+    const [ux,uz]=dir(sp[k-1],sp[k]);
+    if(k<sp.length-1){const [vx,vz]=dir(sp[k],sp[k+1]);const R=st.corners[k-1]||30;const th=Math.acos(clamp(ux*vx+uz*vz,-1,1));const T=R*Math.tan(th/2);
+      const ax=sp[k][0]-ux*T,az=sp[k][1]-uz*T;let L=Math.hypot(ax-cur[0],az-cur[1]);for(let d=1;d<L;d+=1)out.push([cur[0]+ux*d,cur[1]+uz*d]);
+      const turn=Math.sign(ux*vz-uz*vx);const cx=ax-uz*R*turn,cz=az+ux*R*turn; // centre of the arc, on the inside of the turn
+      const a0=Math.atan2(az-cz,ax-cx);const n=Math.ceil(R*th);for(let i=1;i<=n;i++){const a=a0+turn*th*i/n;out.push([cx+R*Math.cos(a),cz+R*Math.sin(a)]);}
+      cur=out[out.length-1].slice();}
+    else{let L=Math.hypot(sp[k][0]-cur[0],sp[k][1]-cur[1]);const [wx,wz]=dir(cur,sp[k]);for(let d=1;d<L;d+=1)out.push([cur[0]+wx*d,cur[1]+wz*d]);out.push(sp[k].slice());}
+  }
+  return out;
+}
 function walkSegment(def){
-  const st=STYLES[def.style];const rnd=mulberry32(def.seed*7919+3);
+  const st=STYLES[def.style];if(st.straight)return straightPath(def);const rnd=mulberry32(def.seed*7919+3);
   const sp=def.spine;const cum=polyInfo(sp);const U=cum[cum.length-1];
   const A=NODES[def.from],B=NODES[def.to];
   let x=sp[0][0],z=sp[0][1];
@@ -406,7 +532,7 @@ function smoothPoly(P,iters,keep){ // laplacian smoothing, endpoints fixed
 }
 
 // ---------------- segment building: profile, speed, berms, features ----------------
-const GRADE={flowEasy:[0.012,0.155],jumpflow:[0.015,0.22],natural:[0.0,0.26],bigjump:[0.015,0.24],tech:[0.0,0.42],slab:[0.0,0.36],steep:[0.0,0.52],link:[0.008,0.13]};
+const GRADE={mega:[0.0,0.34],flowEasy:[0.012,0.155],jumpflow:[0.015,0.22],natural:[0.0,0.26],bigjump:[0.015,0.24],tech:[0.0,0.42],slab:[0.0,0.36],steep:[0.0,0.52],link:[0.008,0.13]};
 function sm1(arr,r){const n=arr.length;const o=new Float32Array(n);let acc=0;const pre=new Float64Array(n+1);for(let i=0;i<n;i++)pre[i+1]=pre[i]+arr[i];
   for(let i=0;i<n;i++){const a=Math.max(0,i-r),b=Math.min(n-1,i+r);o[i]=(pre[b+1]-pre[a])/(b-a+1);}return o;}
 function nodePlane(N){const h=(mountainH(N.x,N.z)+mountainH(N.x+4,N.z)+mountainH(N.x-4,N.z)+mountainH(N.x,N.z+4)+mountainH(N.x,N.z-4))/5;const g=terrGrad(N.x,N.z,8);
@@ -474,7 +600,7 @@ function computeSpeeds(tr,fp){ // speed of a rider who coasts but brakes for tur
   if(tr.surf){const rockCap=['tech','slab','steep'].includes(tr.def.style)?7.5:9.5,rootCap=rockCap+1.5;
     for(let i=0;i<n;i++){const st2=tr.surf[i];const flat=Math.sqrt(G*0.55/Math.max(Math.abs(tr.kap[i]),1e-4));if(st2===3)vT[i]=Math.min(vT[i],rockCap,flat);else if(st2===2)vT[i]=Math.min(vT[i],rootCap,flat*1.1);}}
   if(tr.sideArr)for(let i=Math.max(0,n-26);i<n;i++)vT[i]=Math.min(vT[i],6.5);
-  for(let i=0;i<n;i++){v=Math.min(v,vT[i],17);vd[i]=v;const Gr=i<n-1?hAt(i)-hAt(i+1):0;v=Math.sqrt(Math.max(v*v+2*(G*Gr-crr*G-kd*v*v),36));} // riders pedal to keep at least ~6 m/s on flats
+  const vmax=st.vmax||17;for(let i=0;i<n;i++){v=Math.min(v,vT[i],vmax);vd[i]=v;const Gr=i<n-1?hAt(i)-hAt(i+1):0;v=Math.sqrt(Math.max(v*v+2*(G*Gr-crr*G-kd*v*v),36));} // riders pedal to keep at least ~6 m/s on flats
   for(let i=n-2;i>=0;i--){const Gr=hAt(i)-hAt(i+1);const dec=Math.max(1.4,5.0-G*Gr);vd[i]=Math.min(vd[i],Math.sqrt(vd[i+1]*vd[i+1]+2*dec));}
   tr.vd=vd;
 }
@@ -514,16 +640,19 @@ function placeProfileFeatures(tr,rnd){
     }
   }
 }
-function designJump(v,Gr,H,tanA,drop){ // drop: how far the landing knuckle sits below the lip (step-downs)
-  // sized for a rider a bit slower than the flow speed; faster riders land further down a long landing
-  const Lt=2*H/tanA;v*=0.9;const vl=Math.sqrt(Math.max(v*v-2*G*(H-Gr*Lt),9))*0.96;
-  const ang=Math.atan(tanA-Gr);const vx=vl*Math.cos(ang),vy=vl*Math.sin(ang);
-  const bq=vy+Gr*vx;const Hk=H-drop,target=Hk*0.7;
-  const t1=(bq+Math.sqrt(bq*bq+4*4.905*(H-target)))/(2*4.905);
-  const x1=vx*t1;const slopeRel=(vy-G*t1)/vx+Gr;
-  const sl=clamp(0.95*(-slopeRel),0.35,1.1);const kn=1.4;
-  const D=Math.max(x1-kn/2-0.3*Hk/sl,1.0);
-  return {Lt,D,sl,kn,H,Hk};
+function designJump(v,Gr,H,tanA,drop,lo,hi,digMax){ // drop: how far the landing knuckle sits below the lip (step-downs)
+  // The landing is aimed at a rider on speed (v), set a little flatter than their flight so every flight crosses it;
+  // it is dug long enough that a fast rider (hi*v) still lands on the slope, and the knuckle is pulled in so a slow one (lo*v) clears the deck.
+  lo=lo||0.88;hi=hi||1.08;const Lt=2*H/tanA,Hk=H-drop,kn=clamp(0.9+H*0.6,1.4,2.4); /* rounder knuckles on bigger jumps */
+  const fly=vv=>{const vl=Math.sqrt(Math.max(vv*vv-2*G*(H-Gr*Lt),9))*0.93; /* the lip's transition, suspension and air drag cost some speed (measured in the game's physics) */const a=Math.atan(tanA-Gr);const vx=vl*Math.cos(a),vy=vl*Math.sin(a);return {a:4.905/(vx*vx),b:vy/vx+Gr};};
+  const xAtY=(T,y)=>(T.b+Math.sqrt(Math.max(0,T.b*T.b-4*T.a*(y-H))))/(2*T.a);
+  const S=fly(v*lo),M=fly(v),F=fly(v*hi);
+  const yM=Hk*0.5,xM=xAtY(M,yM);const sM=-(M.b-2*M.a*xM);const sl=clamp(0.75*sM,0.35,1.1); // flatter than the flight by a quarter: a firm but safe touchdown, and far less sensitive to speed
+  const xk=Math.max(1.5,xM-(Hk-yM)/sl-kn/2);const gapEnd=Math.min(xk-1.1,xAtY(S,Hk*0.92)-0.8); // a slow rider lands on the deck, so any gap stops short of where they come down
+  const hitRamp=T=>{const q=Hk+sl*(xk+kn/2)-H;const B=T.b+sl;return (B+Math.sqrt(Math.max(0,B*B-4*T.a*q)))/(2*T.a);};
+  const xF=hitRamp(F);const yF=Hk-sl*(xF-xk-kn/2);const dig=clamp(-(yF-sl*2.2),0.3,digMax||0.4*H+0.3);
+  const Lb=clamp(12*sl,4,13),Lrec=clamp(dig*16,8,40);
+  return {Lt,D:xk,sl,kn,H,Hk,dig,Lb,Lrec,gapEnd,len:Lt+xk+kn/2+(Hk+dig)/sl+Lb/2+Lrec+2,xM:hitRamp(M),xF};
 }
 function placeRideFeatures(tr,rnd){
   const sty=tr.def.style,F=tr.feats,L=tr.len,n=tr.n;
@@ -531,13 +660,19 @@ function placeRideFeatures(tr,rnd){
   const addRollers=(s,amp,lam,cnt)=>{const len=cnt*lam;if(freeAt(tr,s,s+len,5)&&straightAt(tr,s-2,s+len+2,1/28)){F.push({type:'rollers',s0:s,s1:s+len,amp,lam});return len;}return 0;};
   const addJump=(s,H,tanA,kind,drop,vScale)=>{
     const v=vAt(s)*vScale;if(v<7)return 0;const Gr=clamp(gradeAt(tr,s+5),-0.05,0.4);
-    const J=designJump(v,Gr,H,tanA,drop||0);const len=J.Lt+J.D+J.kn+J.Hk/J.sl+1.6/J.sl+14;
-    if(J.D>(sty==='bigjump'?22:sty==='jumpflow'?16:10))return 0;
-    if(freeAt(tr,s-5,s+len,5)&&straightAt(tr,s-4,s+len+2,1/34)){F.push({type:'jump',s0:s,s1:s+len,lip:s+J.Lt,H,Hk:J.Hk,Lt:J.Lt,D:J.D,sl:J.sl,kn:J.kn,gap:kind==='gap'&&J.D>4.5,step:drop>0,v});return len;}
+    if(sty==='mega'&&v<11.5)return 0;
+    const J=sty==='mega'?designJump(v,Gr,H,tanA,drop||0,0.94,1.05,2.4):designJump(v,Gr,H,tanA,drop||0);const len=J.len;
+    if(J.D>(sty==='mega'?30:sty==='bigjump'?22:sty==='jumpflow'?16:10))return 0;
+    if(freeAt(tr,s-5,s+len,5)&&straightAt(tr,s-4,s+len+2,1/34)){F.push({type:'jump',s0:s,s1:s+len,lip:s+J.Lt,H,Hk:J.Hk,Lt:J.Lt,D:J.D,sl:J.sl,kn:J.kn,dig:J.dig,Lb:J.Lb,Lrec:J.Lrec,gapEnd:J.gapEnd,gap:kind==='gap'&&J.gapEnd>3.8,step:drop>0,v});buildFeatTable(tr);computeSpeeds(tr,tr.featProfile);return len;}
     return 0;};
-  const addRocks=(s,len,dens,rmin,rmax,hmin,hmax)=>{if(!freeAt(tr,s,s+len,4)||!straightAt(tr,s-3,s+len+3,sty==='tech'||sty==='steep'||sty==='slab'?1/9:1/18))return 0;
-    const cnt=Math.round(len*tr.w*2*dens);for(let k=0;k<cnt;k++){const r=rmin+rnd()*(rmax-rmin);tr.rocks.push({s:s+rnd()*len,d:(rnd()*2-1)*tr.w*0.95,r,h:hmin+rnd()*(hmax-hmin)});}
-    F.push({type:'rocks',s0:s,s1:s+len});return len;};
+  const addRocks=(s,len,dens,rmin,rmax,hmin,hmax)=>{if(!freeAt(tr,s,s+len,4)||!straightAt(tr,s-3,s+len+3,sty==='tech'||sty==='steep'||sty==='slab'?1/8:1/18))return 0;
+    // a cleaner line weaves through every rock garden: rocks on it are small, the chunky ones sit to the sides
+    const ph=rnd()*6.28,lam=14+rnd()*10,amp=tr.w*(0.25+rnd()*0.3);const cnt=Math.round(len*tr.w*2*dens);
+    for(let k=0;k<cnt;k++){const r=rmin+rnd()*(rmax-rmin);const rs=s+rnd()*len,rd=(rnd()*2-1)*tr.w*0.95;let h=hmin+rnd()*(hmax-hmin);
+      const off=Math.abs(rd-amp*Math.sin(ph+rs*6.283/lam));if(off<0.45)h=Math.min(h,hmin+0.02);else if(off<0.8)h*=0.75;
+      if(Math.abs(tr.kap[clamp(Math.round(rs),0,tr.n-1)])>1/22)h*=0.65; /* smaller rocks where the trail turns */
+      tr.rocks.push({s:rs,d:rd,r:Math.max(r,h*2.2),h});}
+    F.push({type:'rocks',s0:s,s1:s+len,line:{ph,lam,amp}});return len;};
   const addRoots=(s,len,cnt)=>{if(!freeAt(tr,s,s+len,4)||!straightAt(tr,s-3,s+len+3,sty==='tech'||sty==='steep'?1/6:1/20))return 0;
     for(let k=0;k<cnt;k++){tr.roots.push({s:s+rnd()*len,d:(rnd()*2-1)*tr.w*0.6,ang:(rnd()*2-1)*0.7,r:0.05+rnd()*0.06});}
     F.push({type:'roots',s0:s,s1:s+len});return len;};
@@ -552,9 +687,9 @@ function placeRideFeatures(tr,rnd){
     slab:['rocks','roots','rocks','rocks'],
     steep:['rocks','roots','rocks','rocks'],
   };
-  if(sty==='jumpflow'||sty==='bigjump'||sty==='flowEasy'){ // jump lines: fill every straight between berms
+  if(sty==='jumpflow'||sty==='bigjump'||sty==='flowEasy'||sty==='mega'){ // jump lines: fill every straight between berms
     const kLim=1/34;let i=30;
-    const kinds=sty==='bigjump'?['bigtable','gap','step','bigtable','gap']:sty==='jumpflow'?['table','table','step','table','rollers']:['smalltable','rollers','rollers'];let ki=Math.floor(rnd()*kinds.length);
+    const kinds=sty==='mega'?['mtable','mgap','mstep','mgap','mtable','mstep']:sty==='bigjump'?['bigtable','gap','step','bigtable','gap']:sty==='jumpflow'?['table','table','step','table','rollers']:['smalltable','rollers','rollers'];let ki=Math.floor(rnd()*kinds.length);
     while(i<n-30){
       if(Math.abs(tr.kap[i])>kLim){i++;continue;}
       let j=i;while(j<n-30&&Math.abs(tr.kap[j])<=kLim)j++;
@@ -567,8 +702,11 @@ function placeRideFeatures(tr,rnd){
           else if(kind==='step')used=addJump(s,1.0+rnd()*0.4,0.46,'gap',sty==='bigjump'?1.2+rnd()*0.8:0.7+rnd()*0.4,0.95);
           else if(kind==='bigtable')used=addJump(s,1.4+rnd()*0.6,0.56,'table',0,0.95);
           else if(kind==='gap')used=addJump(s,1.4+rnd()*0.5,0.56,'gap',0,0.95);
+          else if(kind==='mtable')used=addJump(s,1.8+rnd()*0.5,0.42+rnd()*0.06,'table',0,1);
+          else if(kind==='mgap')used=addJump(s,1.8+rnd()*0.4,0.45,'gap',0,1);
+          else if(kind==='mstep')used=addJump(s,1.5+rnd()*0.3,0.42,'gap',1.2+rnd()*0.6,1);
           if(used)ki=(ki+t+1)%kinds.length;}
-        s+=used?used+(sty==='flowEasy'?14+rnd()*20:5+rnd()*6):2;
+        s+=used?used+(sty==='flowEasy'?14+rnd()*20:sty==='mega'?7+rnd()*8:5+rnd()*6):2;
       }
       i=j+1;
     }
@@ -585,7 +723,7 @@ function placeRideFeatures(tr,rnd){
       case 'step':used=addJump(s,1.0+rnd()*0.4,0.46,'gap',sty==='bigjump'?1.2+rnd()*0.8:0.7+rnd()*0.4,0.95);break;
       case 'bigtable':used=addJump(s,1.4+rnd()*0.6,0.56,'table',0,0.95);break;
       case 'gap':used=addJump(s,1.4+rnd()*0.5,0.56,'gap',0,0.95);break;
-      case 'rocks':{const big=sty==='steep'||sty==='slab';used=addRocks(s,16+rnd()*18,big?1.0:sty==='tech'?0.85:0.45,big?0.22:0.18,big?0.58:0.42,0.06,big?0.26:0.2);break;}
+      case 'rocks':{const big=sty==='steep'||sty==='slab';used=addRocks(s,16+rnd()*18,big?0.9:sty==='tech'?0.8:0.45,big?0.3:0.25,big?0.6:0.48,0.05,big?0.18:sty==='tech'?0.15:0.12);break;}
       case 'roots':{const len=10+rnd()*16;used=addRoots(s,len,Math.round(len*(sty==='tech'?0.9:0.5)));break;}
     }
     if(used>0){pi++;fails=0;s+=used+gapR[0]+rnd()*(gapR[1]-gapR[0]);}
@@ -611,12 +749,13 @@ function featH(f,s){
     if(x<=0){const t=(x+f.Lt)/f.Lt;return H*t*t;}
     let y;
     if(x<=f.D){
-      if(f.step){y=lerp(H,f.Hk,smooth(x/f.D));const a=1.0,b=f.D-0.9;if(x>a&&x<b){const e=Math.min(smooth((x-a)/1.2),smooth((b-x)/1.4));y-=0.55*y*e;}}
-      else{y=H;if(f.gap){const a=1.3,b=f.D-1.1;if(x>a&&x<b){const e=Math.min(smooth((x-a)/1.2),smooth((b-x)/1.6));y=H-0.5*H*e;}}}
-    }else{const u=x-f.D;y=f.Hk-f.sl*(u<f.kn?u*u/(2*f.kn):u-f.kn/2);
-      if(y<0){ // long landing: keep dropping below the trail, round out, then ease back up
-        const u0=f.kn/2+f.Hk/f.sl,Lr=1.6/f.sl,t=u-u0;
-        if(t<Lr)return -(f.sl*t-f.sl*t*t/(2*Lr));const dig=f.sl*Lr/2,k=(t-Lr)/12;return k>=1?0:-dig*(1-k*k*(3-2*k));}}
+      if(f.step){y=lerp(H,f.Hk,smooth(x/f.D));} /* step-down: the deck itself falls away, so coming up short still lands on a slope */
+      else{y=H;if(f.gap){const a=1.3,b=f.gapEnd;if(x>a&&x<b){const e=Math.min(smooth((x-a)/1.2),smooth((b-x)/1.6));y=H-0.5*H*e;}}}
+    }else{ // long landing: down the slope (dug below the trail line when it needs the length), a rounded bottom, then ease back up
+      const u=x-f.D,u1=f.kn/2+(f.Hk+f.dig)/f.sl,a=u1-f.Lb/2;
+      if(u<a)return f.Hk-f.sl*(u<f.kn?u*u/(2*f.kn):u-f.kn/2);
+      const t=u-a;if(t<f.Lb)return f.Hk-f.sl*(a-f.kn/2)-f.sl*t+f.sl*t*t/(2*f.Lb);
+      const k=(t-f.Lb)/f.Lrec;return k>=1?0:-f.dig*(1-k*k*(3-2*k));}
     return y;
   }
   return 0;
@@ -720,7 +859,7 @@ renderer.shadowMap.type=Q.soft?THREE.PCFSoftShadowMap:THREE.PCFShadowMap;
 const maxAniso=renderer.capabilities.getMaxAnisotropy();
 const scene=new THREE.Scene();
 const HAZE=new THREE.Color(0xaec3cf);
-scene.fog=new THREE.FogExp2(HAZE.getHex(),0.0019);
+scene.fog=new THREE.FogExp2(HAZE.getHex(),0.00145);
 const camera=new THREE.PerspectiveCamera(80,1,0.05,9000);
 camera.rotation.order='YXZ';scene.add(camera);
 
@@ -729,10 +868,12 @@ const SUN_DIR=new V3(0.42,0.6,-0.68).normalize();
 const hemi=new THREE.HemisphereLight(0xa9c8ea,0x3b3323,0.62);scene.add(hemi);
 const sun=new THREE.DirectionalLight(0xfff1dc,2.3);
 sun.castShadow=true;
-function applyShadowQuality(){
+// shadows are rendered into a cached map that is only redrawn when you have moved on (or something changed)
+let shadowDirty=true;const shadowC=new V3(1e9,0,1e9);renderer.shadowMap.autoUpdate=false;
+function applyShadowQuality(){shadowDirty=true;
   sun.shadow.mapSize.set(Q.shadow,Q.shadow);if(sun.shadow.map){sun.shadow.map.dispose();sun.shadow.map=null;}
   const b=Q.shadowBox;Object.assign(sun.shadow.camera,{left:-b,right:b,top:b,bottom:-b,near:1,far:520});sun.shadow.camera.updateProjectionMatrix();
-  sun.shadow.bias=-0.0004;sun.shadow.normalBias=0.04;sun.shadow.radius=Q.soft?3:1;
+  sun.shadow.bias=-0.0004;sun.shadow.normalBias=0.04;sun.shadow.radius=Q.soft?3:1;sun.shadow.autoUpdate=true;
   renderer.shadowMap.type=Q.soft?THREE.PCFSoftShadowMap:THREE.PCFShadowMap;
 }
 applyShadowQuality();
@@ -782,13 +923,23 @@ function makeDirtTex(){const S=TEX,c=mkCanvas(S,S),g=c.getContext('2d');const Hn
       g.fillStyle='rgba(255,255,255,.08)';g.beginPath();g.ellipse(px-r*0.3,py-r*0.3,r*0.45,r*0.3,0,0,7);g.fill();});}
   const H=heightFromCanvas(c,S,1);return {map:toTex(c),normal:normalFromHeight(H,S,3.0)};}
 // rock: grey granite with cracks and lichen
-function makeRockTex(){const S=TEX,c=mkCanvas(S,S),g=c.getContext('2d');const H=new Float32Array(S*S);
-  const img=g.createImageData(S,S),d=img.data;
-  for(let y=0;y<S;y++)for(let x=0;x<S;x++){const u=x/S,v=y/S;const n=tfbm(u*4,v*4,4,5),r=1-Math.abs(tnoise(u*7,v*7,7)),r2=1-Math.abs(tnoise(u*16+4,v*16,16));
-    const crack=Math.pow(smooth((r-0.93)/0.07),2)*0.7+Math.pow(smooth((r2-0.95)/0.05),2)*0.15;const lich=smooth((tfbm(u*9+7,v*9+1,9,3)-0.28)/0.1);
-    let k=0.74+n*0.22;let cr=132*k,cg=130*k,cb=124*k;cr=lerp(cr,176,lich*0.5);cg=lerp(cg,184,lich*0.5);cb=lerp(cb,150,lich*0.5);
-    cr*=1-crack*0.5;cg*=1-crack*0.5;cb*=1-crack*0.5;const i=(y*S+x)*4;d[i]=cr;d[i+1]=cg;d[i+2]=cb;d[i+3]=255;H[y*S+x]=n*0.8-crack*0.45+(tnoise(u*40,v*40,40))*0.08;}
-  g.putImageData(img,0,0);return {map:toTex(c),normal:normalFromHeight(H,S,2.0)};}
+function makeRockTex(){const S=TEX,c=mkCanvas(S,S),g=c.getContext('2d');
+  // mottled granite with mineral speckle and pale lichen, then a few angular fractures drawn on top
+  const img=g.createImageData(S,S),d=img.data;const H0=new Float32Array(S*S);
+  for(let y=0;y<S;y++)for(let x=0;x<S;x++){const u=x/S,v=y/S;const n=tfbm(u*3,v*3,3,5),m=tfbm(u*11+4,v*11+2,11,3);const spk=tnoise(u*96,v*96,96);
+    const lich=smooth((tfbm(u*7+7,v*7+1,7,3)-0.3)/0.12);let k=0.76+n*0.2+m*0.08;let cr=128*k,cg=127*k,cb=122*k;
+    if(spk>0.4){cr+=30;cg+=29;cb+=27;}else if(spk<-0.44){cr-=26;cg-=26;cb-=24;}
+    cr=lerp(cr,172,lich*0.45);cg=lerp(cg,180,lich*0.45);cb=lerp(cb,148,lich*0.45);
+    const i=(y*S+x)*4;d[i]=cr;d[i+1]=cg;d[i+2]=cb;d[i+3]=255;H0[y*S+x]=n*0.7+m*0.2+spk*0.03;}
+  g.putImageData(img,0,0);
+  const crackLayer=mkCanvas(S,S),cg2=crackLayer.getContext('2d');cg2.lineCap='round';cg2.lineJoin='round';
+  for(let k=0;k<14;k++){let x=R()*S,y=R()*S,a=R()*Math.PI*2;const segs=4+Math.floor(R()*6);const w=S/512*(0.8+R()*1.6);const pts=[[x,y]];
+    for(let j=0;j<segs;j++){a+=(R()-0.5)*0.9;const l=S/40*(0.6+R()*1.2);x+=Math.cos(a)*l;y+=Math.sin(a)*l;pts.push([x,y]);}
+    for(const [col,lw] of [['rgba(200,196,188,.35)',w*2.2],['rgba(38,36,33,.85)',w]]){cg2.strokeStyle=col;cg2.lineWidth=lw;
+      wrapDraw(S,pts[0][0],pts[0][1],S/2,(px,py)=>{const ox=px-pts[0][0],oy=py-pts[0][1];cg2.beginPath();cg2.moveTo(pts[0][0]+ox,pts[0][1]+oy);for(const q of pts)cg2.lineTo(q[0]+ox,q[1]+oy);cg2.stroke();});}}
+  g.drawImage(crackLayer,0,0);
+  const cd=cg2.getImageData(0,0,S,S).data;for(let i=0;i<S*S;i++){const a=cd[i*4+3]/255;const dark=cd[i*4]<120;H0[i]-=dark?a*0.5:0;}
+  return {map:toTex(c),normal:normalFromHeight(H0,S,1.8)};}
 // bark: deep vertical furrows (fir) or stringy red-brown (cedar)
 function makeBarkTex(kind){const W=256,S=512,c=mkCanvas(W,S),g=c.getContext('2d');const img=g.createImageData(W,S),d=img.data;const H=new Float32Array(W*S);
   for(let y=0;y<S;y++)for(let x=0;x<W;x++){const u=x/W,v=y/S;
@@ -1061,9 +1212,20 @@ let ribbonMat=null;
 //  Forest: coastal BC conifers, cedars, alders, understory, rocks, logs
 // ===================================================================
 function barkMat(t,color){return new THREE.MeshStandardMaterial({map:t.map,normalMap:t.normal,roughness:0.96,metalness:0,color:color||0xffffff});}
-function leafShade(m){m.onBeforeCompile=sh=>{sh.fragmentShader=sh.fragmentShader.replace('( gl_FrontFacing ) ? vIndirectFront : vIndirectBack','vIndirectFront')
-  .replace('( gl_FrontFacing ) ? vLightFront : vLightBack','max( vLightFront, vLightBack * 0.75 )');};return m;}
-function foliageMat(tex,alpha){const m=leafShade(new THREE.MeshLambertMaterial({map:tex,alphaTest:alpha||0.42,side:THREE.DoubleSide,vertexColors:true}));
+// leaves lit from both sides, and a gentle breeze: tops move more than the base, each plant on its own phase
+const WIND={value:0};
+function leafShade(m,amp){m.onBeforeCompile=sh=>{sh.fragmentShader=sh.fragmentShader.replace('( gl_FrontFacing ) ? vIndirectFront : vIndirectBack','vIndirectFront')
+  .replace('( gl_FrontFacing ) ? vLightFront : vLightBack','max( vLightFront, vLightBack * 0.75 )');
+  if(amp){sh.uniforms.uWind=WIND;sh.vertexShader=sh.vertexShader.replace('#include <common>','#include <common>\nuniform float uWind;').replace('#include <begin_vertex>',`#include <begin_vertex>
+    #ifdef USE_INSTANCING
+      vec3 wip=vec3(instanceMatrix[3][0],instanceMatrix[3][1],instanceMatrix[3][2]);
+    #else
+      vec3 wip=vec3(0.0);
+    #endif
+    float wh=max(position.y,0.0);float wph=wip.x*0.071+wip.z*0.053;
+    float wsw=sin(uWind*1.1+wph)*0.6+sin(uWind*2.3+wph*1.7)*0.4;
+    transformed.x+=wsw*${amp.toFixed(5)}*wh*wh;transformed.z+=cos(uWind*0.9+wph)*${(amp*0.6).toFixed(5)}*wh*wh;`);}};return m;}
+function foliageMat(tex,alpha,amp){const m=leafShade(new THREE.MeshLambertMaterial({map:tex,alphaTest:alpha||0.42,side:THREE.DoubleSide,vertexColors:true}),amp==null?0.00035:amp);
   m.userData.depth=new THREE.MeshDepthMaterial({depthPacking:THREE.RGBADepthPacking,map:tex,alphaTest:alpha||0.42});return m;}
 function geoFrom(pos,nor,uv,colr,idx){const g=new THREE.BufferGeometry();g.setAttribute('position',new THREE.Float32BufferAttribute(pos,3));g.setAttribute('normal',new THREE.Float32BufferAttribute(nor,3));
   if(uv)g.setAttribute('uv',new THREE.Float32BufferAttribute(uv,2));if(colr)g.setAttribute('color',new THREE.Float32BufferAttribute(colr,3));if(idx)g.setIndex(idx);g.computeBoundingSphere();return g;}
@@ -1148,7 +1310,7 @@ function boulderGeo(detail,seed,mossy){const g=new THREE.IcosahedronGeometry(1,d
   g.setAttribute('color',new THREE.Float32BufferAttribute(c,3));g.setAttribute('uv',new THREE.Float32BufferAttribute(uv,2));return g;}
 
 // ---------- templates, materials, impostors ----------
-let SPEC=null,VMAT=null,IMP=null;
+let SPEC=null,SPEC_MID=null,VMAT=null,IMP=null;
 function buildTemplates(){
   const b=Q.branches,cross=Q.cross;
   SPEC={
@@ -1158,14 +1320,21 @@ function buildTemplates(){
     alder:alderTemplate(404,{H:17,crownR:3.8,trunkR:0.24,cards:Q===QUAL.high?46:30}),
     young:coniferTemplate({H:6,base:0.04,crownR:1.7,trunkR:0.09,whorl:0.42,branches:Math.max(3,b),cross:false,droop:0.3,tip:0.4,wide:0.6,tint:[1.05,1.12,0.95],shape:0.9},505),
   };
+  // mid-distance crowns: fewer, wider sprays (same silhouette, a third of the cards)
+  const mb=Math.max(3,b-2);
+  SPEC_MID={fir:coniferTemplate({H:32,base:0.42,crownR:4.6,trunkR:0.52,whorl:1.7,branches:mb,cross:false,droop:0.2,wide:1.05,tint:[0.95,1,0.95],shape:0.95},101).foliage,
+    hemlock:coniferTemplate({H:28,base:0.28,crownR:4.2,trunkR:0.42,whorl:1.6,branches:mb,cross:false,droop:0.42,tip:0.5,wide:1.1,tint:[1.05,1.1,0.95],shape:0.85},202).foliage,
+    cedar:coniferTemplate({H:26,base:0.18,crownR:4.8,trunkR:0.62,whorl:1.7,branches:mb,cross:false,droop:0.55,tip:0.9,wide:1.25,tint:[1,1,1],flare:0.7,shape:0.75},303).foliage,
+    alder:alderTemplate(404,{H:17,crownR:3.8,trunkR:0.24,cards:16}).foliage,
+    young:null};
   const bk={fir:makeBarkTex('fir'),cedar:makeBarkTex('cedar'),alder:makeBarkTex('alder')};
   const spr={fir:sprayTex('fir'),cedar:sprayTex('cedar'),alder:sprayTex('alder')};
   VMAT={
     trunk:{fir:barkMat(bk.fir),hemlock:barkMat(bk.fir,0xb0a498),cedar:barkMat(bk.cedar),alder:barkMat(bk.alder),young:barkMat(bk.fir,0x9a8a7a)},
-    fol:{fir:foliageMat(spr.fir),hemlock:foliageMat(spr.fir),cedar:foliageMat(spr.cedar,0.4),alder:foliageMat(spr.alder,0.45),young:foliageMat(spr.fir)},
-    fern:leafShade(new THREE.MeshLambertMaterial({map:fernTex(),alphaTest:0.45,side:THREE.DoubleSide,vertexColors:true})),
-    salal:leafShade(new THREE.MeshLambertMaterial({map:sprayTex('salal'),alphaTest:0.45,side:THREE.DoubleSide,vertexColors:true})),
-    grass:leafShade(new THREE.MeshLambertMaterial({map:sprayTex('grass'),alphaTest:0.4,side:THREE.DoubleSide,vertexColors:true})),
+    fol:{fir:foliageMat(spr.fir),hemlock:foliageMat(spr.fir,0.42,0.0005),cedar:foliageMat(spr.cedar,0.4,0.0005),alder:foliageMat(spr.alder,0.45,0.0015),young:foliageMat(spr.fir,0.42,0.006)},
+    fern:leafShade(new THREE.MeshLambertMaterial({map:fernTex(),alphaTest:0.45,side:THREE.DoubleSide,vertexColors:true}),0.05),
+    salal:leafShade(new THREE.MeshLambertMaterial({map:sprayTex('salal'),alphaTest:0.45,side:THREE.DoubleSide,vertexColors:true}),0.04),
+    grass:leafShade(new THREE.MeshLambertMaterial({map:sprayTex('grass'),alphaTest:0.4,side:THREE.DoubleSide,vertexColors:true}),0.16),
     log:new THREE.MeshStandardMaterial({map:bk.fir.map,normalMap:bk.fir.normal,roughness:0.95,vertexColors:true}),
     stump:new THREE.MeshStandardMaterial({map:bk.cedar.map,normalMap:bk.cedar.normal,roughness:0.95,vertexColors:true}),
     boulder:new THREE.MeshStandardMaterial({map:TXS.rock.map,normalMap:TXS.rock.normal,roughness:0.9,vertexColors:true}),
@@ -1212,6 +1381,9 @@ let VS=null,FAR=null,nearMeshes=[],nearC={x:1e9,z:1e9},FARU={c:{value:new THREE.
 const _m=new THREE.Matrix4(),_q=new THREE.Quaternion(),_s=new V3(),_p=new V3(),_e=new THREE.Euler(),_c=new THREE.Color();
 function vpush(kind,m,c){const v=VS[kind];v.m.push(...m.elements);v.c.push(c.r,c.g,c.b);v.x.push(m.elements[12]);v.z.push(m.elements[14]);}
 function nearTrail(x,z,m){const L=locate(x,z);return L.t&&L.dist<L.t.w+L.t.sw+m;}
+function clearOfTread(x,z,R){const L=locate(x,z);return !(L.t&&L.dist<L.t.w+R+0.25);} // a solid thing of radius R centred here stays off the riding surface
+const BOULDER_R=1.15*1.3; // how far the rock mesh can reach, per unit of horizontal scale
+function lineClear(x0,z0,x1,z1,r){for(let k=0;k<=6;k++){const t=k/6;if(!clearOfTread(lerp(x0,x1,t),lerp(z0,z1,t),r))return false;}return true;}
 function addTree(sp,x,z,rnd,sc){
   const y=gridH(x,z);if(y<WATER_Y+1.5)return;const T=SPEC[sp];
   _q.setFromEuler(_e.set((rnd()-0.5)*0.04,rnd()*6.28,(rnd()-0.5)*0.04));_s.set(sc,sc*(0.92+rnd()*0.16),sc);_p.set(x,y-0.3,z);_m.compose(_p,_q,_s);
@@ -1231,40 +1403,44 @@ function buildVegetation(){
   const plateau=(x,z)=>z>Z_TOP-4&&z<100&&Math.abs(x)<190;
   for(let z=TZ0+6;z<TZ1-6;z+=SP)for(let x=TX0+6;x<TX1-6;x+=SP){
     const px=x+(rnd()-0.5)*SP*0.95,pz=z+(rnd()-0.5)*SP*0.95;
-    if(nearTrail(px,pz,1.6))continue;
+    if(nearTrail(px,pz,1.6)||liftDist(px,pz)<11)continue;
     if(plateau(px,pz)&&rnd()>0.05)continue;
     const h=gridH(px,pz);let p=0.62+0.5*fbm(px/140+4,pz/140,3);if(pz<Z_BOT-8)p*=0.1;
     const hx=gridH(px+2,pz)-gridH(px-2,pz),hz=gridH(px,pz+2)-gridH(px,pz-2);if(Math.hypot(hx,hz)/4>0.85)p*=0.25;
     p*=1-rockiness(px,pz)*0.7;
     if(rnd()>p)continue;
     const sp=pickSpecies(px,pz,h,rnd);const sc=sp==='alder'?0.7+rnd()*0.4:0.62+rnd()*0.58;addTree(sp,px,pz,rnd,sc);
-    if(rnd()<0.3){const ox=px+(rnd()-0.5)*5,oz=pz+(rnd()-0.5)*5;if(!nearTrail(ox,oz,1.2))addTree('young',ox,oz,rnd,0.5+rnd()*0.9);}
+    if(rnd()<0.3){const ox=px+(rnd()-0.5)*5,oz=pz+(rnd()-0.5)*5;if(!nearTrail(ox,oz,1.2)&&liftDist(ox,oz)>=11)addTree('young',ox,oz,rnd,0.5+rnd()*0.9);}
     if(rnd()<0.55){const ox=px+(rnd()-0.5)*6,oz=pz+(rnd()-0.5)*6;if(!nearTrail(ox,oz,0.5)){const t=0.85+rnd()*0.3;if(rnd()<0.6)addItem('fern',ox,oz,gridH(ox,oz)-0.05,[0,rnd()*6.28,0],0.8+rnd()*0.6,0.8+rnd()*0.5,0.8+rnd()*0.6,new THREE.Color(t,t,t*0.92));
       else addItem('salal',ox,oz,gridH(ox,oz)-0.05,[0,rnd()*6.28,0],0.8+rnd()*0.7,0.7+rnd()*0.5,0.8+rnd()*0.7,new THREE.Color(t,t,t));}}
-    if(rnd()<0.045){const ox=px+(rnd()-0.5)*5,oz=pz+(rnd()-0.5)*5;if(!nearTrail(ox,oz,1.5)){const L=5+rnd()*9,r=0.25+rnd()*0.35;addItem('log',ox,oz,gridH(ox,oz)+r*0.4,[0,rnd()*6.28,(rnd()-0.5)*0.1],L,r,r);}}
-    if(rnd()<0.03){const ox=px+(rnd()-0.5)*5,oz=pz+(rnd()-0.5)*5;if(!nearTrail(ox,oz,1.5)){const r=0.6+rnd()*0.7;addItem('stump',ox,oz,gridH(ox,oz)-0.1,[0,rnd()*6.28,0],r,0.6+rnd()*1.6,r);}}
-    if(rnd()<0.05+rockiness(px,pz)*0.4){const ox=px+(rnd()-0.5)*5,oz=pz+(rnd()-0.5)*5;if(!nearTrail(ox,oz,1.2)){const s=0.5+rnd()*rnd()*2.4;addItem('boulder',ox,oz,gridH(ox,oz)-s*0.25,[rnd(),rnd()*6.28,rnd()],s*(1+rnd()*0.5),s*(0.6+rnd()*0.5),s);}}
+    if(rnd()<0.045){const ox=px+(rnd()-0.5)*5,oz=pz+(rnd()-0.5)*5;const L=5+rnd()*9,r=0.25+rnd()*0.35,yaw=rnd()*6.28;const hx=Math.cos(yaw)*L/2,hz=-Math.sin(yaw)*L/2;
+      if(lineClear(ox-hx,oz-hz,ox+hx,oz+hz,r+1))addItem('log',ox,oz,gridH(ox,oz)+r*0.4,[0,yaw,(rnd()-0.5)*0.1],L,r,r);}
+    if(rnd()<0.03){const ox=px+(rnd()-0.5)*5,oz=pz+(rnd()-0.5)*5;const r=0.6+rnd()*0.7;if(clearOfTread(ox,oz,r*1.3+1))addItem('stump',ox,oz,gridH(ox,oz)-0.1,[0,rnd()*6.28,0],r,0.6+rnd()*1.6,r);}
+    if(rnd()<0.05+rockiness(px,pz)*0.4){const ox=px+(rnd()-0.5)*5,oz=pz+(rnd()-0.5)*5;const s=0.5+rnd()*rnd()*2.4,sx=s*(1+rnd()*0.5);
+      if(clearOfTread(ox,oz,BOULDER_R*sx+0.6))addItem('boulder',ox,oz,gridH(ox,oz)-s*0.25,[rnd()*0.3,rnd()*6.28,rnd()*0.3],sx,s*(0.6+rnd()*0.5),s);}
   }
-  for(let i=0;i<14000;i++){const top=i<8000;const x=top?(rnd()-0.5)*440:(rnd()-0.5)*1000,z=top?Z_TOP-8+rnd()*115:Z_BOT-6-rnd()*140;if(nearTrail(x,z,0.3))continue;const h=gridH(x,z);if(h<WATER_Y+1)continue;
+  for(let i=0;i<14000;i++){const top=i<8000;const x=top?(rnd()-0.5)*440:(rnd()-0.5)*1000,z=top?Z_TOP-8+rnd()*115:Z_BOT-6-rnd()*140;if(nearTrail(x,z,0.3)||nearStation(x,z,9))continue;const h=gridH(x,z);if(h<WATER_Y+1)continue;
     const t=0.8+rnd()*0.35;addItem('grass',x,z,h-0.03,[0,rnd()*6.28,0],0.8+rnd()*0.8,0.7+rnd()*0.7,0.8+rnd()*0.8,new THREE.Color(t,t,t*0.9));}
   const p={};
   for(const tr of TR){
     for(let s=10;s<tr.len-6;s+=3.3){for(const sg of [-1,1]){
       if(rnd()<0.56){const d=sg*(tr.w+tr.sw+1.9+rnd()*6);trailPoint(tr,s+(rnd()-0.5)*2,p);const x=p.x+p.tz*d,z=p.z-p.tx*d;if(nearTrail(x,z,1.7))continue;if(plateau(x,z)&&rnd()>0.1)continue;
-        const h=gridH(x,z);const sp=rnd()<0.18?'young':pickSpecies(x,z,h,rnd);addTree(sp,x,z,rnd,sp==='young'?0.6+rnd()*0.8:0.6+rnd()*0.55);}}}
+        if(liftDist(x,z)<11)continue;const h=gridH(x,z);const sp=rnd()<0.18?'young':pickSpecies(x,z,h,rnd);addTree(sp,x,z,rnd,sp==='young'?0.6+rnd()*0.8:0.6+rnd()*0.55);}}}
     for(let s=6;s<tr.len-4;s+=1.1){for(const sg of [-1,1]){const r=rnd();if(r<0.6){const d=sg*(tr.w+tr.sw*0.5+rnd()*4.5);trailPoint(tr,s+(rnd()-0.5)*1.2,p);const x=p.x+p.tz*d,z=p.z-p.tx*d;if(nearTrail(x,z,-tr.sw*0.4))continue;if(plateau(x,z))continue;
         const t=0.85+rnd()*0.3;const y=groundH(x,z)-0.04;if(r<0.42)addItem('fern',x,z,y,[0,rnd()*6.28,0],0.7+rnd()*0.6,0.75+rnd()*0.5,0.7+rnd()*0.6,new THREE.Color(t,t,t*0.92));
         else addItem('salal',x,z,y,[0,rnd()*6.28,0],0.7+rnd()*0.5,0.6+rnd()*0.4,0.7+rnd()*0.5,new THREE.Color(t,t,t));}}}
     for(let s=30;s<tr.len-20;s+=25+rnd()*40){if(rnd()<0.45){const sg=rnd()<0.5?-1:1;trailPoint(tr,s,p);const d=sg*(tr.w+tr.sw+0.9+rnd()*0.8);const x=p.x+p.tz*d,z=p.z-p.tx*d;const L=4+rnd()*5,r=0.22+rnd()*0.2;
-        addItem('log',x,z,groundH(x,z)+r*0.35,[0,Math.atan2(-p.tz,p.tx),0],L,r,r);}}
+        const hx=p.tx*L/2,hz=p.tz*L/2;if(lineClear(x-hx,z-hz,x+hx,z+hz,r+0.4))addItem('log',x,z,groundH(x,z)+r*0.35,[0,Math.atan2(-p.tz,p.tx),0],L,r,r);}}
     for(const r of tr.rocks){trailPoint(tr,r.s,p);const x=p.x+p.tz*r.d,z=p.z-p.tx*r.d;const y=surfH(tr,r.s,r.d,false);const g=0.75+rnd()*0.4;
-      addItem('trailrock',x,z,y-r.h*0.42,[rnd()*0.3,rnd()*6.28,rnd()*0.3],r.r*1.02,r.h*1.9,r.r*1.02,new THREE.Color(g,g,g*0.96));}
+      addItem('trailrock',x,z,y-r.h*0.06,[rnd()*0.08,rnd()*6.28,rnd()*0.08],r.r*0.72,r.h*1.12,r.r*0.72,new THREE.Color(g,g,g*0.96));}
     for(const rt of tr.roots){trailPoint(tr,rt.s,p);const x=p.x+p.tz*rt.d,z=p.z-p.tx*rt.d;const y=surfH(tr,rt.s,rt.d,false);const yaw=yawOf(p)+Math.PI/2+rt.ang;
       addItem('root',x,z,y-rt.r*0.2,[0,yaw,(rnd()-0.5)*0.08],rt.r,rt.r*0.9,(tr.w+0.9)*2);}
     for(const f of tr.feats){if(!f.rock)continue;
-      if(f.type==='ledge'){trailPoint(tr,f.a,p);const y=surfH(tr,f.a-0.3,0,false);addItem('trailrock',p.x,p.z,y-0.55,[0,yawOf(p)+Math.PI/2,0],tr.w+0.6,0.9,0.7,new THREE.Color(0.9,0.9,0.88));}
-      for(let k=0;k<6;k++){const s=f.a+rnd()*((f.Ls||2)+2);trailPoint(tr,s,p);const sg=k%2?1:-1;const d=sg*(tr.w+tr.sw*0.8+rnd()*2.5);const x=p.x+p.tz*d,z=p.z-p.tx*d;const sc=1.2+rnd()*2.4;
-        addItem('boulder',x,z,groundH(x,z)-sc*0.35,[rnd()*0.4,rnd()*6.28,rnd()*0.4],sc*1.3,sc*0.8,sc);}}
+      if(f.type==='ledge'){trailPoint(tr,f.a-0.45,p);const y=surfH(tr,f.a,0,false);const hy=Math.max(0.5,f.H*0.9);
+        addItem('trailrock',p.x,p.z,y-0.04-hy*0.99,[0,yawOf(p),0],(tr.w+0.35)/1.15,hy,0.42,new THREE.Color(0.9,0.9,0.88));}
+      for(let k=0;k<6;k++){const s=f.a+rnd()*((f.Ls||2)+2);trailPoint(tr,s,p);const sg=k%2?1:-1;const sc=1.0+rnd()*2.0;const Rh=BOULDER_R*1.27*sc*1.3;
+        const d=sg*(tr.w+tr.sw*0.6+Rh+rnd()*1.5);const x=p.x+p.tz*d,z=p.z-p.tx*d;if(!clearOfTread(x,z,Rh))continue;
+        addItem('boulder',x,z,groundH(x,z)-sc*0.35,[rnd()*0.2,rnd()*6.28,rnd()*0.2],sc*1.3,sc*0.8,sc);}}
   }
   // pack into typed arrays + a coarse grid for range queries
   const GC=40;
@@ -1275,26 +1451,41 @@ function buildVegetation(){
   for(const k of VKIND){const v=VS[k];if(!v.n)continue;const sp=k.slice(2);let geo,mat,shadow=false;
     if(k.startsWith('t_')){geo=SPEC[sp].trunk;mat=VMAT.trunk[sp];shadow=true;}else if(k.startsWith('f_')){geo=SPEC[sp].foliage;mat=VMAT.fol[sp];shadow=true;}
     else{geo=VMAT.geo[k];mat=VMAT[k];shadow=k==='log'||k==='stump'||k==='boulder'||k==='trailrock';}
-    const im=new THREE.InstancedMesh(geo,mat,v.n);im.setColorAt(0,_c.setRGB(1,1,1));im.count=0;im.frustumCulled=false;im.castShadow=shadow;im.receiveShadow=true;im.userData.kind=k;im.userData.tree=k.startsWith('t_')||k.startsWith('f_');
-    if(mat.userData.depth)im.customDepthMaterial=mat.userData.depth;v.mesh=im;nearMeshes.push(im);scene.add(im);}
+    const mk=(g)=>{const im=new THREE.InstancedMesh(g,mat,v.n);im.setColorAt(0,_c.setRGB(1,1,1));im.count=0;im.frustumCulled=false;im.castShadow=shadow;im.receiveShadow=true;im.userData.kind=k;im.userData.tree=k.startsWith('t_')||k.startsWith('f_');
+      if(mat.userData.depth)im.customDepthMaterial=mat.userData.depth;nearMeshes.push(im);scene.add(im);return im;};
+    v.mesh=mk(geo);v.meshMid=k.startsWith('f_')&&SPEC_MID[sp]?mk(SPEC_MID[sp]):null;v.rng=new Int32Array(v.n);v.rngN=0;v.rngMid=v.meshMid?new Int32Array(v.n):null;v.rngMidN=0;}
   // far tree cards: every tree once; the shader hides the ones the near meshes are drawing
   if(FAR.mesh){scene.remove(FAR.mesh);FAR.mesh.geometry.dispose();}
   const nF=FAR.sp.length;const g=IMP.geo.clone();g.setAttribute('aSp',new THREE.InstancedBufferAttribute(new Float32Array(FAR.sp),1));
   const fm=new THREE.InstancedMesh(g,IMP.mat,nF);fm.instanceMatrix.array.set(FAR.m);fm.instanceMatrix.needsUpdate=true;fm.setColorAt(0,_c.setRGB(1,1,1));fm.instanceColor.array.set(FAR.c);fm.instanceColor.needsUpdate=true;
   fm.frustumCulled=false;FAR.mesh=fm;FAR.m=FAR.c=null;scene.add(fm);
+  if(LIFT.built)addLiftCollision();
   nearC.x=nearC.z=1e9;
 }
 function refreshNear(cx,cz,force){
-  if(!force&&Math.hypot(cx-nearC.x,cz-nearC.z)<10)return;
-  nearC.x=cx;nearC.z=cz;const GC=40;
-  for(const k of VKIND){const v=VS[k];if(!v.n)continue;const Rr=COVER.has(k)?Q.cover:Q.treeNear;const R2=Rr*Rr;const im=v.mesh;const M=im.instanceMatrix.array,Cc=im.instanceColor.array;let n=0;
+  if(!force&&Math.hypot(cx-nearC.x,cz-nearC.z)<10)return false;
+  nearC.x=cx;nearC.z=cz;const GC=40;const midR2=Math.pow(Q.treeNear*0.55,2);
+  for(const k of VKIND){const v=VS[k];if(!v.n)continue;const Rr=COVER.has(k)?Q.cover:Q.treeNear;const R2=Rr*Rr;let n=0,nm=0;
     const c0=Math.floor((cx-Rr)/GC),c1=Math.floor((cx+Rr)/GC),r0=Math.floor((cz-Rr)/GC),r1=Math.floor((cz+Rr)/GC);
     for(let a=c0;a<=c1;a++)for(let b=r0;b<=r1;b++){const arr=v.cells.get(hkey(a,b));if(!arr)continue;
-      for(const i of arr){const dx=v.X[i]-cx,dz=v.Z[i]-cz;if(dx*dx+dz*dz>R2)continue;M.set(v.M.subarray(i*16,i*16+16),n*16);Cc[n*3]=v.C[i*3];Cc[n*3+1]=v.C[i*3+1];Cc[n*3+2]=v.C[i*3+2];n++;}}
-    im.count=n;im.instanceMatrix.needsUpdate=true;im.instanceColor.needsUpdate=true;}
-  FARU.c.value.set(cx,cz);FARU.r.value=Q.treeNear;
+      for(const i of arr){const dx=v.X[i]-cx,dz=v.Z[i]-cz;const d2=dx*dx+dz*dz;if(d2>R2)continue;if(v.rngMid&&d2>midR2)v.rngMid[nm++]=i;else v.rng[n++]=i;}}
+    v.rngN=n;v.rngMidN=nm;}
+  FARU.c.value.set(cx,cz);FARU.r.value=Q.treeNear;shadowDirty=true;cullNear(null,true);return true;
 }
-function setTreeShadows(on){nearMeshes.forEach(im=>{if(im.userData.tree)im.castShadow=on;});}
+// draw only what the camera can see (plus a margin); on frames that re-render the cached shadows, draw everything in range
+const _cf={x:0,z:-1,px:0,pz:0,cos:0};
+function cullNear(cam,full){
+  let fx=0,fz=-1,px=nearC.x,pz=nearC.z,cosL=-2;
+  if(cam&&!full){const e=cam.matrixWorld.elements;fx=-e[8];fz=-e[10];const l=Math.hypot(fx,fz)||1;fx/=l;fz/=l;px=cam.position.x;pz=cam.position.z;
+    const hf=Math.atan(Math.tan(cam.fov*Math.PI/360)*cam.aspect);cosL=Math.cos(Math.min(Math.PI,hf+0.42));}
+  const fill=(im,list,cnt,v)=>{const M=im.instanceMatrix.array,Cc=im.instanceColor.array;let n=0;
+    for(let j=0;j<cnt;j++){const i=list[j];if(cosL>-1.5){const dx=v.X[i]-px,dz=v.Z[i]-pz;const d=Math.sqrt(dx*dx+dz*dz);if(d>16&&dx*fx+dz*fz<cosL*d-7)continue;}
+      M.set(v.M.subarray(i*16,i*16+16),n*16);Cc[n*3]=v.C[i*3];Cc[n*3+1]=v.C[i*3+1];Cc[n*3+2]=v.C[i*3+2];n++;}
+    im.count=n;im.instanceMatrix.needsUpdate=true;im.instanceColor.needsUpdate=true;};
+  for(const k of VKIND){const v=VS[k];if(!v.n)continue;fill(v.mesh,v.rng,v.rngN,v);if(v.meshMid)fill(v.meshMid,v.rngMid,v.rngMidN,v);}
+  _cf.x=fx;_cf.z=fz;_cf.px=px;_cf.pz=pz;
+}
+function setTreeShadows(on){nearMeshes.forEach(im=>{if(im.userData.tree)im.castShadow=on;});shadowDirty=true;}
 function updateLOD(camPos,force){refreshNear(camPos.x,camPos.z,force);}
 
 // ---------- signs, gates, markers, junction signs, map board, start hut ----------
@@ -1368,6 +1559,7 @@ function addStartArea(mapCanvas){
   for(const sx of [-1.45,1.45]){const p=new THREE.Mesh(new THREE.BoxGeometry(0.16,4.8,0.16),postMat);p.position.set(sx,2.4,-0.1);p.castShadow=true;grp.add(p);}
   const roof=new THREE.Mesh(new THREE.BoxGeometry(3.6,0.1,0.8),woodMat);roof.position.set(0,4.85,0.1);roof.rotation.x=0.25;grp.add(roof);
   board.castShadow=true;scene.add(grp);
+  return;
   const hut=new THREE.Group();hut.position.set(8,gridH(8,82),82);hut.rotation.y=0.1;
   const wall=new THREE.MeshStandardMaterial({map:TXS.barkWood,roughness:0.9,color:0xa07850});
   const body=new THREE.Mesh(new THREE.BoxGeometry(9,3,5),wall);body.position.y=1.5;body.castShadow=body.receiveShadow=true;hut.add(body);
@@ -1457,6 +1649,37 @@ function mergeChildren(grp){ // merge the rigid parts of each moving group by ma
   for(const ch of grp.children)if(ch.isGroup)mergeChildren(ch);
 }
 mergeChildren(bikeBody);
+// the moving bike doesn't go into the cached shadow map; a soft contact shadow sits under it instead
+bikeRoot.traverse(o=>{o.castShadow=false;});bikeBody.children.forEach(ch=>{if(ch.isGroup&&ch.children.some(m=>m.isMesh&&m.material&&m.material.colorWrite===false))ch.visible=false;});
+const blob=(()=>{const c=mkCanvas(128,128),g=c.getContext('2d');const gr=g.createRadialGradient(64,64,4,64,64,62);gr.addColorStop(0,'rgba(0,0,0,0.62)');gr.addColorStop(0.55,'rgba(0,0,0,0.32)');gr.addColorStop(1,'rgba(0,0,0,0)');g.fillStyle=gr;g.fillRect(0,0,128,128);
+  const t=new THREE.CanvasTexture(c);const m=new THREE.Mesh(new THREE.PlaneGeometry(1,1),new THREE.MeshBasicMaterial({map:t,transparent:true,depthWrite:false,polygonOffset:true,polygonOffsetFactor:-6,polygonOffsetUnits:-6,fog:true}));
+  m.geometry.rotateX(-Math.PI/2);m.renderOrder=2;scene.add(m);return m;})();
+const _bn=new V3(),_bq=new THREE.Quaternion(),_bup=new V3(0,1,0);
+// dust: a small pool of soft particles kicked up by skids, berms and landings
+const DUST={n:260,i:0,pos:new Float32Array(260*3),vel:new Float32Array(260*3),life:new Float32Array(260),max:new Float32Array(260),size:new Float32Array(260),alpha:new Float32Array(260)};
+const dustPts=(()=>{const g=new THREE.BufferGeometry();g.setAttribute('position',new THREE.BufferAttribute(DUST.pos,3));g.setAttribute('aSize',new THREE.BufferAttribute(DUST.size,1));g.setAttribute('aAlpha',new THREE.BufferAttribute(DUST.alpha,1));
+  const m=new THREE.ShaderMaterial({transparent:true,depthWrite:false,uniforms:{uScale:{value:600},uCol:{value:col(0x8a6f55)}},
+    vertexShader:'attribute float aSize;attribute float aAlpha;varying float vA;uniform float uScale;void main(){vA=aAlpha;vec4 mv=modelViewMatrix*vec4(position,1.0);gl_PointSize=aSize*uScale/max(0.5,-mv.z);gl_Position=projectionMatrix*mv;}',
+    fragmentShader:'uniform vec3 uCol;varying float vA;void main(){vec2 d=gl_PointCoord-0.5;float r=dot(d,d)*4.0;if(r>1.0)discard;gl_FragColor=vec4(uCol,vA*(1.0-r)*(1.0-r));}'});
+  const p=new THREE.Points(g,m);p.frustumCulled=false;p.renderOrder=3;scene.add(p);return p;})();
+function dustEmit(x,y,z,vx,vy,vz,n,sz,life){for(let k=0;k<n;k++){const i=DUST.i;DUST.i=(i+1)%DUST.n;const j=i*3;
+  DUST.pos[j]=x+(Math.random()-0.5)*0.3;DUST.pos[j+1]=y+Math.random()*0.1;DUST.pos[j+2]=z+(Math.random()-0.5)*0.3;
+  DUST.vel[j]=vx+(Math.random()-0.5)*1.2;DUST.vel[j+1]=vy+Math.random()*0.8;DUST.vel[j+2]=vz+(Math.random()-0.5)*1.2;const L=life*(0.7+Math.random()*0.6);DUST.life[i]=L;DUST.max[i]=L;DUST.size[i]=sz*(0.7+Math.random()*0.6);}}
+let dustAcc=0;
+function updateDust(dt){const b=bike;
+  if(state==='ride'&&bikeRoot.visible&&(b.surf==='dirt'||b.surf==='edge'||b.surf==='forest'||b.surf==='roots')){
+    const rx=b.pos.x-hf.x*0.62,rz=b.pos.z-hf.z*0.62,gy=groundH(rx,rz);const sp=b.vel.length();
+    dustAcc+=dt;if(dustAcc>0.03){dustAcc=0;
+      if(b.contact[1]&&b.skid>0.3&&sp>2)dustEmit(rx,gy+0.05,rz,-hf.x*1.5,0.6,-hf.z*1.5,2,0.35,1.0);
+      if(b.contact[1]&&Math.abs(b.latA)>5.5&&Math.abs(b.bank)>0.2&&sp>6){const side=Math.sign(b.latA);dustEmit(rx,gy+0.08,rz,hf.z*side*2.5-hf.x*1.5,1.2,-hf.x*side*2.5-hf.z*1.5,2,0.4,1.1);}}
+    if(b.land&&!b.land.dusted){b.land.dusted=true;if(b.land.air>0.35)dustEmit(b.pos.x,groundH(b.pos.x,b.pos.z)+0.05,b.pos.z,b.vel.x*0.15,0.9,b.vel.z*0.15,Math.min(18,6+b.land.air*8),0.45,1.3);}}
+  for(let i=0;i<DUST.n;i++){if(DUST.life[i]<=0){DUST.alpha[i]=0;continue;}DUST.life[i]-=dt;const j=i*3;DUST.vel[j+1]-=0.9*dt;const f=1-dt*1.6;DUST.vel[j]*=f;DUST.vel[j+1]*=f;DUST.vel[j+2]*=f;
+    DUST.pos[j]+=DUST.vel[j]*dt;DUST.pos[j+1]+=DUST.vel[j+1]*dt;DUST.pos[j+2]+=DUST.vel[j+2]*dt;const a=DUST.life[i]/DUST.max[i];DUST.alpha[i]=Math.max(0,a)*0.4;DUST.size[i]+=dt*0.5;}
+  const g=dustPts.geometry;g.attributes.position.needsUpdate=true;g.attributes.aSize.needsUpdate=true;g.attributes.aAlpha.needsUpdate=true;
+  dustPts.material.uniforms.uScale.value=window.innerHeight*pr*0.5/Math.tan(camera.fov*Math.PI/360);}
+function updateBlob(){const b=bike;if(!bikeRoot.visible){blob.visible=false;return;}blob.visible=true;const g=groundH(b.pos.x,b.pos.z);const h=Math.max(0,b.pos.y-g-0.95);
+  _bn.copy(b.n[0]).add(b.n[1]).normalize();_bq.setFromUnitVectors(_bup,_bn);blob.quaternion.copy(_bq);blob.rotateY(b.yaw);blob.position.set(b.pos.x,g+0.03,b.pos.z);
+  const k=clamp(1-h/3,0,1);blob.scale.set(0.95+h*0.3,1,2.0+h*0.3);blob.material.opacity=k;}
 function mergeGeoms(list){
   const parts=list.map(g=>g.index?g.toNonIndexed():g);let n=0;parts.forEach(g=>n+=g.attributes.position.count);
   const pos=new Float32Array(n*3),nor=new Float32Array(n*3);let o=0;
@@ -1465,45 +1688,79 @@ function mergeGeoms(list){
 }
 
 // ---------- physics ----------
-const PH={M:92,I:17,KS:[7400,8300],KP:[1.9e6,2.1e6],CC:[440,480],CR:[980,1040],KB:150000,CDA:0.7,POWER:520};
+// The rider's mass rides on the bike through arms (front) and legs (rear). Each end of the bike frame is a light
+// mass between the tyre/suspension below and the rider's limbs above, so rocks buck the bike, not the whole rider.
+const PH={M:92,MC:9,I:17,KS:[7400,8300],KP:[1.9e6,2.1e6],CC:[440,480],CR:[980,1040],KB:150000,CDA:0.7,POWER:520,
+  KL:[16000,18000],CLc:[430,470],CLr:[1350,1450],LMIN:-0.1,LMAX:0.17};
+// PITCH_DIRECT: share of the tyre forces' pitching moment that reaches the rider straight away (the rest goes through arms/legs)
+const MR=PH.M-2*PH.MC;let PITCH_DIRECT=0.6;const LZ0=[-MR*G/2/PH.KL[0],-MR*G/2/PH.KL[1]];
 // grip and rolling resistance per surface: dirt, rock slab, roots, rock garden
 const SURF=[{mu:1.05,crr:0.036,name:'dirt'},{mu:1.2,crr:0.026,name:'rock'},{mu:0.86,crr:0.046,name:'roots'},{mu:0.95,crr:0.05,name:'rocks'}];
-const bike={pos:new V3(),vel:new V3(),yaw:0,pitch:0,pw:0,steer:0,comp:[0,0],cprev:[0,0],contact:[false,false],n:[new V3(0,1,0),new V3(0,1,0)],
-  spin:[0,0],lean:0,air:0,impact:0,slip:0,skid:0,chatter:0,vf:0,surf:'dirt',latA:0,bank:0,lastTrail:null,lastS:0,offTimer:0,cur:null,curS:0,hitCD:[0,0]};
-const input={steer:0,pedal:false,brake:false,keySteer:0,keys:{},auto:null};
+const bike={pos:new V3(),vel:new V3(),yaw:0,pitch:0,pw:0,steer:0,comp:[0,0],cprev:[0,0],contact:[false,false],n:[new V3(0,1,0),new V3(0,1,0)],z:[0,0],zv:[0,0],fw:[0,0],
+  spin:[0,0],lean:0,air:0,impact:0,slip:0,skid:0,chatter:0,vf:0,surf:'dirt',latA:0,bank:0,lastTrail:null,lastS:0,offTimer:0,cur:null,curS:0,hitCD:[0,0],land:null};
+const input={steer:0,lean:0,pedal:false,brake:false,pedalAmt:null,brakeAmt:null,keySteer:0,keys:{},auto:null};
 const EV={land:0,takeoff:0,bottom:0,rock:0,root:0,crash:0,roost:0}; // one-shot sound events, consumed by the audio engine
 const fwd=new V3(),upv=new V3(),hf=new V3(),nAvg=new V3(),fDir=new V3(),lDir=new V3();const tpt={};const L2={};
-function wheelGround(x,z,hx,hz,nOut){
-  const h0=groundH(x,z),h1=groundH(x+hx*0.2,z+hz*0.2),h2=groundH(x-hx*0.2,z-hz*0.2); // tyre envelope rolls over sharp edges
+const TYRE_U=[-0.26,-0.13,0,0.13,0.26],TYRE_D=TYRE_U.map(u=>0.37-Math.sqrt(0.37*0.37-u*u));
+function wheelGround(x,z,hx,hz,nOut){ // a round tyre rolls over edges: the highest point of the ground under its circle
+  let h=-1e9;for(let k=0;k<5;k++){const u=TYRE_U[k];const v=groundH(x+hx*u,z+hz*u)-TYRE_D[k];if(v>h)h=v;}
   const e=0.3;const gx=(groundH(x+e,z)-groundH(x-e,z))/(2*e),gz=(groundH(x,z+e)-groundH(x,z-e))/(2*e);
-  nOut.set(-gx,1,-gz).normalize();return Math.max(h0,h1*0.98+h0*0.02,h2*0.98+h0*0.02);
+  nOut.set(-gx,1,-gz).normalize();return h;
 }
+function popLip(b){ // leaving a jump lip, the rider pops so the bike follows the lip's angle instead of the flatter average under its wheelbase
+  const tr=b.cur;if(!tr||!tr.feats)return;const s=b.curS;let f=null;for(const q of tr.feats){if(q.type==='jump'&&s>q.lip-2.2&&s<q.lip+1.2){f=q;break;}}if(!f)return;
+  const i=clamp(Math.round(f.lip),2,tr.n-3);const Gr=(tr.base[i-2]-tr.base[i+2])/4;const want=Math.atan(2*f.H/f.Lt-Gr)*0.97;
+  const hs=Math.hypot(b.vel.x,b.vel.z);if(hs<3)return;const cur=Math.atan2(b.vel.y,hs);if(cur>=want)return;
+  const sp=b.vel.length(),hx=b.vel.x/hs,hz=b.vel.z/hs;const a=cur+(want-cur)*0.9;b.vel.set(hx*sp*Math.cos(a),sp*Math.sin(a),hz*sp*Math.cos(a));}
+function predictLandSlope(b){ // where this flight comes down, and the slope of the ground there (along the direction of travel)
+  let x=b.pos.x,y=b.pos.y-0.85,z=b.pos.z,vx=b.vel.x,vy=b.vel.y,vz=b.vel.z;const h=Math.hypot(vx,vz)||1;const hx=vx/h,hz=vz/h;
+  for(let i=0;i<60;i++){vy-=G*0.05;x+=vx*0.05;y+=vy*0.05;z+=vz*0.05;if(vy<0&&y<=groundH(x,z))return Math.atan((groundH(x+hx*0.8,z+hz*0.8)-groundH(x-hx*0.8,z-hz*0.8))/1.6);}
+  return Math.atan2(b.vel.y,h);}
 function physStep(dt){
   const b=bike;if(!(input.steer===input.steer))input.steer=0;const cy=Math.cos(b.yaw),sy=Math.sin(b.yaw),cp=Math.cos(b.pitch),sp=Math.sin(b.pitch);
   fwd.set(-sy*cp,sp,-cy*cp);upv.set(sy*sp,cp,cy*sp);hf.set(-sy,0,-cy);
   let ax=0,ay=-G,az=0,torque=0;b.impact=0;let anyContact=false;nAvg.set(0,0,0);let N=0,chat=0;
+  const Fc=[0,0];
   for(let i=0;i<2;i++){
-    const sg=i===0?1:-1;const Ax=b.pos.x+fwd.x*BK.H2*sg,Ay=b.pos.y+fwd.y*BK.H2*sg,Az=b.pos.z+fwd.z*BK.H2*sg;
+    const sg=i===0?1:-1;const zi=b.z[i];
+    const Ax=b.pos.x+fwd.x*BK.H2*sg+upv.x*zi,Ay=b.pos.y+fwd.y*BK.H2*sg+upv.y*zi,Az=b.pos.z+fwd.z*BK.H2*sg+upv.z*zi;
+    // limbs: soft when the bike is pushed up into you, firm as it comes back so the hit isn't returned
+    let fc=PH.KL[i]*(zi-LZ0[i])+(b.zv[i]>0?PH.CLc[i]:PH.CLr[i])*b.zv[i];
+    if(zi>0.05)fc+=7e5*(zi-0.05)*(zi-0.05); // the deeper you absorb, the harder your legs push back
+    if(zi<PH.LMIN)fc+=60000*(zi-PH.LMIN)+900*Math.min(b.zv[i],0);
+    Fc[i]=fc;
     const gh=wheelGround(Ax-upv.x*BK.EMAX[i],Az-upv.z*BK.EMAX[i],hf.x,hf.z,b.n[i]);
     const need=(Ay-gh-BK.RW)/Math.max(upv.y,0.3);
+    b.fw[i]=0;
     if(need>=BK.EMAX[i]){b.comp[i]=0;b.cprev[i]=0;b.contact[i]=false;continue;}
-    let c=BK.EMAX[i]-need;const cv=(c-b.cprev[i])/dt;const n=b.n[i];
-    // digressive damping: firm at low shaft speeds, blows off on sharp hits so rocks and roots don't launch you
-    const dc=cv>0?PH.CC[i]*(Math.min(cv,0.7)+0.28*Math.max(0,cv-0.7)):PH.CR[i]*cv; // rebound stays firm so the wheels stay down
+    let c=BK.EMAX[i]-need;let cv=(c-b.cprev[i])/dt;const n=b.n[i];
+    // digressive damping: firm at low shaft speeds, blows off on sharp hits
+    const dc=cv>0?PH.CC[i]*(Math.min(cv,0.7)+0.28*Math.max(0,cv-0.7)):PH.CR[i]*cv;
     let F=PH.KS[i]*c+PH.KP[i]*c*c*c+dc;
     if(c>BK.TRV[i]){F+=PH.KB*(c-BK.TRV[i])+1800*Math.max(cv,0);if(cv>1.2)EV.bottom=Math.max(EV.bottom,cv);}
-    F=clamp(F,0,40000);
-    if(c>BK.TRV[i]+0.05){b.pos.y+=(c-BK.TRV[i]-0.05)*0.95;
-      const vn=b.vel.dot(n);if(vn<0){b.impact=Math.max(b.impact,-vn);b.vel.addScaledVector(n,-vn*0.9);}
-      c=BK.TRV[i]+0.05;}
-    if(cv>0.9&&b.hitCD[i]<=0&&(b.surf==='rocks'||b.surf==='roots'||b.surf==='rock')){if(b.surf==='roots')EV.root=Math.max(EV.root,cv);else EV.rock=Math.max(EV.rock,cv);b.hitCD[i]=0.07;}
+    F=clamp(F,0,30000);
+    if(c>BK.TRV[i]+0.03){ // fork at the end of its travel: the frame is shoved up into the rider's arms/legs
+      const ex=c-BK.TRV[i]-0.03;b.z[i]+=ex*0.95;if(cv>0)b.zv[i]+=cv*0.9;c=BK.TRV[i]+0.03;}
+    if(b.z[i]>PH.LMAX){ // limbs fully compressed too: now the rider's whole body takes the hit
+      const ex=b.z[i]-PH.LMAX;b.pos.addScaledVector(upv,ex*0.6);b.z[i]=PH.LMAX;
+      const vn=b.vel.dot(n);if(vn<0){b.impact=Math.max(b.impact,-vn);b.vel.addScaledVector(n,-vn*0.85);b.pw+=sg*(-vn)*0.08/BK.H2;}
+      b.zv[i]=Math.min(b.zv[i],0);}
+    if(cv>0.9&&b.hitCD[i]<=0&&(b.surf==='rocks'||b.surf==='roots'||b.surf==='rock')){if(b.surf==='roots')EV.root=Math.max(EV.root,cv);else EV.rock=Math.max(EV.rock,cv);b.hitCD[i]=0.07;padRumble(0,Math.min(0.8,cv*0.12),60);}
     b.hitCD[i]-=dt;
     chat+=Math.abs(cv);
-    b.cprev[i]=c;b.comp[i]=c;b.contact[i]=true;anyContact=true;
-    ax+=n.x*F/PH.M;ay+=n.y*F/PH.M;az+=n.z*F/PH.M;
-    torque+=sg*F*BK.H2*n.dot(upv)+0.6*(BK.EMAX[i]-c+BK.RW+0.35)*F*n.dot(fwd);
+    b.cprev[i]=c;b.comp[i]=c;b.contact[i]=true;anyContact=true;b.fw[i]=F;
+    // the part of the tyre force along the frame's up axis goes into the frame end; the rest acts on the whole bike
+    const nu=n.dot(upv);
+    ax+=(n.x-upv.x*nu)*F/PH.M;ay+=(n.y-upv.y*nu)*F/PH.M;az+=(n.z-upv.z*nu)*F/PH.M;
+    torque+=0.4*(BK.EMAX[i]-c+BK.RW+0.35)*F*n.dot(fwd)+PITCH_DIRECT*sg*F*BK.H2*nu;
     nAvg.addScaledVector(n,F+1e-3);N+=F;
   }
+  // rider body: pushed by the limbs; frame ends: pushed by the tyres, held by the limbs
+  const Fsum=Fc[0]+Fc[1];const tq=(Fc[0]-Fc[1])*BK.H2;
+  ax+=upv.x*Fsum/MR;ay+=upv.y*Fsum/MR;az+=upv.z*Fsum/MR;torque+=tq*(1-PITCH_DIRECT);
+  const aMain=Fsum/MR,alpha=tq/PH.I;
+  for(let i=0;i<2;i++){const sg=i===0?1:-1;const nu=b.contact[i]?b.n[i].dot(upv):0;
+    const za=(b.fw[i]*nu-Fc[i])/PH.MC-(aMain+alpha*sg*BK.H2);b.zv[i]+=za*dt;b.zv[i]=clamp(b.zv[i],-8,8);b.z[i]+=b.zv[i]*dt;}
   b.chatter=lerp(b.chatter,chat,0.05);
   b.vel.x+=ax*dt;b.vel.y+=ay*dt;b.vel.z+=az*dt;
   const L=locate(b.pos.x,b.pos.z);
@@ -1512,20 +1769,24 @@ function physStep(dt){
   else if(L.t&&L.over<0.5&&L.ad<L.t.w+L.t.sw){crr=0.07;mu=0.95;b.surf='edge';}
   else if((b.pos.z>Z_TOP-6&&b.pos.z<110)||b.pos.z<Z_BOT-4){crr=0.055;mu=0.95;b.surf='grass';}
   let Flong=0;b.skid=0;
+  const pAmt=input.pedal?(input.pedalAmt==null?1:clamp(input.pedalAmt,0.1,1)):0,bAmt=input.brake?(input.brakeAmt==null?1:clamp(input.brakeAmt,0.08,1)):0;
   if(anyContact&&N>1){
     nAvg.normalize();
     fDir.copy(hf).addScaledVector(nAvg,-hf.dot(nAvg)).normalize();
     lDir.crossVectors(nAvg,fDir).normalize();
     const vf=b.vel.dot(fDir),vl=b.vel.dot(lDir);b.vf=vf;
-    if(input.pedal){const Fp=Math.min(430,PH.POWER/Math.max(vf,1.2))*clamp((16.5-vf)/4,0,1);Flong+=Fp;b.vel.addScaledVector(fDir,Fp/PH.M*dt);}
-    if(input.brake){
-      if(vf>0.25){const want=Math.min(0.78*N,820);const lim=mu*N*0.72;const Fb=Math.min(want,lim);if(want>lim*0.98&&vf>2)b.skid=clamp((want-lim)/300+0.3,0,1);
+    // grip follows the average tyre load, so a wheel skipping over a rock doesn't instantly lose the line
+    b.Ngrip=lerp(b.Ngrip||N,N,0.25);const Ng=b.Ngrip;
+    if(pAmt>0){const Fp=Math.min(430,PH.POWER/Math.max(vf,1.2))*clamp((16.5-vf)/4,0,1)*pAmt;Flong+=Fp;b.vel.addScaledVector(fDir,Fp/PH.M*dt);}
+    if(bAmt>0){
+      if(vf>0.25){const want=Math.min(0.78*Ng,820)*bAmt;const lim=mu*Ng*0.72;let Fb=Math.min(want,lim);
+        if(b.fw[1]<0.12*N)Fb*=0.55; /* rear going light: ease off like a rider would instead of going over the bars */if(want>lim*0.98&&vf>2)b.skid=clamp((want-lim)/300+0.3,0,1);
         const dv=Math.min(vf,Fb/PH.M*dt);b.vel.addScaledVector(fDir,-dv);Flong-=dv*PH.M/dt;}
-      else if(vf>-1.3)b.vel.addScaledVector(fDir,-160/PH.M*dt);
+      else if(vf>-1.3)b.vel.addScaledVector(fDir,-160*bAmt/PH.M*dt);
     }
-    const vf2=b.vel.dot(fDir);const rr=crr*N/PH.M*dt;
-    if(Math.abs(vf2)<=rr&&!input.pedal&&!input.brake)b.vel.addScaledVector(fDir,-vf2);else b.vel.addScaledVector(fDir,-Math.sign(vf2)*rr);
-    const maxL=mu*N/PH.M*dt;const dvl=clamp(-vl,-maxL,maxL);b.vel.addScaledVector(lDir,dvl);
+    const vf2=b.vel.dot(fDir);const rr=crr*Ng/PH.M*dt;
+    if(Math.abs(vf2)<=rr&&pAmt===0&&bAmt===0)b.vel.addScaledVector(fDir,-vf2);else b.vel.addScaledVector(fDir,-Math.sign(vf2)*rr);
+    const maxL=mu*Ng/PH.M*dt;const dvl=clamp(-vl,-maxL,maxL);b.vel.addScaledVector(lDir,dvl);
     b.slip=lerp(b.slip,Math.abs(vl)-Math.abs(dvl)>0.02?Math.abs(vl):0,0.1);
     const vv=Math.max(Math.abs(vf),0.6);
     const bankL=(nAvg.x*hf.z-nAvg.z*hf.x)/Math.max(nAvg.y,0.3);b.bank=bankL;
@@ -1538,19 +1799,24 @@ function physStep(dt){
     b.yaw+=yawRate*dt;
     b.latA=vf*yawRate;
     b.lean=lerp(b.lean,clamp(Math.atan(-b.latA/G),-0.8,0.8),Math.min(1,dt*6));
-    if(b.air>0.12)EV.land=Math.max(EV.land,b.air);
-    b.air=0;
+    if(b.air>0.12){EV.land=Math.max(EV.land,b.air);
+      // how well the bike matched the ground on touchdown (for the landing check and the HUD)
+      const gx=b.pos.x,gz=b.pos.z;const gA=Math.atan((groundH(gx+hf.x*0.7,gz+hf.z*0.7)-groundH(gx-hf.x*0.7,gz-hf.z*0.7))/1.4);b.land={air:b.air,err:b.pitch-gA,t:0};}
+    b.air=0;b.Nair=0;b.predT=0;b.landSlope=null;
   }else{
-    if(b.air===0)EV.takeoff=Math.max(EV.takeoff,b.vel.length());
-    b.air+=dt;b.steer*=1-dt*2;b.yaw+=-input.steer*0.9*dt;b.lean*=1-dt*2;b.slip*=0.9;b.latA=0;
+    if(b.air===0){EV.takeoff=Math.max(EV.takeoff,b.vel.length());popLip(b);}
+    b.air+=dt;b.steer*=1-dt*2;b.yaw+=-input.steer*0.9*dt;b.lean*=1-dt*2;b.slip*=0.9;b.latA=0;b.Ngrip=0;
     const hs=Math.hypot(b.vel.x,b.vel.z);b.vf=hs*(b.vel.x*hf.x+b.vel.z*hf.z>=0?1:-1);
   }
-  torque+=Flong*0.55;
-  if(anyContact){b.pw+=(torque/PH.I)*dt;b.pw*=1-dt*1.5;}
-  else{ // in the air the rider levels the bike to match the ground coming up
+  // braking pitches you forward; on steep ground riders drop their hips back, which shortens that lever
+  const steepDown=clamp(-Math.sin(b.pitch)/0.3,0,1);torque+=Flong*(Flong<0?0.55-0.25*steepDown:0.55);
+  if(anyContact){b.pw+=(torque/PH.I)*dt;b.pw*=1-dt*2.5;}
+  else{ // in the air: the rider levels the bike toward the landing (strongly with assist), and can push the bars forward or pull back
     const hs=Math.hypot(b.vel.x,b.vel.z);const traj=Math.atan2(b.vel.y,Math.max(hs,1));
-    const ax2=b.pos.x+hf.x*1.4,az2=b.pos.z+hf.z*1.4,bx2=b.pos.x-hf.x*0.6,bz2=b.pos.z-hf.z*0.6;const gAng=Math.atan((groundH(ax2,az2)-groundH(bx2,bz2))/2);
-    const target=traj*0.35+gAng*0.65;b.pw+=((target-b.pitch)*26-b.pw*5.5)*dt;}
+    b.predT=(b.predT||0)-1;if(b.predT<=0||b.landSlope==null){b.predT=8;b.landSlope=predictLandSlope(b);}const gAng=b.landSlope;
+    b.gAng=gAng;const target=traj*0.3+gAng*0.7;const ln=clamp(input.lean||0,-1,1);
+    const K=[5,12,26][settings.assist|0]*(1-0.85*Math.abs(ln));
+    b.pw+=((target-b.pitch)*K-b.pw*(3+0.1*K)-ln*7.5)*dt+torque/PH.I*dt*0.3;}
   b.pitch+=b.pw*dt;
   const sp2=b.vel.length();if(sp2>0.01)b.vel.multiplyScalar(Math.max(0,1-0.5*1.2*PH.CDA/PH.M*sp2*dt));
   b.pos.addScaledVector(b.vel,dt);
@@ -1593,14 +1859,14 @@ let state='loading',paused=false;
 const run={active:false,route:[],t:0,air:0,top:0,crashes:0,startSeg:null};
 const stats={crashes:0,finishes:[],repeat:null,lastCrash:null};
 let crashT=0,lastRoute=null;
-const SPAWN=new V3(0,0,58);
+const SPAWN=new V3(12,0,56);
 function placeBike(x,z,yaw,speed,pitch){
   const b=bike;b.yaw=yaw;b.pitch=pitch||0;b.pw=0;b.steer=0;b.lean=0;b.air=0;b.slip=0;b.impact=0;
   const h=Math.max(groundH(x,z),groundH(x-Math.sin(yaw)*0.62,z-Math.cos(yaw)*0.62),groundH(x+Math.sin(yaw)*0.62,z+Math.cos(yaw)*0.62));
-  b.pos.set(x,h+BK.RW+0.27,z);b.vel.set(-Math.sin(yaw)*speed,0,-Math.cos(yaw)*speed);b.comp=[0,0];b.cprev=[0,0];
+  b.pos.set(x,h+BK.RW+0.27,z);b.vel.set(-Math.sin(yaw)*speed,0,-Math.cos(yaw)*speed);b.comp=[0,0];b.cprev=[0,0];b.z=[0,0];b.zv=[0,0];b.land=null;b.Ngrip=0;b.predT=0;b.landSlope=null;
   const L=locate(x,z);b.cur=L.t&&L.dist<L.t.w+2?L.t:null;b.curS=L.s;wasAir=false;camState.init=false;
 }
-function respawnTop(){placeBike(SPAWN.x,SPAWN.z,0,0,0);bike.finNote=false;cancelRun();setHint(true);JX.node=null;renderJunctionHUD();}
+function respawnTop(){if(typeof liftRide!=='undefined'&&liftRide.on){liftRide.on=false;$('liftHud').hidden=true;$('speed').hidden=false;}placeBike(SPAWN.x,SPAWN.z,0,0,0);bike.finNote=false;cancelRun();setHint(true);JX.node=null;renderJunctionHUD();}
 function safeS(tr,s){
   for(let k=0;k<40;k++){let bad=false;for(const f of tr.feats){if((f.type==='jump'||f.type==='drop'||f.type==='ledge'||f.type==='slab'||f.type==='chute')&&s>f.s0-28&&s<f.s1+4){s=f.s0-30;bad=true;}}if(!bad)break;}
   for(let k=0;k<20&&s>12&&Math.abs(tr.kap[Math.round(s)])>1/25;k++)s-=4;
@@ -1623,7 +1889,7 @@ function cancelRun(){run.active=false;run.route=[];$('runChip').hidden=true;}
 function updateRunChip(){const tr=bike.cur||run.startSeg;if(!tr)return;$('runSym').innerHTML=SYMSVG[DIFF[tr.def.diff].symbol];$('runName').textContent=tr.def.name;$('runChip').hidden=!run.active;
   $('runChip').style.setProperty('--c',tr.def.diff==='blue'?'#1f63c8':tr.def.diff==='green'?'#1f9d4a':'#f5f6ef');}
 function setHint(on){$('hint').hidden=!on;}
-function crash(reason){if(state!=='ride')return;state='crash';crashT=0;stats.crashes++;if(run.active)run.crashes++;EV.crash=1;toast('Crashed',reason,1500);
+function crash(reason){if(state!=='ride')return;state='crash';padRumble(1,1,380);crashT=0;stats.crashes++;if(run.active)run.crashes++;EV.crash=1;toast('Crashed',reason,1500);
   camState.cv.set(bike.vel.x*0.6,2.2,bike.vel.z*0.6);
   const rp=stats.repeat;if(rp&&rp.tr===bike.cur&&Math.abs(rp.s-bike.curS)<35)rp.n++;else stats.repeat={tr:bike.cur,s:bike.curS,n:1};
   stats.lastCrash={reason,trail:bike.cur&&bike.cur.id,s:bike.curS,v:bike.vel.length(),impact:bike.impact,pitch:bike.pitch};}
@@ -1664,7 +1930,7 @@ function trackSegment(L){
   const i=Math.round(ns);
   if(!run.active&&NODE[nt.from].top&&ns>9&&ns<40&&hf.x*nt.tx[i]+hf.z*nt.tz[i]>0)startRun(nt);
   if(run.active&&NODE[nt.to].fin&&ns>nt.len-12){finishRun();return;}
-  if(!run.active&&NODE[nt.to].fin&&ns>nt.len-12&&!b.finNote){b.finNote=true;toast('Bottom of the mountain','Pause and choose Back to the top',2800);}
+  if(!run.active&&NODE[nt.to].fin&&ns>nt.len-12&&!b.finNote){b.finNote=true;toast('Bottom of the mountain','Roll to the chairlift, or pause to ride it up',2800);}
 }
 function gameStep(dt){
   const L=physStep(dt);const b=bike;const sp=b.vel.length();
@@ -1673,6 +1939,7 @@ function gameStep(dt){
   if(inAir)airTime+=dt;
   if(!inAir&&wasAir&&airTime>0.12){if(airTime>0.45)airFlash(airTime);if(run.active)run.air+=airTime;}
   wasAir=inAir;
+  if(b.land&&!b.land.done){b.land.done=true;const a=b.land.air;if(a>0.25)padRumble(Math.min(1,0.2+a*0.35+b.impact*0.06),0.35,110+Math.min(a,2)*90);}
   if(b.impact>6.5)return crash('Landed too hard');
   if(b.pitch<-1.15)return crash('Over the bars');
   if(b.pitch>1.25)return crash('Looped out');
@@ -1685,11 +1952,13 @@ function gameStep(dt){
 // ---------- camera ----------
 const camState={init:false,eyeY:0,pitch:0,cv:new V3(),crashRot:0};
 const CAM={eye:new V3(0,0.62,0.2),tilt:0.14};
-const eyeAnchor=new THREE.Object3D();eyeAnchor.position.copy(CAM.eye);bikeBody.add(eyeAnchor);const eyeW=new V3();
+// the eye rides with the rider, not the bucking frame
+const eyeAnchor=new THREE.Object3D();eyeAnchor.position.set(CAM.eye.x,CAM.eye.y+0.63,CAM.eye.z);leanPivot.add(eyeAnchor);const eyeW=new V3();
 function baseFov(){const a=window.innerWidth/window.innerHeight;return a<1?102:a<1.6?90:86;}
 function updateBikeVisual(){
   const b=bike;
   bikeRoot.position.copy(b.pos);bikeRoot.rotation.set(b.pitch,b.yaw,0,'YXZ');leanPivot.rotation.z=-b.lean*0.8;
+  bikeBody.position.y=0.63+(b.z[0]+b.z[1])/2;bikeBody.rotation.x=Math.atan((b.z[0]-b.z[1])/(2*BK.H2));
   bikeParts.lowers.position.y=-(0.56-b.comp[0]*0.95);bikeParts.steer.rotation.y=-b.steer;bikeParts.frontWheel.rotation.x=-b.spin[0];
   const er=BK.EMAX[1]-b.comp[1];bikeParts.rearWheel.position.set(0,-er,0.62);bikeParts.rearWheel.rotation.x=-b.spin[1];
   const sw=bikeParts.swing;sw.rotation.x=Math.atan2(-er-sw.position.y,0.62-sw.position.z);
@@ -1721,11 +1990,11 @@ function updateMenuCam(dt){
 // ---------- input ----------
 addEventListener('keydown',e=>{const k=e.key.toLowerCase();input.keys[k]=true;
   if(state==='ride'){if(k==='r')respawnNear();if(k==='t')respawnTop();}
-  if((k==='escape'||k==='p')&&(state==='ride'||state==='crash'))togglePause();
+  if((k==='escape'||k==='p')&&(state==='ride'||state==='crash'||state==='lift'))togglePause();
   if(['arrowup','arrowdown','arrowleft','arrowright',' '].includes(k)&&state!=='menu')e.preventDefault();});
 addEventListener('keyup',e=>{input.keys[e.key.toLowerCase()]=false;});
 addEventListener('blur',()=>{input.keys={};});
-const touchState={stickId:null,sx:0,sy:0,val:0,pedalId:null,brakeId:null};
+const touchState={stickId:null,sx:0,sy:0,val:0,valY:0,pedalId:null,brakeId:null};
 (function setupTouch(){
   const zone=$('stickZone'),base=$('stickBase'),knob=$('stickKnob');let R0=56;
   // resting spot: well in from the left edge, where a thumb naturally sits (the stick still follows wherever you touch)
@@ -1734,8 +2003,9 @@ const touchState={stickId:null,sx:0,sy:0,val:0,pedalId:null,brakeId:null};
   zone.addEventListener('pointerdown',e=>{if(touchState.stickId!==null)return;R0=Math.max(40,(base.offsetWidth||128)*0.42);touchState.stickId=e.pointerId;try{zone.setPointerCapture(e.pointerId);}catch(_){}touchState.sx=e.clientX;touchState.sy=e.clientY;
     base.style.left=e.clientX+'px';base.style.top=e.clientY+'px';base.classList.remove('idle');knob.style.transform='translate(0,0)';e.preventDefault();});
   zone.addEventListener('pointermove',e=>{if(e.pointerId!==touchState.stickId)return;let dx=e.clientX-touchState.sx,dy=e.clientY-touchState.sy;const l=Math.hypot(dx,dy);if(l>R0){dx*=R0/l;dy*=R0/l;}
-    knob.style.transform=`translate(${dx}px,${dy}px)`;const v=dx/R0;touchState.val=Math.sign(v)*Math.pow(Math.abs(v),1.35);});
-  const end=e=>{if(e.pointerId!==touchState.stickId)return;touchState.stickId=null;touchState.val=0;knob.style.transform='translate(0,0)';base.classList.add('idle');idlePos();};
+    knob.style.transform=`translate(${dx}px,${dy}px)`;const v=dx/R0;touchState.val=Math.sign(v)*Math.pow(Math.abs(v),1.35);
+    const w=-dy/R0;touchState.valY=Math.abs(w)<0.18?0:Math.sign(w)*(Math.abs(w)-0.18)/0.82;});
+  const end=e=>{if(e.pointerId!==touchState.stickId)return;touchState.stickId=null;touchState.val=0;touchState.valY=0;knob.style.transform='translate(0,0)';base.classList.add('idle');idlePos();};
   zone.addEventListener('pointerup',end);zone.addEventListener('pointercancel',end);
   const hold=(el,key)=>{el.addEventListener('pointerdown',e=>{touchState[key]=e.pointerId;try{el.setPointerCapture(e.pointerId);}catch(_){}el.classList.add('on');e.preventDefault();});
     const up=e=>{if(touchState[key]===e.pointerId){touchState[key]=null;el.classList.remove('on');}};el.addEventListener('pointerup',up);el.addEventListener('pointercancel',up);el.addEventListener('lostpointercapture',up);};
@@ -1747,9 +2017,22 @@ function readInput(dt){
   const K=input.keys;const target=((K['d']||K['arrowright'])?1:0)-((K['a']||K['arrowleft'])?1:0);
   input.keySteer=target===0?input.keySteer*(1-Math.min(1,dt*9)):clamp(input.keySteer+target*dt*3.2,-1,1);
   input.steer=clamp(touchState.stickId!==null?touchState.val:input.keySteer,-1,1);
-  input.pedal=!!(K['w']||K['arrowup']||touchState.pedalId!==null);
-  input.brake=!!(K['s']||K['arrowdown']||K[' ']||touchState.brakeId!==null);
+  const kUp=!!(K['w']||K['arrowup']),kDn=!!(K['s']||K['arrowdown']);
+  const inAir=!bike.contact[0]&&!bike.contact[1];
+  // in the air, pushing forward/back tilts the bike: stick up/down, or the pedal/brake keys on a keyboard
+  input.lean=clamp(touchState.stickId!==null?touchState.valY:inAir?(kUp?1:0)-(kDn?1:0):0,-1,1);
+  input.pedal=!!((kUp&&!inAir)||touchState.pedalId!==null);
+  input.brake=!!((kDn&&!inAir)||K[' ']||touchState.brakeId!==null);
+  input.pedalAmt=null;input.brakeAmt=null;
+  if(typeof pollPad==='function')pollPad(inAir);
+  assistJumpSpeed();
 }
+// the next real jump ahead on the trail you're riding, and the approach speed it was built for
+function nextJump(tr,s,range){if(!tr||!tr.feats)return null;let best=null;for(const f of tr.feats){if(f.type!=='jump'||f.D<6)continue;const d=f.s0-s;if(d>-0.5&&d<(range||70)&&(!best||f.s0<best.s0))best=f;}return best;}
+function jumpWindow(f){const mega=f.D>13;return [f.v*(mega?0.97:0.94),f.v*(mega?1.03:1.05)];}
+function assistJumpSpeed(){ // full assist also sets your speed for the big jumps
+  if(settings.assist!==2||state!=='ride')return;const J=nextJump(bike.cur,bike.curS,45);if(!J)return;const v=bike.vel.length();const w=jumpWindow(J);
+  if(v>w[1]*0.995){input.brake=true;input.brakeAmt=clamp((v/w[1]-1)*10+0.25,0.25,1);input.pedal=false;}}
 
 // ===================================================================
 //  Sound: everything is synthesised live with Web Audio
@@ -1851,7 +2134,7 @@ const audio=(()=>{
     V.rollG.gain.setTargetAtTime(gnd?Math.min(0.55,sp*0.034)*(0.7+0.5*rockK):0,t,k);V.rollF.frequency.setTargetAtTime(140+sp*28,t,k);
     V.gritG.gain.setTargetAtTime(gnd?Math.min(0.22,sp*0.016)*dirtK:0,t,k);V.gritS.playbackRate.setTargetAtTime(0.5+sp*0.07,t,k);V.gritF.frequency.setTargetAtTime(1300+sp*90,t,k);
     V.clkG.gain.setTargetAtTime(gnd?Math.min(0.4,sp*0.03)*rockK:0,t,0.03);V.clkS.playbackRate.setTargetAtTime(0.5+sp*0.09,t,k);
-    V.windG.gain.setTargetAtTime(riding||st.crash?Math.min(0.42,sp*sp*0.0017)*(st.air?1.35:1):0,t,0.12);V.windF.frequency.setTargetAtTime(260+sp*60,t,0.12);
+    V.windG.gain.setTargetAtTime(riding||st.crash?Math.min(0.42,sp*sp*0.0017)*(st.air?1.35:1):st.lift?0.05+0.03*Math.sin(t*0.3):0,t,0.12);V.windF.frequency.setTargetAtTime(st.lift?380:260+sp*60,t,0.12);
     V.skidG.gain.setTargetAtTime(gnd?Math.min(0.32,st.skid*0.3+Math.max(0,st.slip-0.35)*0.22):0,t,0.04);
     // berm roost: steady spray while carving, a burst of dirt as you exit
     const carve=gnd&&Math.abs(st.bank)>0.22?clamp((Math.abs(st.latA)-4.5)/10,0,1):0;
@@ -1879,10 +2162,225 @@ const audio=(()=>{
     woodNext-=dt;if(woodNext<=0){woodpecker();woodNext=45+R2()*60;}
     lastSpeed=sp;
   }
+  // chairlift: the rumble of the chair's grip rolling over a tower's sheaves, and a steady breeze up high
+  function liftClack(){if(!AC)return;const t=AC.currentTime;for(let i=0;i<8;i++){const tt=t+i*0.075+R2()*0.01;clank(tt,380+R2()*120,0.05,0.12);thump(tt,120,60,0.06,0.06);}burst(t,V.brown,'lowpass',500,0.7,0.12,0.8,0.05,1,sfx);}
   function setOn(on){if(master)master.gain.setTargetAtTime(on?0.9:0,AC.currentTime,0.05);}
   function silence(){if(!AC)return;const t=AC.currentTime;for(const k of ['rollG','gritG','clkG','windG','skidG','sprayG','hubG','chainG','brkG','sqG'])V[k]&&V[k].gain.setTargetAtTime(0,t,0.05);}
-  return {init,update,beep,finish,setOn,silence,get ctx(){return AC;}};
+  return {init,update,beep,finish,setOn,silence,liftClack,get ctx(){return AC;}};
 })();
+
+// ===================================================================
+//  Chairlift: a quad chair from the meadow at the bottom to the trailheads, two minutes up
+// ===================================================================
+const LIFT={B:{x:-6,z:-1044},T:{x:-4,z:84},dur:120,towers:[],loop:null,upLen:0,loopLen:0,phase:0,spacing:26,hB:0,hT:0,built:false};
+(function(){const dx=LIFT.T.x-LIFT.B.x,dz=LIFT.T.z-LIFT.B.z;const L=Math.hypot(dx,dz);LIFT.dir={x:dx/L,z:dz/L};LIFT.nrm={x:-dz/L,z:dx/L};LIFT.hlen=L;LIFT.yaw=Math.atan2(-LIFT.dir.x,-LIFT.dir.z);})();
+// distance from the lift line (used to keep the cut line clear of trees)
+function liftDist(x,z){const B=LIFT.B,d=LIFT.dir;const t=clamp((x-B.x)*d.x+(z-B.z)*d.z,-14,LIFT.hlen+14);return Math.hypot(x-(B.x+d.x*t),z-(B.z+d.z*t));}
+function nearStation(x,z,r){return Math.hypot(x-LIFT.B.x,z-LIFT.B.z)<r||Math.hypot(x-LIFT.T.x,z-LIFT.T.z)<r;}
+const HANG=2.7,SEAT_X=-0.36; // chair hangs this far below the cable; you sit in the second seat from the left
+
+function liftPoint(u,side){const B=LIFT.B,d=LIFT.dir,n=LIFT.nrm;return {x:B.x+d.x*u+n.x*side,z:B.z+d.z*u+n.z*side};}
+function buildLiftLine(){
+  const L=LIFT.hlen,d=LIFT.dir;const gAt=u=>{const p=liftPoint(u,0);return Math.max(groundH(p.x,p.z),groundH(p.x+LIFT.nrm.x*2.4,p.z+LIFT.nrm.z*2.4),groundH(p.x-LIFT.nrm.x*2.4,p.z-LIFT.nrm.z*2.4));};
+  LIFT.hB=gridH(LIFT.B.x,LIFT.B.z);LIFT.hT=gridH(LIFT.T.x,LIFT.T.z);
+  // towers roughly every 80 m, nudged along the line so none stands on a trail
+  const first=26,last=L-26,n=Math.round((last-first)/80);const us=[];
+  for(let i=0;i<=n;i++){const u0=first+(last-first)*i/n;let best=null;
+    for(const o of [0,4,-4,8,-8,12,-12,16,-16,20,-20,24,-24]){const u=clamp(u0+o,first-6,last+6);let ok=true;for(const s of [-2.4,0,2.4]){const p=liftPoint(u,s);if(!clearOfTread(p.x,p.z,3.2)){ok=false;break;}}if(ok){best=u;break;}}
+    if(best!==null)us.push(best);}
+  // support points: bullwheels at the stations, sheave tops on the towers
+  const P=[{u:0,y:LIFT.hB+5.0,st:true}];for(const u of us)P.push({u,y:gAt(u)+(u<60||u>L-60?8.5:11)});P.push({u:L,y:LIFT.hT+5.0,st:true});
+  // raise towers until the chairs clear the ground (and anyone riding under them) by a good margin
+  const sag=(a,b)=>(b.u-a.u)*0.012;
+  for(let it=0;it<40;it++){let moved=false;
+    for(let k=0;k<P.length-1;k++){const a=P[k],b=P[k+1];for(let j=1;j<16;j++){const t=j/16;const u=lerp(a.u,b.u,t);const y=lerp(a.y,b.y,t)-sag(a,b)*4*t*(1-t);
+      const need=gAt(u)+(u<18||u>L-18?HANG+1.2:HANG+5.5)-y;if(need>0.05){if(!a.st){a.y+=need*0.6;moved=true;}if(!b.st){b.y+=need*0.6;moved=true;}}}}
+    if(!moved)break;}
+  for(const p of P)if(!p.st)p.y=Math.min(p.y,gAt(p.u)+24);
+  LIFT.towers=P.filter(p=>!p.st).map(p=>({u:p.u,y:p.y,g:gAt(p.u)}));
+  // the cable loop: up the right side, round the top bullwheel, down the left, round the bottom
+  const R=2.4,pts=[];const push=(x,y,z)=>pts.push([x,y,z]);
+  const line=(side,rev)=>{const seq=rev?P.slice().reverse():P;for(let k=0;k<seq.length-1;k++){const a=seq[k],b=seq[k+1];const s=sag(rev?b:a,rev?a:b);
+    for(let j=0;j<12;j++){const t=j/12;const u=lerp(a.u,b.u,t);const q=liftPoint(u,side);push(q.x,lerp(a.y,b.y,t)-s*4*t*(1-t),q.z);}}};
+  const wheel=(c,y,from)=>{for(let j=0;j<=12;j++){const a=from+Math.PI*j/12;push(c.x+(LIFT.nrm.x*Math.cos(a)+d.x*Math.sin(a))*R,y,c.z+(LIFT.nrm.z*Math.cos(a)+d.z*Math.sin(a))*R);}};
+  line(R,false);const upN=pts.length;wheel(LIFT.T,LIFT.hT+5.0,0);line(-R,true);wheel(LIFT.B,LIFT.hB+5.0,Math.PI);
+  const cum=[0];for(let i=1;i<pts.length;i++)cum.push(cum[i-1]+Math.hypot(pts[i][0]-pts[i-1][0],pts[i][1]-pts[i-1][1],pts[i][2]-pts[i-1][2]));
+  LIFT.loop=pts;LIFT.cum=cum;LIFT.upLen=cum[upN-1];LIFT.loopLen=cum[cum.length-1]+Math.hypot(pts[0][0]-pts[pts.length-1][0],pts[0][2]-pts[pts.length-1][2]);
+  LIFT.speed=LIFT.upLen/LIFT.dur;LIFT.built=true;
+}
+// position + heading of a point that is s metres around the loop
+function loopAt(s,out){const L=LIFT.loopLen;s=((s%L)+L)%L;const cum=LIFT.cum,P=LIFT.loop;let lo=0,hi=cum.length-1;if(s>=cum[hi]){const a=P[hi],b=P[0];const t=(s-cum[hi])/(L-cum[hi]);out.x=lerp(a[0],b[0],t);out.y=lerp(a[1],b[1],t);out.z=lerp(a[2],b[2],t);out.yaw=Math.atan2(-(b[0]-a[0]),-(b[2]-a[2]));return out;}
+  while(hi-lo>1){const m=(lo+hi)>>1;if(cum[m]<=s)lo=m;else hi=m;}const a=P[lo],b=P[hi];const t=(s-cum[lo])/(cum[hi]-cum[lo]||1);
+  out.x=lerp(a[0],b[0],t);out.y=lerp(a[1],b[1],t);out.z=lerp(a[2],b[2],t);out.yaw=Math.atan2(-(b[0]-a[0]),-(b[2]-a[2]));return out;}
+
+// ---------- the build: towers, cables, stations, chairs ----------
+let chairMesh=null;const LP={};
+function chairGeo(){
+  const parts=[];const box=(sx,sy,sz,x,y,z,rx)=>{const g=new THREE.BoxGeometry(sx,sy,sz);if(rx)g.rotateX(rx);g.translate(x,y,z);parts.push(g);};
+  const tube=(a,b,r)=>{const A=new V3(...a),Bv=new V3(...b);const dv=new V3().subVectors(Bv,A);const g=new THREE.CylinderGeometry(r,r,dv.length(),8);
+    g.applyMatrix4(new THREE.Matrix4().makeRotationFromQuaternion(new THREE.Quaternion().setFromUnitVectors(new V3(0,1,0),dv.clone().normalize())));g.translate((A.x+Bv.x)/2,(A.y+Bv.y)/2,(A.z+Bv.z)/2);parts.push(g);};
+  box(0.3,0.22,0.5,0,0.05,0);                                   // grip on the rope
+  tube([0,0,0.05],[0,-1.9,0.05],0.045);tube([0,-1.9,0.05],[0,-2.25,0.45],0.045);   // hanger
+  tube([-1.05,-2.25,0.45],[1.05,-2.25,0.45],0.04);                // top of the back
+  box(2.1,0.5,0.06,0,-2.52,0.42,-0.12);                           // backrest
+  box(2.1,0.08,0.52,0,-2.78,0.12);                                 // seat
+  for(const x of [-1.05,1.05]){tube([x,-2.25,0.45],[x,-2.8,0.35],0.035);tube([x,-2.78,-0.15],[x,-2.2,-0.3],0.03);}
+  tube([-1.05,-2.2,-0.32],[1.05,-2.2,-0.32],0.03);                 // safety bar
+  tube([-0.9,-2.2,-0.32],[-0.9,-3.25,-0.62],0.025);tube([0.9,-2.2,-0.32],[0.9,-3.25,-0.62],0.025);tube([-0.9,-3.25,-0.62],[0.9,-3.25,-0.62],0.03); // footrest
+  return mergeGeoms(parts);
+}
+function addLiftCollision(){for(const c of LIFT.coll){const i=TREES.x.length;TREES.x.push(c.x);TREES.z.push(c.z);TREES.y.push(c.y);TREES.r.push(c.r);const k=hkey(Math.floor(c.x/TCELL),Math.floor(c.z/TCELL));let arr=TREEHASH.get(k);if(!arr){arr=[];TREEHASH.set(k,arr);}arr.push(i);}}
+function buildLift(){
+  LIFT.coll=[];buildLiftLine();
+  const steel=new THREE.MeshStandardMaterial({color:col(0x6f7a74),roughness:0.55,metalness:0.35});
+  const dark=new THREE.MeshStandardMaterial({color:col(0x2b2f31),roughness:0.6,metalness:0.4});
+  const concrete=new THREE.MeshStandardMaterial({color:col(0x9a978f),roughness:0.95});
+  const roofM=new THREE.MeshStandardMaterial({color:col(0x2f4a3a),roughness:0.7,metalness:0.2});
+  const d=LIFT.dir,n=LIFT.nrm;const tw=[],cb=[],cc=[];
+  const put=(g,x,y,z,yaw)=>{g.rotateY(yaw);g.translate(x,y,z);return g;};
+  // towers: tapered pole, crossarm, sheave trains on both sides
+  for(const T of LIFT.towers){const p=liftPoint(T.u,0);const h=T.y-T.g;
+    tw.push(put(new THREE.CylinderGeometry(0.34,0.5,h+0.6,10),p.x,T.g+h/2-0.3,p.z,0));
+    cc.push(put(new THREE.BoxGeometry(1.8,0.6,1.8),p.x,T.g-0.1,p.z,LIFT.yaw));
+    tw.push(put(new THREE.BoxGeometry(5.6,0.34,0.4),p.x,T.y+0.25,p.z,LIFT.yaw));
+    for(const s of [-2.4,2.4]){const q=liftPoint(T.u,s);tw.push(put(new THREE.BoxGeometry(0.22,0.28,2.6),q.x,T.y+0.18,q.z,LIFT.yaw));
+      for(const o of [-0.9,-0.3,0.3,0.9]){const g=new THREE.CylinderGeometry(0.2,0.2,0.1,12);g.rotateZ(Math.PI/2);cb.push(put(g,q.x+d.x*o,T.y+0.05,q.z+d.z*o,LIFT.yaw));}}
+    // a rider hitting a tower goes down like hitting a tree
+    LIFT.coll.push({x:p.x,z:p.z,y:T.g,r:0.55});}
+  // stations: concrete deck, steel frame, roof, bullwheel
+  for(const [S,hy,top] of [[LIFT.B,LIFT.hB,false],[LIFT.T,LIFT.hT,true]]){
+    cc.push(put(new THREE.BoxGeometry(9,1.2,10),S.x,hy-0.35,S.z,LIFT.yaw));
+    for(const a of [-3.6,3.6])for(const b of [-3.8,3.8])tw.push(put(new THREE.BoxGeometry(0.35,6.2,0.35),S.x+n.x*a+d.x*b,hy+3.1,S.z+n.z*a+d.z*b,LIFT.yaw));
+    const roof=put(new THREE.BoxGeometry(9.6,0.3,10.4),S.x,hy+6.4,S.z,LIFT.yaw);
+    const bw=new THREE.TorusGeometry(2.4,0.13,8,40);bw.rotateX(Math.PI/2);cb.push(put(bw,S.x,hy+5.0,S.z,0));
+    cb.push(put(new THREE.BoxGeometry(2.2,1.4,2.2),S.x,hy+5.9,S.z,LIFT.yaw));
+    const rm=new THREE.Mesh(roof,roofM);rm.castShadow=rm.receiveShadow=true;scene.add(rm);
+    const sign=toTex((()=>{const c=mkCanvas(512,112),g=c.getContext('2d');woodBg(g,512,112);g.fillStyle='#f6f1e4';g.font='800 58px '+DISP;g.textAlign='center';g.textBaseline='middle';g.fillText(top?'Top of the lift':'Chairlift',256,58);return c;})(),{repeat:false});
+    const sm=signMesh(sign,4.2,0.92);const face=top?-1:1;sm.position.set(S.x-d.x*5.3*face,hy+4.6,S.z-d.z*5.3*face);sm.rotation.y=LIFT.yaw+(top?Math.PI:0);scene.add(sm);
+    for(const a of [-3.6,3.6])for(const b of [-3.8,3.8])LIFT.coll.push({x:S.x+n.x*a+d.x*b,z:S.z+n.z*a+d.z*b,y:hy,r:0.3});}
+  // cables: both lines as thin tubes following the loop
+  const P=LIFT.loop;const rope=[];for(let i=0;i<P.length;i++){const a=P[i],b=P[(i+1)%P.length];const A=new V3(a[0],a[1],a[2]),Bv=new V3(b[0],b[1],b[2]);const dv=new V3().subVectors(Bv,A);const l=dv.length();if(l<0.01)continue;
+    const g=new THREE.CylinderGeometry(0.03,0.03,l,5,1,true);g.applyMatrix4(new THREE.Matrix4().makeRotationFromQuaternion(new THREE.Quaternion().setFromUnitVectors(new V3(0,1,0),dv.normalize())));g.translate((a[0]+b[0])/2,(a[1]+b[1])/2,(a[2]+b[2])/2);rope.push(g);}
+  for(const [list,mat,shadow] of [[tw,steel,true],[cb,dark,true],[cc,concrete,false],[rope,dark,false]]){const m=new THREE.Mesh(mergeGeoms(list),mat);m.castShadow=shadow;m.receiveShadow=true;scene.add(m);}
+  // chairs: one instanced mesh, moved every frame
+  const count=Math.floor(LIFT.loopLen/LIFT.spacing);LIFT.count=count;
+  chairMesh=new THREE.InstancedMesh(chairGeo(),new THREE.MeshStandardMaterial({color:col(0x3b4448),roughness:0.5,metalness:0.4}),count);chairMesh.castShadow=false;chairMesh.frustumCulled=false;scene.add(chairMesh);
+  updateChairs(0);addLiftCollision();
+}
+const _cm=new THREE.Matrix4(),_cq=new THREE.Quaternion(),_ce=new THREE.Euler(),_cp=new V3(),_cs=new V3(1,1,1);
+function updateChairs(dt){
+  if(!chairMesh)return;if(liftRide.on)LIFT.phase=liftRide.s;else LIFT.phase+=LIFT.speed*dt;
+  const sp=LIFT.spacing;for(let i=0;i<LIFT.count;i++){loopAt(LIFT.phase+i*sp,LP);const sw=i===0&&liftRide.on?liftRide.swing:0;
+    _ce.set(sw,LP.yaw,0,'YXZ');_cq.setFromEuler(_ce);_cp.set(LP.x,LP.y,LP.z);_cm.compose(_cp,_cq,_cs);chairMesh.setMatrixAt(i,_cm);}
+  chairMesh.instanceMatrix.needsUpdate=true;
+}
+
+// ---------- riding the lift ----------
+const liftRide={on:false,t:0,s:0,look:{yaw:0,pitch:-0.08},swing:0,swingV:0,nextTower:0,drag:null};
+function startLift(){
+  if(!LIFT.built||liftRide.pending)return;liftRide.pending=true;cancelRun();JX.node=null;renderJunctionHUD();fade(true);
+  setTimeout(()=>{liftRide.pending=false;liftRide.on=true;liftRide.t=0;liftRide.s=0;liftRide.look.yaw=0;liftRide.look.pitch=-0.08;liftRide.swing=0;liftRide.swingV=0;liftRide.nextTower=0;
+    state='lift';paused=false;$('pause').hidden=true;$('finish').hidden=true;$('menu').hidden=true;$('hud').hidden=false;$('touch').hidden=true;$('liftHud').hidden=false;$('speed').hidden=true;setHint(false);
+    bikeRoot.visible=false;audio.silence();audio.init();updateLiftCam(0);updateLOD(camera.position,true);fade(false);},320);
+}
+function endLift(){
+  liftRide.on=false;$('liftHud').hidden=true;$('speed').hidden=false;fade(true);
+  setTimeout(()=>{state='ride';bikeRoot.visible=true;const x=LIFT.T.x-LIFT.dir.x*9,z=LIFT.T.z-LIFT.dir.z*9;placeBike(x,z,LIFT.yaw+Math.PI,1.5,0);bike.finNote=false;
+    showRideUI();setHint(true);camera.rotation.z=0;fade(false);toast('Top of the lift','Pick a trail and roll through the start gate',2400);},320);
+}
+function updateLift(dt){
+  const r=liftRide;r.t+=dt;r.s=Math.min(LIFT.upLen,r.t*LIFT.speed);
+  // the chair rocks a little each time it rolls over a tower's sheaves
+  const u=r.s/LIFT.upLen*LIFT.hlen;while(r.nextTower<LIFT.towers.length&&LIFT.towers[r.nextTower].u<u){r.swingV+=0.05;r.nextTower++;audio.liftClack&&audio.liftClack();}
+  r.swingV+=(-r.swing*3.2-r.swingV*0.45)*dt;r.swing+=r.swingV*dt;
+  const left=Math.max(0,LIFT.dur-r.t);$('liftTime').textContent=Math.floor(left/60)+':'+String(Math.floor(left%60)).padStart(2,'0');$('liftBar').firstElementChild.style.width=(r.s/LIFT.upLen*100).toFixed(1)+'%';
+  updateLiftCam(dt);
+  if(r.s>=LIFT.upLen-0.01)endLift();
+}
+function updateLiftCam(dt){
+  const r=liftRide;loopAt(r.s,LP);const cy=Math.cos(LP.yaw),sy=Math.sin(LP.yaw);
+  // eye above your seat: the chair hangs below the rope and faces up the hill
+  const ox=SEAT_X,oz=0.02,oy=-HANG+0.95;const sw=r.swing;
+  camera.position.set(LP.x+ox*cy+oz*sy,LP.y+oy+Math.sin(sw)*0.2,LP.z-ox*sy+oz*cy);
+  camera.rotation.set(r.look.pitch+sw*0.4,LP.yaw+r.look.yaw,0,'YXZ');
+  const f=Math.min(80,baseFov());if(Math.abs(camera.fov-f)>0.05){camera.fov=f;camera.updateProjectionMatrix();}
+}
+// look around while riding up: drag on the screen (touch or mouse), or the sticks on a controller
+(function(){const el=$('gl');
+  el.addEventListener('pointerdown',e=>{if(state!=='lift')return;liftRide.drag={id:e.pointerId,x:e.clientX,y:e.clientY};try{el.setPointerCapture(e.pointerId);}catch(_){} });
+  el.addEventListener('pointermove',e=>{const d=liftRide.drag;if(state!=='lift'||!d||d.id!==e.pointerId)return;const k=2.6/Math.max(window.innerWidth,1);
+    liftRide.look.yaw=clamp(liftRide.look.yaw+(e.clientX-d.x)*k,-2.4,2.4);liftRide.look.pitch=clamp(liftRide.look.pitch+(e.clientY-d.y)*k,-1.0,0.7);d.x=e.clientX;d.y=e.clientY;});
+  const up=e=>{if(liftRide.drag&&liftRide.drag.id===e.pointerId)liftRide.drag=null;};el.addEventListener('pointerup',up);el.addEventListener('pointercancel',up);})();
+function liftLook(dx,dy,dt){liftRide.look.yaw=clamp(liftRide.look.yaw-dx*1.8*dt,-2.4,2.4);liftRide.look.pitch=clamp(liftRide.look.pitch-dy*1.2*dt,-1.0,0.7);}
+// rolling into the loading area at the bottom boards the next chair
+function checkLiftBoarding(){
+  if(!LIFT.built||state!=='ride'||liftRide.on)return;const b=bike;const lx=LIFT.B.x+LIFT.dir.x*6+LIFT.nrm.x*2.4,lz=LIFT.B.z+LIFT.dir.z*6+LIFT.nrm.z*2.4;
+  if(Math.hypot(b.pos.x-lx,b.pos.z-lz)<5&&b.vel.length()<10){toast('Loading the chair','',1200);startLift();}
+}
+
+// ===================================================================
+//  Game controllers: PS4 DualShock (and any pad with the standard layout)
+//  R2 pedal, L2 brake (both gradual), left stick steer and lean, Options pause
+// ===================================================================
+const PAD={idx:-1,active:false,prev:[],rumbleT:0,navT:0,sticky:0};
+const BTN={X:0,O:1,SQ:2,TRI:3,L1:4,R1:5,L2:6,R2:7,SHARE:8,OPT:9,L3:10,R3:11,UP:12,DOWN:13,LEFT:14,RIGHT:15,PS:16};
+addEventListener('gamepadconnected',e=>{PAD.idx=e.gamepad.index;const nm=(e.gamepad.id||'').replace(/\(.*?\)/g,'').replace(/Vendor.*$/,'').trim();
+  if(typeof toast==='function')toast('Controller connected',/054c|sony|dualshock|wireless controller/i.test(e.gamepad.id)?'PS4 controller ready':nm.slice(0,36)||'Ready to ride',1800);setPadMode(true);});
+addEventListener('gamepaddisconnected',e=>{if(e.gamepad.index===PAD.idx){PAD.idx=-1;setPadMode(false);if(typeof toast==='function')toast('Controller disconnected','',1400);}});
+function getPad(){const list=navigator.getGamepads?navigator.getGamepads():[];if(!list)return null;if(PAD.idx>=0&&list[PAD.idx]&&list[PAD.idx].connected)return list[PAD.idx];
+  for(const g of list){if(g&&g.connected&&g.buttons&&g.buttons.length>=12){PAD.idx=g.index;return g;}}return null;}
+function setPadMode(on){PAD.active=on;document.documentElement.classList.toggle('pad',on);
+  if(typeof state!=='undefined'&&(state==='ride'||state==='crash')&&!paused)$('touch').hidden=on||!isTouch;
+  if(typeof refreshCtrlText==='function')refreshCtrlText();}
+// touching the screen hands control back to the touch buttons
+addEventListener('pointerdown',e=>{if(PAD.active&&e.pointerType==='touch')setPadMode(false);},true);
+const padDZ=(v,d)=>Math.abs(v)<d?0:Math.sign(v)*(Math.abs(v)-d)/(1-d);
+function padRumble(strong,weak,ms){if(!PAD.active)return;const now=performance.now();if(now<PAD.rumbleT)return;const g=getPad();if(!g)return;PAD.rumbleT=now+ms*0.6;
+  try{const a=g.vibrationActuator;if(a&&a.playEffect)a.playEffect('dual-rumble',{duration:ms,strongMagnitude:clamp(strong,0,1),weakMagnitude:clamp(weak,0,1)});}catch(_){}}
+function pollPad(inAir){
+  const g=getPad();if(!g)return;const B=g.buttons,A=g.axes;const val=i=>B[i]?(typeof B[i]==='object'?B[i].value:B[i]):0;const on=i=>B[i]&&(B[i].pressed||val(i)>0.5);
+  const edge=i=>on(i)&&!PAD.prev[i];
+  const lx=padDZ(A[0]||0,0.14),ly=padDZ(A[1]||0,0.18),rx=padDZ(A[2]||0,0.15),ry=padDZ(A[3]||0,0.15);
+  const r2=Math.max(val(BTN.R2),on(BTN.X)?1:0),l2=Math.max(val(BTN.L2),on(BTN.SQ)?1:0);
+  const any=Math.abs(lx)+Math.abs(ly)+Math.abs(rx)+Math.abs(ry)+r2+l2>0.05||B.some(b=>b&&b.pressed);
+  if(any&&!PAD.active)setPadMode(true);
+  const overlay=padOverlay();
+  if(overlay){padMenu(overlay,g,edge,lx,ly);}
+  else if(state==='lift'){liftLook(-(rx||lx),-(ry||ly),1/60);if(edge(BTN.TRI))endLift();if(edge(BTN.OPT))togglePause();}
+  else if(state==='ride'||state==='crash'){
+    const st=Math.sign(lx)*Math.pow(Math.abs(lx),1.35);if(Math.abs(st)>Math.abs(input.steer))input.steer=st;
+    if(Math.abs(ly)>Math.abs(input.lean))input.lean=-ly;
+    if(!inAir){if(r2>0.04){input.pedal=true;input.pedalAmt=val(BTN.R2)>0.04?Math.max(val(BTN.R2),on(BTN.X)?1:0):1;}
+      if(l2>0.04){input.brake=true;input.brakeAmt=val(BTN.L2)>0.04?Math.max(val(BTN.L2),on(BTN.SQ)?1:0):1;}}
+    if(edge(BTN.OPT))togglePause();
+    if(edge(BTN.TRI)&&state==='ride')respawnNear();
+    if(edge(BTN.SHARE))showMap(true);
+    if(JX.node&&(edge(BTN.L1)||edge(BTN.LEFT)||edge(BTN.R1)||edge(BTN.RIGHT))){const dir=edge(BTN.L1)||edge(BTN.LEFT)?-1:1;JX.choice=clamp(JX.choice+dir,0,JX.node.out.length-1);renderJunctionHUD();}
+  }
+  PAD.prev=B.map(b=>b&&(b.pressed||(typeof b==='object'?b.value:b)>0.5));
+}
+// menus: move between buttons with the d-pad or stick, X to press, O to go back
+function padOverlay(){
+  for(const id of ['guide','mapView','pause','finish','menu']){const el=$(id);if(el&&!el.hidden)return el;}
+  return null;}
+function padMenu(root,g,edge,lx,ly){
+  const now=performance.now();let dx=0,dy=0;
+  if(edge(BTN.UP))dy=-1;else if(edge(BTN.DOWN))dy=1;else if(edge(BTN.LEFT))dx=-1;else if(edge(BTN.RIGHT))dx=1;
+  else if(now>PAD.navT&&(Math.abs(lx)>0.6||Math.abs(ly)>0.6)){if(Math.abs(ly)>Math.abs(lx))dy=Math.sign(ly);else dx=Math.sign(lx);}
+  if(Math.abs(lx)<0.3&&Math.abs(ly)<0.3)PAD.navT=0;
+  const items=[...root.querySelectorAll('button:not([hidden])')].filter(b=>b.offsetParent!==null&&!b.disabled);
+  let cur=document.activeElement;if(!items.includes(cur))cur=null;
+  if(dx||dy){PAD.navT=now+(PAD.navT?160:340);
+    if(!cur){items[0]&&padFocus(items[0]);}
+    else{const r=cur.getBoundingClientRect(),cx=r.left+r.width/2,cy=r.top+r.height/2;let best=null,bs=1e9;
+      for(const b of items){if(b===cur)continue;const q=b.getBoundingClientRect(),qx=q.left+q.width/2,qy=q.top+q.height/2;const ex=qx-cx,ey=qy-cy;
+        const along=dx?ex*dx:ey*dy,across=dx?Math.abs(ey):Math.abs(ex);if(along<=4)continue;const sc=along+across*2.2;if(sc<bs){bs=sc;best=b;}}
+      if(best)padFocus(best);}}
+  if(edge(BTN.X)){if(cur)cur.click();else if(items[0])padFocus(items[0]);}
+  if(edge(BTN.O)){if(root.id==='guide')$('btnGuideClose').click();else if(root.id==='mapView')$('btnMapClose').click();else if(root.id==='pause')togglePause();}
+  if(edge(BTN.OPT)&&root.id==='pause')togglePause();
+}
+function padFocus(el){try{el.focus({preventScroll:false});}catch(_){el.focus();}document.querySelectorAll('.pad-focus').forEach(e=>e.classList.remove('pad-focus'));el.classList.add('pad-focus');}
 
 // ===================================================================
 //  UI: trail map, minimap, junction chooser, menus, main loop, boot
@@ -1898,7 +2396,7 @@ function toast(big,small,ms){const el=$('toast');el.textContent=big;if(small){co
 let airT=null;function airFlash(t){const el=$('air');el.textContent=t.toFixed(1)+' s air';el.classList.add('on');clearTimeout(airT);airT=setTimeout(()=>el.classList.remove('on'),1100);}
 
 // ---------- trail map (menu, pause, and the board at the top) ----------
-const MAPB={x0:-500,x1:500,z0:-1018,z1:78};
+const MAPB={x0:-500,x1:500,z0:-1058,z1:98};
 const diffCol=d=>d==='green'?'#1f9d4a':d==='blue'?'#1f63c8':'#101010';
 function drawTrailMap(W,header){
   const top=header?Math.round(W*0.11):0;const mh=Math.round(W*(MAPB.z1-MAPB.z0)/(MAPB.x1-MAPB.x0));const H=mh+top;
@@ -1922,6 +2420,10 @@ function drawTrailMap(W,header){
     const i0=best,i1=Math.min(tr.n-1,best+24);let ang=Math.atan2(Z(tr.pz[i1])-Z(tr.pz[i0]),X(tr.px[i1])-X(tr.px[i0]));if(ang>Math.PI/2)ang-=Math.PI;if(ang<-Math.PI/2)ang+=Math.PI;
     const x=X(tr.px[i0]),y=Z(tr.pz[i0]);g.save();g.translate(x,y);g.rotate(ang);g.translate(0,-11*k);
     g.font=`700 ${Math.round(17*k)}px ${DISP}`;g.lineWidth=4*k;g.strokeStyle='rgba(15,25,18,.85)';g.strokeText(tr.def.name,0,0);g.fillStyle='#fff';g.fillText(tr.def.name,0,0);g.restore();}
+  { // the chairlift: dashed line between the stations
+    g.save();g.setLineDash([9*k,7*k]);g.strokeStyle='rgba(20,24,22,.85)';g.lineWidth=3*k;g.beginPath();g.moveTo(X(LIFT.B.x),Z(LIFT.B.z));g.lineTo(X(LIFT.T.x),Z(LIFT.T.z));g.stroke();
+    g.strokeStyle='#f3c13a';g.lineWidth=1.6*k;g.stroke();g.restore();for(const S of [LIFT.B,LIFT.T]){g.fillStyle='#f3c13a';g.strokeStyle='#1d1606';g.lineWidth=2*k;g.fillRect(X(S.x)-6*k,Z(S.z)-6*k,12*k,12*k);g.strokeRect(X(S.x)-6*k,Z(S.z)-6*k,12*k,12*k);}
+    g.save();g.translate(X((LIFT.B.x+LIFT.T.x)/2)+11*k,Z(-200));g.rotate(-Math.PI/2);g.font=`700 ${Math.round(15*k)}px ${DISP}`;g.lineWidth=4*k;g.strokeStyle='rgba(15,25,18,.85)';g.strokeText('Chairlift',0,0);g.fillStyle='#f3c13a';g.fillText('Chairlift',0,0);g.restore();}
   for(const id in NODE){const N=NODE[id];const x=X(N.x),y=Z(N.z);
     if(N.fin){g.fillStyle='#fff';g.fillRect(x-7*k,y-5*k,14*k,10*k);g.fillStyle='#111';for(let a=0;a<4;a++)for(let b2=0;b2<2;b2++)if((a+b2)%2)g.fillRect(x-7*k+a*3.5*k,y-5*k+b2*5*k,3.5*k,5*k);}
     else if(N.top){g.fillStyle='#f3c13a';g.beginPath();g.arc(x,y,6*k,0,7);g.fill();g.strokeStyle='#1d1606';g.lineWidth=2*k;g.stroke();}
@@ -1950,6 +2452,7 @@ function drawMinimap(){
   for(const pass of [0,1])TR.forEach((tr,ti)=>{const B=SEGBOX[ti];if(bx<B[0]-R||bx>B[1]+R||bz<B[2]-R||bz>B[3]+R)return;
     mg.beginPath();let on=false;for(let i=0;i<tr.n;i+=3){const dx=tr.px[i]-bx,dz=tr.pz[i]-bz;if(dx*dx+dz*dz>(R+30)*(R+30)){on=false;continue;}const [x,y]=px(tr.px[i],tr.pz[i]);if(on)mg.lineTo(x,y);else{mg.moveTo(x,y);on=true;}}
     if(pass===0){mg.strokeStyle='rgba(255,255,255,.75)';mg.lineWidth=8;mg.stroke();}else{mg.strokeStyle=diffCol(tr.def.diff);mg.lineWidth=4.5;mg.stroke();}});
+  {const [ax,ay]=px(LIFT.B.x,LIFT.B.z),[bx,by]=px(LIFT.T.x,LIFT.T.z);mg.save();mg.setLineDash([7,6]);mg.strokeStyle='#f3c13a';mg.lineWidth=2.5;mg.beginPath();mg.moveTo(ax,ay);mg.lineTo(bx,by);mg.stroke();mg.restore();}
   for(const id in NODE){const N=NODE[id];if(N.out.length<2)continue;const [x,y]=px(N.x,N.z);if(Math.hypot(x-cx,y-cx)>cx)continue;mg.fillStyle='#fff';mg.beginPath();mg.arc(x,y,6,0,7);mg.fill();mg.strokeStyle='#111';mg.lineWidth=2;mg.stroke();}
   mg.restore();mg.fillStyle='#f3c13a';mg.strokeStyle='#1d1606';mg.lineWidth=2.5;mg.beginPath();mg.moveTo(cx,cx-14);mg.lineTo(cx+10,cx+11);mg.lineTo(cx,cx+5);mg.lineTo(cx-10,cx+11);mg.closePath();mg.fill();mg.stroke();
   mg.strokeStyle='rgba(245,246,239,.5)';mg.lineWidth=2;mg.beginPath();mg.arc(cx,cx,cx-2,0,7);mg.stroke();
@@ -1979,7 +2482,8 @@ function refreshMenu(){
   document.querySelectorAll('#segGfx button').forEach(b=>b.setAttribute('aria-checked',String(b.dataset.v===settings.quality)));
   document.querySelectorAll('#segCtl button').forEach(b=>b.setAttribute('aria-checked',String(+b.dataset.v===(settings.ctl|0))));
 }
-$('ctrlText').textContent=isTouch?'Left thumb steers. Right thumb pedals and brakes. Hold brake when stopped to roll backward.':'Steer with A and D or the arrow keys. W pedals, S brakes and rolls backward. R respawns, Esc pauses.';
+function refreshCtrlText(){$('ctrlText').textContent=PAD.active?'Controller: left stick steers and leans in the air, R2 pedals, L2 brakes, Options pauses.':isTouch?'Left thumb steers (push up or down in the air to tilt). Right thumb pedals and brakes.':'Steer with A and D or the arrow keys. W pedals, S brakes. In the air W and S tilt the bike. R respawns, Esc pauses.';}
+refreshCtrlText();
 function setToggles(){
   $('tAssist').querySelector('b').textContent=ASSIST_NAME[settings.assist];$('tSound').querySelector('b').textContent=settings.sound?'On':'Off';
   $('tShadows').querySelector('b').textContent=settings.shadows?'On':'Off';$('tGfx').querySelector('b').textContent=GFX_NAME[settings.quality];
@@ -2000,19 +2504,67 @@ function applyQuality(q){
   if(vegBuilt){const old=SPEC;buildTemplates();buildVegetation();for(const k in old){old[k].trunk.dispose();old[k].foliage.dispose();}updateLOD(state==='menu'?camera.position:bike.pos,true);}
   setToggles();
 }
-function showRideUI(){$('menu').hidden=true;$('hud').hidden=false;$('touch').hidden=!isTouch;$('pause').hidden=true;$('finish').hidden=true;unzoom();if(touchState.idle)requestAnimationFrame(touchState.idle);}
+function showRideUI(){$('menu').hidden=true;$('hud').hidden=false;$('touch').hidden=!isTouch||PAD.active;$('pause').hidden=true;$('finish').hidden=true;unzoom();if(touchState.idle)requestAnimationFrame(touchState.idle);}
 function fade(on){$('fade').style.opacity=on?1:0;}
 $('btnStart').onclick=()=>{audio.init();fade(true);setTimeout(()=>{respawnTop();state='ride';showRideUI();fade(false);},320);};
 $('btnMap').onclick=()=>showMap(false);
-function togglePause(){if(state==='finish'||state==='menu')return;paused=!paused;$('pause').hidden=!paused;$('touch').hidden=paused||!isTouch;unzoom();if(!paused&&touchState.idle)requestAnimationFrame(touchState.idle);if(paused){audio.silence();setToggles();try{$('btnResume').focus({preventScroll:true});}catch(e){}}}
+function togglePause(){if(state==='finish'||state==='menu')return;$('liftHud').hidden=paused?state!=='lift':true;paused=!paused;$('pause').hidden=!paused;$('touch').hidden=paused||!isTouch||state==='lift'||PAD.active;unzoom();if(!paused&&touchState.idle)requestAnimationFrame(touchState.idle);if(paused){audio.silence();setToggles();try{$('btnResume').focus({preventScroll:true});}catch(e){}}}
 $('btnPause').onclick=togglePause;$('btnResume').onclick=togglePause;
 $('btnRespawn').onclick=()=>{togglePause();state='ride';fade(false);camera.rotation.z=0;respawnNear();};
-$('btnTop').onclick=()=>{togglePause();state='ride';fade(false);camera.rotation.z=0;respawnTop();};
+$('btnTop').onclick=()=>{togglePause();state='ride';fade(false);camera.rotation.z=0;respawnTop();showRideUI();};
+$('btnLift').onclick=()=>{paused=false;$('pause').hidden=true;startLift();};
+$('btnLiftSkip').onclick=()=>{if(state==='lift')endLift();};
 $('btnPauseMap').onclick=()=>showMap(true);
-$('btnMenu').onclick=()=>{paused=false;$('pause').hidden=true;$('hud').hidden=true;$('touch').hidden=true;cancelRun();state='menu';fade(false);audio.silence();refreshMenu();$('menu').hidden=false;JX.node=null;renderJunctionHUD();};
-$('btnFinTop').onclick=()=>{$('finish').hidden=true;showRideUI();respawnTop();state='ride';};
+// ---------- controls guide ----------
+let guideReturn=null;
+function showGuide(){const t=PAD.active?'pad':isTouch?'touch':'keys';setGuideTab(t);guideReturn=document.activeElement;$('guide').hidden=false;try{$('btnGuideClose').focus({preventScroll:true});}catch(e){}}
+function setGuideTab(t){document.querySelectorAll('#guideTabs button').forEach(b=>{const on=b.dataset.t===t;b.setAttribute('aria-selected',String(on));b.setAttribute('aria-checked',String(on));});
+  document.querySelectorAll('.gpanel').forEach(p=>p.hidden=p.dataset.t!==t);}
+document.querySelectorAll('#guideTabs button').forEach(b=>b.onclick=()=>setGuideTab(b.dataset.t));
+$('btnGuide').onclick=showGuide;$('btnPauseGuide').onclick=showGuide;
+$('btnGuideClose').onclick=()=>{$('guide').hidden=true;try{guideReturn&&guideReturn.focus({preventScroll:true});}catch(e){}};
+$('btnMenu').onclick=()=>{paused=false;liftRide.on=false;$('liftHud').hidden=true;$('speed').hidden=false;$('pause').hidden=true;$('hud').hidden=true;$('touch').hidden=true;cancelRun();state='menu';fade(false);audio.silence();refreshMenu();$('menu').hidden=false;JX.node=null;renderJunctionHUD();};
+$('btnFinTop').onclick=()=>{startLift();};
+$('btnFinSkip').onclick=()=>{$('finish').hidden=true;showRideUI();respawnTop();state='ride';};
 $('btnFinAgain').onclick=()=>{const tr=lastRoute?NET.byId[lastRoute[0]]:TR[0];$('finish').hidden=true;showRideUI();const p={};trailPoint(tr,1,p);placeBike(p.x,p.z,yawOf(p),0,0);cancelRun();setHint(false);state='ride';};
 document.addEventListener('visibilitychange',()=>{if(document.hidden&&(state==='ride'||state==='crash')&&!paused)togglePause();});
+
+// ---------- landing gauge: shows the bike's angle against the ground where you'll come down ----------
+const tiltEl=$('tilt'),tiltBike=$('tiltBike'),tiltGround=$('tiltGround'),tiltTxt=$('tiltTxt');let tiltShown=false,tiltLand=0,tiltT=0;
+function predictLanding(){const b=bike;let x=b.pos.x,y=b.pos.y-0.9,z=b.pos.z,vx=b.vel.x,vy=b.vel.y,vz=b.vel.z;const h=Math.hypot(vx,vz)||1;const hx=vx/h,hz=vz/h;
+  for(let i=0;i<70;i++){vy-=G*0.04;x+=vx*0.04;y+=vy*0.04;z+=vz*0.04;const g=groundH(x,z);if(y<=g&&vy<0)return Math.atan((groundH(x+hx*0.8,z+hz*0.8)-groundH(x-hx*0.8,z-hz*0.8))/1.6);}
+  return b.gAng||0;}
+function updateTiltGauge(){
+  const b=bike;const air=state==='ride'&&!paused&&!b.contact[0]&&!b.contact[1]&&b.air>0.22&&b.vel.y<3;
+  if(!air){if(tiltShown){tiltEl.hidden=true;tiltShown=false;}return;}
+  tiltLand=b.landSlope!=null?b.landSlope:predictLanding();
+  const err=b.pitch-tiltLand,ae=Math.abs(err);
+  tiltEl.style.setProperty('--tc',ae<0.13?'#7fd36b':ae<0.32?'#f3c13a':'#ff7a5c');
+  tiltTxt.textContent=ae<0.13?'Matched':err>0?'Push forward':'Pull back';
+  tiltBike.setAttribute('transform',`rotate(${(-b.pitch*57.3).toFixed(1)} 70 36)`);tiltGround.setAttribute('transform',`rotate(${(-tiltLand*57.3).toFixed(1)} 70 46)`);
+  if(!tiltShown){tiltEl.hidden=false;tiltShown=true;}}
+
+// ---------- jump speed: what speed the next big jump was built for ----------
+let jsShown=false;
+function updateJumpSpeed(){const el=$('jspd');const J=state==='ride'&&!paused?nextJump(bike.cur,bike.curS,70):null;
+  if(!J||bike.air>0){if(jsShown){el.hidden=true;jsShown=false;}return;}
+  const w=jumpWindow(J),v=bike.vel.length();const lo=Math.round(w[0]*3.6),hi=Math.round(w[1]*3.6);
+  const st=v<w[0]?'up':v>w[1]?'down':'ok';el.style.setProperty('--jc',st==='ok'?'#7fd36b':st==='up'?'#7fb8ff':'#ff9a6a');
+  el.textContent=(st==='up'?'▲ ':st==='down'?'▼ ':'')+'Jump '+lo+'–'+hi;if(!jsShown){el.hidden=false;jsShown=true;}}
+
+// ---------- cached shadows + view culling ----------
+let lastFull=false,cullYaw=1e9;const cullPos=new V3(1e9,0,0);
+function updateShadowsAndCulling(fp){
+  const e=camera.matrixWorld.elements;let fx=-e[8],fz=-e[10];const l=Math.hypot(fx,fz)||1;fx/=l;fz/=l;
+  const box=Q.shadowBox,cx=fp.x+fx*box*0.42,cz=fp.z+fz*box*0.42;
+  let full=false;
+  if(shadowDirty||Math.hypot(cx-shadowC.x,cz-shadowC.z)>box*0.24){
+    shadowC.set(cx,fp.y,cz);sun.target.position.set(cx,fp.y,cz);sun.position.set(cx+SUN_DIR.x*260,fp.y+SUN_DIR.y*260,cz+SUN_DIR.z*260);sun.target.updateMatrixWorld();sun.updateMatrixWorld();
+    renderer.shadowMap.needsUpdate=true;shadowDirty=false;full=true;}
+  const yaw=Math.atan2(fx,fz);
+  if(full){cullNear(camera,true);lastFull=true;}
+  else if(lastFull||Math.abs(wrapA(yaw-cullYaw))>0.06||cullPos.distanceToSquared(camera.position)>6.25){cullNear(camera,false);cullYaw=yaw;cullPos.copy(camera.position);lastFull=false;}
+}
 
 // ---------- main loop ----------
 const STEP=1/240;let acc=0,lastT=performance.now(),hudT=0,mapT=0,lodT=0,perfT=0,perfN=0,perfSum=0,skyT=0;
@@ -2032,20 +2584,22 @@ function frame(now){
   readInput(dt);
   if(state==='menu')updateMenuCam(dt);
   else if(!paused){
-    if(state==='ride'){acc+=dt;let n=0;while(acc>=STEP&&n<14){if(input.auto)input.auto(STEP);gameStep(STEP);acc-=STEP;n++;if(state!=='ride')break;}if(n>=14)acc=0;updateJunction();}
+    if(state==='ride'){acc+=dt;let n=0;while(acc>=STEP&&n<14){if(input.auto)input.auto(STEP);gameStep(STEP);acc-=STEP;n++;if(state!=='ride')break;}if(n>=14)acc=0;updateJunction();checkLiftBoarding();}
+    else if(state==='lift')updateLift(dt);
     else if(state==='crash'){crashT+=dt;if(crashT>1.15)fade(true);if(crashT>1.5){respawnNear();state='ride';fade(false);camera.rotation.z=0;camState.crashRot=0;}}
-    updateBikeVisual();
-    if(state!=='finish')updateCamera(dt);
+    if(state!=='lift'){updateBikeVisual();if(state!=='finish')updateCamera(dt);}
     if(state==='ride')adaptQuality(dt);
   }
   sky.position.copy(camera.position);skyT+=dt;skyMat.uniforms.time.value=skyT;
-  const fp=state==='menu'?camera.position:bike.pos;
-  sun.target.position.copy(fp);sun.position.set(fp.x+SUN_DIR.x*260,fp.y+SUN_DIR.y*260,fp.z+SUN_DIR.z*260);
-  lodT-=dt;if(lodT<=0){lodT=0.2;updateLOD(state==='menu'?camera.position:bike.pos);}
-  bikeRoot.visible=state!=='menu';
-  audio.update(dt,{riding:state==='ride'&&!paused,crash:state==='crash',speed:bike.vel.length(),vf:bike.vf,contact:bike.contact[0]||bike.contact[1],surf:bike.surf,slip:bike.slip,skid:bike.skid,
+  updateChairs(paused?0:dt);
+  const fp=state==='menu'||state==='lift'?camera.position:bike.pos;
+  lodT-=dt;if(lodT<=0){lodT=0.2;updateLOD(fp);}
+  camera.updateMatrixWorld();updateShadowsAndCulling(fp);updateBlob();updateDust(paused?0:dt);WIND.value+=dt;
+  bikeRoot.visible=state!=='menu'&&state!=='lift';
+  audio.update(dt,{lift:state==='lift'&&!paused,riding:state==='ride'&&!paused,crash:state==='crash',speed:bike.vel.length(),vf:bike.vf,contact:bike.contact[0]||bike.contact[1],surf:bike.surf,slip:bike.slip,skid:bike.skid,
     brake:input.brake,pedal:input.pedal,air:!(bike.contact[0]||bike.contact[1]),chatter:bike.chatter,latA:bike.latA,bank:bike.bank,impact:bike.impact});
-  hudT-=dt;if(hudT<=0&&state!=='menu'){hudT=0.07;$('spd').textContent=Math.round(bike.vel.length()*3.6);
+  updateTiltGauge();
+  hudT-=dt;if(hudT<=0&&state!=='menu'){hudT=0.07;$('spd').textContent=Math.round(bike.vel.length()*3.6);updateJumpSpeed();
     if(run.active){$('runTime').textContent=fmtTime(run.t);if(bike.cur)$('runBar').firstElementChild.style.width=(bike.curS/bike.cur.len*100).toFixed(1)+'%';}}
   mapT-=dt;if(mapT<=0&&state!=='menu'){mapT=0.066;drawMinimap();}
   renderer.render(scene,camera);
@@ -2069,6 +2623,7 @@ async function boot(){
   for(const tr of TR){if(NODE[tr.from].top){addTrailheadSign(tr);addGate(tr,9,'Start',false);}if(NODE[tr.to].fin)addGate(tr,tr.len-11,'Finish',true);addMarkers(tr);}
   for(const id in NODE)addJunctionSigns(NODE[id]);buildMarkers();
   addStartArea(mapImg);
+  await step('Stringing the chairlift',93);buildLift();
   const mm=drawTrailMap(560,false);$('menuMap').append(mm);
   updateLOD(camera.position,true);setToggles();
   placeBike(SPAWN.x,SPAWN.z,0,0,0);
@@ -2076,7 +2631,7 @@ async function boot(){
   $('loading').hidden=true;$('menu').hidden=false;state='menu';
   setTimeout(()=>{try{$('btnStart').focus({preventScroll:true});}catch(e){}},30);
 }
-window.__st={bike,input,TR,NET,NODE,locate,groundH,settings,run,stats,camera,CAM,JX,trailPoint,yawOf,respawnOnTrail,respawnTop,placeBike,treeCount:()=>TREES.x.length,
+window.__st={bike,input,TR,NET,NODE,locate,groundH,settings,run,stats,camera,CAM,JX,trailPoint,yawOf,respawnOnTrail,respawnTop,placeBike,treeCount:()=>TREES.x.length,LIFT,liftRide,startLift,endLift,updateLift,updateLOD,checkLiftBoarding,
   get state(){return state;},set state(v){state=v;}};
 requestAnimationFrame(frame);
 const start=()=>{boot().catch(err=>{$('loadMsg').textContent='';const e=$('loadErr');e.hidden=false;e.textContent='Something went wrong while building the mountain. Reload the page to try again.';console.error(err);});};
