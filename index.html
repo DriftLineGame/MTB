@@ -53,6 +53,7 @@ button:focus-visible,button.pad-focus:focus{outline:3px solid var(--hi);outline-
 .trails span{font-size:13px;color:var(--soft)}
 .trails em{font-style:normal;font-family:var(--disp);font-weight:600;font-size:16px;color:var(--soft);white-space:nowrap;font-variant-numeric:tabular-nums}
 .opt{margin:0 0 12px}
+.opts{display:grid;grid-template-columns:repeat(auto-fill,minmax(215px,1fr));column-gap:16px}.opts .opt-d{max-width:30ch}
 .opt-l{display:block;font-family:var(--disp);font-weight:700;font-size:17px;margin-bottom:5px}
 .seg{display:inline-flex;background:var(--panel);border-radius:8px;padding:3px;gap:3px}
 .seg button{border:0;border-radius:6px;background:transparent;padding:7px 14px;font-family:var(--disp);font-weight:700;font-size:17px;color:var(--soft)}
@@ -88,6 +89,7 @@ button:focus-visible,button.pad-focus:focus{outline:3px solid var(--hi);outline-
 #hint{position:absolute;left:calc(env(safe-area-inset-left,0px) + 14px);top:calc(env(safe-area-inset-top,0px) + 12px);background:var(--panel);padding:9px 14px;font-size:15px;max-width:min(340px,50vw);line-height:1.35}
 #topRight{position:absolute;right:calc(env(safe-area-inset-right,0px) + 12px);top:calc(env(safe-area-inset-top,0px) + 12px);display:flex;gap:8px;align-items:flex-start}
 #mini{width:124px;height:124px;display:block;border-radius:50%}
+.ibtns{display:flex;flex-direction:column;gap:8px}
 .icon-btn{pointer-events:auto;width:44px;height:44px;border:0;border-radius:6px;background:var(--panel);display:grid;place-items:center}
 .icon-btn svg{width:20px;height:20px}
 #speed{position:absolute;left:50%;transform:translateX(-50%);top:calc(env(safe-area-inset-top,0px) + 10px);text-align:center;font-family:var(--disp);text-shadow:0 1px 3px rgba(0,0,0,.7),0 0 14px rgba(0,0,0,.45);line-height:.9}
@@ -180,16 +182,20 @@ dl.keys dt{font-family:var(--disp);font-weight:700;font-size:16px;color:var(--hi
   <div class="menu-wrap">
     <div class="menu-card">
       <h1>Singletrack</h1>
-      <p class="lede">Fourteen trails and a chairlift on one coastal BC mountain. Pick a line at the top, then choose your way at every junction.</p>
+      <p class="lede">Twenty-one trails, bridges, big drops and a chairlift on one coastal BC mountain. Pick a line at the top, then choose your way at every junction.</p>
       <div class="row start-row"><button id="btnStart" class="btn primary">Ride to the top</button><button id="btnMap" class="btn">Trail map</button><button id="btnGuide" class="btn">Controls</button></div>
       <ul class="trails" id="trailList"></ul>
+      <div class="opts">
       <div class="opt"><span class="opt-l" id="lblAssist">Steering assist</span>
         <div class="seg" role="radiogroup" aria-labelledby="lblAssist" id="segAssist"><button role="radio" data-v="0">Off</button><button role="radio" data-v="1">Light</button><button role="radio" data-v="2">Full</button></div>
         <p class="opt-d" id="assistDesc"></p></div>
       <div class="opt"><span class="opt-l" id="lblGfx">Graphics</span>
         <div class="seg" role="radiogroup" aria-labelledby="lblGfx" id="segGfx"><button role="radio" data-v="low">Low</button><button role="radio" data-v="medium">Medium</button><button role="radio" data-v="high">High</button></div></div>
+      <div class="opt"><span class="opt-l" id="lblCam">View</span>
+        <div class="seg" role="radiogroup" aria-labelledby="lblCam" id="segCam"><button role="radio" data-v="1">3rd person</button><button role="radio" data-v="0">1st person</button></div></div>
       <div class="opt" id="optCtl" hidden><span class="opt-l" id="lblCtl">Button size</span>
         <div class="seg" role="radiogroup" aria-labelledby="lblCtl" id="segCtl"><button role="radio" data-v="0">Normal</button><button role="radio" data-v="1">Large</button><button role="radio" data-v="2">Extra large</button></div></div>
+      </div>
       <p class="controls" id="ctrlText"></p>
     </div>
     <div class="menu-map" id="menuMap"></div>
@@ -209,6 +215,7 @@ dl.keys dt{font-family:var(--disp);font-weight:700;font-size:16px;color:var(--hi
         <circle cx="318" cy="128" r="28" class="g-btn"/><text x="318" y="133" class="g-lab" text-anchor="middle">Pedal</text>
         <circle cx="318" cy="192" r="28" class="g-btn"/><text x="318" y="197" class="g-lab" text-anchor="middle">Brake</text>
         <rect x="350" y="22" width="26" height="26" rx="5" class="g-btn"/><path d="M359 29v12m8-12v12" class="g-arrow"/>
+        <rect x="350" y="54" width="26" height="26" rx="5" class="g-btn"/><rect x="355" y="62" width="11" height="9" rx="2" class="g-knob"/><path d="M367 66l5-3v7z" class="g-knob"/>
         <rect x="130" y="24" width="140" height="30" rx="6" class="g-pill"/><text x="200" y="44" class="g-lab" text-anchor="middle">Tap a line at junctions</text>
         <text x="40" y="36" class="g-cap">Left thumb</text><text x="318" y="84" class="g-cap" text-anchor="middle">Right thumb</text>
       </svg>
@@ -219,6 +226,7 @@ dl.keys dt{font-family:var(--disp);font-weight:700;font-size:16px;color:var(--hi
         <dt>Brake</dt><dd>Brake. Hold it when stopped to roll backward.</dd>
         <dt>Junction buttons</dt><dd>Tap the line you want before the split.</dd>
         <dt>Pause</dt><dd>Respawn, the chairlift, the trail map and settings.</dd>
+        <dt>Camera</dt><dd>The button under pause switches between riding behind the bike and seeing through the rider's eyes.</dd>
       </dl>
     </div>
     <div class="gpanel" data-t="pad" hidden>
@@ -240,7 +248,8 @@ dl.keys dt{font-family:var(--disp);font-weight:700;font-size:16px;color:var(--hi
         <dt>R2</dt><dd>Pedal. Squeeze gently for a soft push, fully to sprint. ✕ also pedals.</dd>
         <dt>L2</dt><dd>Brake, as hard as you squeeze. □ also brakes.</dd>
         <dt>Left stick</dt><dd>Steer. In the air, push forward or pull back to tilt the bike for the landing.</dd>
-        <dt>L1 / R1 or d-pad</dt><dd>Pick the left or right line at a junction.</dd>
+        <dt>L1 / R1 or d-pad ← →</dt><dd>Pick the left or right line at a junction.</dd>
+        <dt>D-pad ↑</dt><dd>Switch between third person and first person.</dd>
         <dt>△</dt><dd>Respawn on the trail. On the chairlift, skip to the top.</dd>
         <dt>Options</dt><dd>Pause. Share opens the trail map.</dd>
         <dt>Menus</dt><dd>D-pad or stick to move, ✕ to press, ○ to go back. The controller rumbles on landings, rocks and crashes.</dd>
@@ -253,12 +262,14 @@ dl.keys dt{font-family:var(--disp);font-weight:700;font-size:16px;color:var(--hi
         <dt>S or ↓, Space</dt><dd>Brake. In the air S tilts the bike back.</dd>
         <dt>R</dt><dd>Respawn on the trail</dd>
         <dt>T</dt><dd>Straight to the top</dd>
+        <dt>C</dt><dd>Switch between third person and first person</dd>
         <dt>Esc or P</dt><dd>Pause</dd>
       </dl>
     </div>
     <h3 class="guide-h">On the mountain</h3>
     <ul class="tips">
-      <li><b>Jump speed.</b> Before a big jump a chip under your speed shows the speed it was built for, like <span class="chip">Jump 52–56</span>. Green means you're on it. Blue, pedal. Orange, brake a little. Full assist handles it for you.</li>
+      <li><b>Jump and drop speed.</b> Before a big jump or drop a chip under your speed shows the speed it was built for, like <span class="chip">Jump 52–56</span> or <span class="chip">Drop 18–21</span>. Green means you're on it. Blue, pedal. Orange, brake a little. Full assist handles it for you.</li>
+      <li><b>Drops.</b> Wooden bridges run level while the hill falls away, and granite shelves end in a 5 to 10 foot drop. Hold your speed off the end and the rider lifts the front; come in slow and you land on the flat top.</li>
       <li><b>Landings.</b> In the air a gauge shows your bike against the landing. Match them and it turns green.</li>
       <li><b>Junctions.</b> Trails split and join. Signs and buttons show where each line goes. Your time follows the lines you ride.</li>
       <li><b>Chairlift.</b> Finish a run and choose Ride the chairlift, or roll into the loading area in the meadow. Two minutes to the top, drag to look around, skip any time.</li>
@@ -273,7 +284,10 @@ dl.keys dt{font-family:var(--disp);font-weight:700;font-size:16px;color:var(--hi
   <div id="runChip" hidden><span id="runSym"></span><span id="runName"></span><span id="runTime">0:00.0</span><div id="runBar"><i></i></div></div>
   <div id="topRight">
     <canvas id="mini" width="248" height="248" aria-label="Map of the trails around you"></canvas>
+    <div class="ibtns">
     <button class="icon-btn" id="btnPause" aria-label="Pause"><svg viewBox="0 0 20 20" aria-hidden="true"><rect x="4" y="3" width="4" height="14" fill="currentColor"/><rect x="12" y="3" width="4" height="14" fill="currentColor"/></svg></button>
+    <button class="icon-btn" id="btnCam" aria-label="Switch camera view"><svg viewBox="0 0 20 20" aria-hidden="true"><rect x="1.5" y="5.5" width="11" height="9" rx="1.6" fill="currentColor"/><path d="M13.5 9 18.5 6v8l-5-3z" fill="currentColor"/></svg></button>
+    </div>
   </div>
   <div id="speed"><b id="spd">0</b><span>km/h</span><em id="jspd" hidden></em></div>
   <div id="jx" hidden><p id="jxTitle"></p><div id="jxList"></div></div>
@@ -309,6 +323,7 @@ dl.keys dt{font-family:var(--disp);font-weight:700;font-size:16px;color:var(--hi
       <button class="toggle" id="tSound">Sound <b>On</b></button>
       <button class="toggle" id="tShadows">Tree shadows <b>On</b></button>
       <button class="toggle" id="tGfx">Graphics <b>High</b></button>
+      <button class="toggle" id="tCam">View <b>Third person</b></button>
       <button class="toggle" id="tCtl" hidden>Button size <b>Normal</b></button>
     </div>
   </div>
@@ -373,7 +388,7 @@ function mountainH(x,z){
   if(z>105)h+=Math.pow(z-105,1.35)*0.2*(1+0.3*fbm(x/80,z/80,2));
   if(z<Z_BOT+12)h+=0.5*fbm(x/25,z/25,2)*smooth((Z_BOT+12-z)/30);
   const ax=Math.abs(x);
-  if(ax>560){const e=ax-560;h+=(Math.min(Math.pow(e,1.5)*0.04,e*0.62)+60*smooth((e-200)/900))*(1+0.4*fbm(x/90,z/120,3))*(1-0.75*smooth((e-300)/1400));}
+  if(ax>800){const e=ax-800;h+=(Math.min(Math.pow(e,1.5)*0.04,e*0.62)+60*smooth((e-200)/900))*(1+0.4*fbm(x/90,z/120,3))*(1-0.75*smooth((e-300)/1400));}
   return h;
 }
 function farH(x,z){
@@ -391,9 +406,10 @@ function terrGrad(x,z,e){e=e||3;return [(mountainH(x+e,z)-mountainH(x-e,z))/(2*e
 // ---------------- trail network ----------------
 // nodes: trailheads on the plateau, junctions mid-mountain, finishes in the bottom meadow
 const NODES={
-  thA:{x:-105,z:26,top:true},thB:{x:-38,z:26,top:true},thC:{x:30,z:26,top:true},thD:{x:98,z:26,top:true},thE:{x:165,z:26,top:true},
+  thF:{x:-172,z:26,top:true},thA:{x:-105,z:26,top:true},thB:{x:-38,z:26,top:true},thC:{x:30,z:26,top:true},thD:{x:98,z:26,top:true},thE:{x:190,z:26,top:true},
   u1:{x:72,z:-262},ml:{x:-300,z:-440},mc:{x:-30,z:-522},mr:{x:252,z:-482},
-  fFern:{x:-372,z:-985,fin:true},fKing:{x:-178,z:-985,fin:true},fAir:{x:-52,z:-990,fin:true},fRoot:{x:84,z:-990,fin:true},fSlab:{x:214,z:-985,fin:true},fCedar:{x:366,z:-980,fin:true},fFree:{x:478,z:-985,fin:true}
+  f1:{x:384,z:-132},c1:{x:340,z:-300},k1:{x:-588,z:-430},f2:{x:-416,z:-620},
+  fFern:{x:-372,z:-985,fin:true},fKing:{x:-178,z:-985,fin:true},fAir:{x:-52,z:-990,fin:true},fRoot:{x:84,z:-990,fin:true},fSlab:{x:214,z:-985,fin:true},fCedar:{x:366,z:-980,fin:true},fFree:{x:512,z:-985,fin:true},fCoho:{x:-600,z:-985,fin:true}
 };
 // styles: w half-width, sw shoulder, gT target grade, thMax max traverse angle, thS forced S-turn angle, rhythm S-turn spacing,
 // R turn radius range, mea meander, rough surface noise, bank max berm slope, spd pedal-in speed
@@ -406,20 +422,23 @@ const STYLES={
   slab:{w:1.3,sw:2.3,gT:0.17,thMax:1.1,thS:0.45,rhythm:[22,40],R:[7,12],mea:0.3,rough:0.04,bankMax:0.55},
   steep:{w:1.2,sw:2.2,gT:0.3,thMax:0.6,thS:0.35,rhythm:[18,34],R:[6,11],mea:0.3,rough:0.05,bankMax:0.45},
   link:{w:1.5,sw:2.2,gT:0.06,thMax:0.2,thS:0.25,rhythm:[30,50],R:[10,16],mea:0.2,rough:0.02,bankMax:0.7},
+  bermflow:{w:1.9,sw:2.5,gT:0.09,thMax:1.3,thS:0.78,rhythm:[28,42],R:[9,13],mea:0.06,rough:0.008,bankMax:1.35},
   mega:{straight:true,w:2.1,sw:2.8,gT:0.14,thMax:0,thS:0,rhythm:[400,400],R:[30,30],mea:0,rough:0.006,bankMax:1.0,vmax:15.5,corners:[20,30]},
 };
 const DIFF={green:{label:'Green circle',word:'Easy',color:'#1f9d4a',symbol:'circle',rank:0},blue:{label:'Blue square',word:'Intermediate',color:'#1f63c8',symbol:'square',rank:1},
   black:{label:'Black diamond',word:'Advanced',color:'#000000',symbol:'diamond',rank:2},dbl:{label:'Double black',word:'Expert',color:'#000000',symbol:'double',rank:3}};
 const SEGDEFS=[
-  {id:'salal',name:'Salal Flow',diff:'green',style:'flowEasy',from:'thA',to:'ml',W:105,seed:11,desc:'Long switchbacks with big smooth berms',
+  {id:'salal',name:'Salal Flow',diff:'green',style:'flowEasy',from:'thA',to:'ml',W:120,gT:0.08,seed:11,desc:'Long switchbacks with big smooth berms',
     spine:[[-105,26],[-105,-12],[-200,-70],[-290,-180],[-310,-330],[-300,-440]]},
-  {id:'fern',name:'Fern Gully',diff:'green',style:'flowEasy',from:'ml',to:'fFern',W:92,seed:12,desc:'Rolling berms down to the meadow',
-    spine:[[-300,-440],[-330,-540],[-360,-700],[-370,-860],[-372,-985]]},
+  {id:'fern',name:'Fern Gully',diff:'green',style:'flowEasy',from:'ml',to:'f2',W:80,gT:0.08,seed:12,desc:'Rolling berms through the ferns',
+    spine:[[-300,-440],[-330,-520],[-416,-620]]},
+  {id:'fernL',name:'Lower Fern',diff:'green',style:'flowEasy',from:'f2',to:'fFern',W:90,gT:0.08,seed:24,desc:'Rolling berms down to the meadow',
+    spine:[[-416,-620],[-380,-720],[-370,-860],[-372,-985]]},
   {id:'hemlock',name:'Hemlock Link',diff:'blue',style:'link',from:'ml',to:'mc',W:9,seed:13,desc:'Connector from Salal to the centre junction',
     spine:[[-300,-440],[-262,-470],[-190,-500],[-110,-516],[-30,-522]]},
   {id:'kingU',name:'Kingfisher',diff:'blue',style:'jumpflow',from:'thB',to:'mc',W:30,seed:14,desc:'Berm, tabletop, berm. Pure flow',
     spine:[[-38,26],[-38,-12],[-92,-120],[-115,-260],[-100,-390],[-48,-470],[-30,-522]]},
-  {id:'kingL',name:'Lower Kingfisher',diff:'blue',style:'jumpflow',from:'mc',to:'fKing',W:28,seed:15,desc:'More berms and bigger tables',
+  {id:'kingL',name:'Lower Kingfisher',diff:'blue',style:'jumpflow',from:'mc',to:'fKing',W:40,gT:0.1,seed:15,desc:'More berms and bigger tables',
     spine:[[-30,-522],[-72,-562],[-138,-630],[-162,-760],[-168,-860],[-178,-985]]},
   {id:'widowU',name:'Widowmaker',diff:'dbl',style:'steep',from:'thC',to:'u1',W:18,seed:16,desc:'Steep fall line, rock gardens and drops',
     spine:[[30,26],[30,-12],[50,-130],[72,-262]]},
@@ -427,19 +446,38 @@ const SEGDEFS=[
     spine:[[72,-262],[50,-370],[8,-460],[-30,-522]]},
   {id:'deadfall',name:'Deadfall',diff:'black',style:'tech',from:'u1',to:'mr',W:20,seed:18,desc:'Roots, rocks and off-camber turns',
     spine:[[72,-262],[124,-300],[168,-372],[222,-432],[252,-482]]},
-  {id:'cedarU',name:'Cedar Line',diff:'blue',style:'natural',from:'thD',to:'mr',W:42,seed:19,desc:'Natural loam, roots and small drops',
-    spine:[[98,26],[98,-12],[186,-112],[330,-236],[336,-390],[252,-482]]},
+  {id:'cedarU',name:'Cedar Line',diff:'blue',style:'natural',from:'thD',to:'c1',W:50,gT:0.1,seed:19,desc:'Natural loam, roots and small drops',
+    spine:[[98,26],[98,-12],[150,-130],[290,-225],[340,-300]]},
+  {id:'cedarM',name:'Middle Cedar',diff:'blue',style:'natural',from:'c1',to:'mr',W:44,gT:0.1,seed:25,desc:'Loamy turns and a wooden drop',
+    spine:[[340,-300],[340,-390],[252,-482]]},
   {id:'air',name:'Air Traffic',diff:'black',style:'bigjump',from:'mc',to:'fAir',W:20,seed:20,desc:'Big tables, gaps and step-downs',
     spine:[[-30,-522],[-22,-600],[-30,-710],[-46,-860],[-52,-990]]},
   {id:'root',name:'Root Canal',diff:'black',style:'tech',from:'mc',to:'fRoot',W:24,seed:21,desc:'Steep, rooty and tight',
     spine:[[-30,-522],[4,-562],[62,-604],[84,-700],[88,-830],[84,-990]]},
   {id:'slab',name:'Slab City',diff:'black',style:'slab',from:'mr',to:'fSlab',W:30,seed:22,desc:'Rock faces, ledges and rock gardens',
     spine:[[252,-482],[218,-560],[200,-705],[202,-850],[214,-985]]},
-  {id:'cedarL',name:'Lower Cedar',diff:'blue',style:'natural',from:'mr',to:'fCedar',W:34,seed:23,desc:'Fast and flowy with a few roots',
+  {id:'cedarL',name:'Lower Cedar',diff:'blue',style:'natural',from:'mr',to:'fCedar',W:50,gT:0.1,seed:23,desc:'Fast and flowy with a few roots',
     spine:[[252,-482],[318,-535],[368,-665],[382,-820],[366,-980]]},
-  {id:'freefall',name:'Freefall',diff:'dbl',style:'mega',from:'thE',to:'fFree',W:0,seed:31,desc:'Dead straight, huge tables and gaps. Watch your speed',
-    spine:[[165,26],[165,-12],[470,-207],[478,-985]]},
+  {id:'freefall',name:'Freefall',diff:'dbl',style:'mega',from:'thE',to:'f1',W:0,seed:31,desc:'Dead straight, huge tables and gaps. Watch your speed',
+    spine:[[190,26],[190,-12],[384,-132]]},
+  {id:'freefallL',name:'Lower Freefall',diff:'dbl',style:'mega',from:'f1',to:'fFree',W:0,seed:33,corners:[30],desc:'Straight down the fall line, the biggest jumps on the hill',
+    spine:[[384,-132],[505,-207],[512,-985]]},
+  {id:'spur',name:"Devil's Club",diff:'black',style:'tech',from:'f1',to:'c1',W:12,seed:34,desc:'Steep link from Freefall to Cedar Line',
+    spine:[[384,-132],[412,-155],[390,-220],[342,-245],[340,-300]]},
+  {id:'coho',name:'Coho',diff:'blue',style:'bermflow',from:'thF',to:'k1',W:30,seed:32,desc:'Big berms and big rollers, one after another',
+    spine:[[-172,26],[-172,-8],[-400,-58],[-545,-190],[-588,-430]]},
+  {id:'cohoL',name:'Lower Coho',diff:'blue',style:'bermflow',from:'k1',to:'fCoho',W:30,seed:35,desc:'More big berms all the way to the meadow',
+    spine:[[-588,-430],[-570,-560],[-566,-760],[-600,-985]]},
+  {id:'salmon',name:'Salmonberry',diff:'blue',style:'link',from:'k1',to:'f2',W:14,seed:36,grade:[0.01,0.2],desc:'Link from Coho across to Fern Gully',
+    spine:[[-588,-430],[-560,-470],[-480,-560],[-416,-620]]},
 ];
+// big drops on each trail: wooden bridges ('wood') and rock shelves ('rock'), height in metres (3 m is about 10 ft)
+const DROPS={cedarU:[['wood',1.5]],cedarM:[['wood',1.7]],cedarL:[['rock',1.4],['wood',1.6]],kingL:[['wood',1.5]],salmon:[['wood',1.4]],
+  deadfall:[['rock',2.3]],root:[['wood',2.4]],slab:[['rock',2.8]],air:[['wood',2.6]],
+  widowU:[['rock',3.0]],chute:[['wood',3.0]],freefallL:[['wood',3.1]]};
+for(const d of SEGDEFS)if(DROPS[d.id])d.drops=DROPS[d.id];
+// spread the whole network across a wider mountain so trails can traverse instead of pointing straight down
+const XS=1.25;for(const k in NODES)NODES[k].x=Math.round(NODES[k].x*XS);for(const d of SEGDEFS){d.spine=d.spine.map(p=>[Math.round(p[0]*XS),p[1]]);d.W*=XS;}
 
 function polyInfo(pts){const cum=[0];for(let i=1;i<pts.length;i++)cum.push(cum[i-1]+Math.hypot(pts[i][0]-pts[i-1][0],pts[i][1]-pts[i-1][1]));return cum;}
 function spineProject(sp,cum,x,z){ // -> {u,e,tx,tz}
@@ -455,14 +493,14 @@ const psiOf=(tx,tz)=>Math.atan2(-tx,-tz);
 
 const LEADIN=20;
 function nodeDir(k){const outs=SEGDEFS.filter(d=>d.from===k);let x=0,z=0;for(const d of outs){const a=d.spine[0],b=d.spine[1];const l=Math.hypot(b[0]-a[0],b[1]-a[1]);x+=(b[0]-a[0])/l;z+=(b[1]-a[1])/l;}const l=Math.hypot(x,z)||1;return [x/l,z/l];}
-for(const k in NODES){if(SEGDEFS.filter(d=>d.from===k).length>1)NODES[k].dir=nodeDir(k);}
+for(const k in NODES){const nOut=SEGDEFS.filter(d=>d.from===k).length,nIn=SEGDEFS.filter(d=>d.to===k).length;if(nOut>1||(nIn>1&&nOut>0))NODES[k].dir=nodeDir(k);} // splits, and merges too, so everyone arrives lined up with the way out
 function straightPath(def){ // straight legs joined by round berms of radius R (one per corner)
   const sp=def.spine,st=STYLES[def.style];const out=[sp[0].slice()];
   const dir=(a,b)=>{const dx=b[0]-a[0],dz=b[1]-a[1],l=Math.hypot(dx,dz);return [dx/l,dz/l,l];};
   let cur=sp[0].slice();
   for(let k=1;k<sp.length;k++){
     const [ux,uz]=dir(sp[k-1],sp[k]);
-    if(k<sp.length-1){const [vx,vz]=dir(sp[k],sp[k+1]);const R=st.corners[k-1]||30;const th=Math.acos(clamp(ux*vx+uz*vz,-1,1));const T=R*Math.tan(th/2);
+    if(k<sp.length-1){const [vx,vz]=dir(sp[k],sp[k+1]);const R=(def.corners||st.corners)[k-1]||30;const th=Math.acos(clamp(ux*vx+uz*vz,-1,1));const T=R*Math.tan(th/2);
       const ax=sp[k][0]-ux*T,az=sp[k][1]-uz*T;let L=Math.hypot(ax-cur[0],az-cur[1]);for(let d=1;d<L;d+=1)out.push([cur[0]+ux*d,cur[1]+uz*d]);
       const turn=Math.sign(ux*vz-uz*vx);const cx=ax-uz*R*turn,cz=az+ux*R*turn; // centre of the arc, on the inside of the turn
       const a0=Math.atan2(az-cz,ax-cx);const n=Math.ceil(R*th);for(let i=1;i<=n;i++){const a=a0+turn*th*i/n;out.push([cx+R*Math.cos(a),cz+R*Math.sin(a)]);}
@@ -483,7 +521,7 @@ function walkSegment(def){
   const straightIn=A.top?40:multiOut?38:14,finalIn=B.fin?30:22;
   const meaSeed=rnd()*100;let legPsi=null,leadIn=false,lastDP=1e9;
   for(let step=0;step<U*6;step++){
-    const pr=spineProject(sp,cum,x,z);const rem=U-pr.u;const dB=Math.hypot(B.x-x,B.z-z);
+    const pr=spineProject(sp,cum,x,z);const rem=U-pr.u;const dB=Math.hypot(B.x-x,B.z-z);const gT=def.gT||st.gT;
     if(dB<1.5)break;
     let want;
     if(B.dir){ // arrive on the junction's shared lead-in line
@@ -501,7 +539,7 @@ function walkSegment(def){
     else{
       const taper=smooth((pr.u-straightIn)/(A.top?50:85))*smooth((rem-finalIn)/70);const Wu=def.W*taper;
       const g=terrGrad(x,z,st.hold?18:6);const S=Math.hypot(g[0],g[1]);const fallPsi=psiOf(-g[0],-g[1]);
-      let th=S>st.gT?Math.acos(clamp(st.gT/S,0,1)):0;th=Math.min(th,st.thMax); // traverse angle off the fall line that gives the target grade
+      let th=S>gT?Math.acos(clamp(gT/S,0,1)):0;th=Math.min(th,st.thMax); // traverse angle off the fall line that gives the target grade
       const sTurn=th<st.thS;
       if(since>(sTurn?rhythm:Math.max(18,rhythm*0.6))&&side*pr.e>sideT*Wu){side=-side;since=0;R=lerp(st.R[0],st.R[1],rnd());sideT=0.45+rnd()*0.55;rhythm=lerp(st.rhythm[0],st.rhythm[1],rnd());}
       else if(sTurn&&since>rhythm*1.25){side=-side;since=0;R=lerp(st.R[0],st.R[1],rnd());rhythm=lerp(st.rhythm[0],st.rhythm[1],rnd());}
@@ -532,7 +570,7 @@ function smoothPoly(P,iters,keep){ // laplacian smoothing, endpoints fixed
 }
 
 // ---------------- segment building: profile, speed, berms, features ----------------
-const GRADE={mega:[0.0,0.34],flowEasy:[0.012,0.155],jumpflow:[0.015,0.22],natural:[0.0,0.26],bigjump:[0.015,0.24],tech:[0.0,0.42],slab:[0.0,0.36],steep:[0.0,0.52],link:[0.008,0.13]};
+const GRADE={bermflow:[0.02,0.2],mega:[0.0,0.34],flowEasy:[0.012,0.155],jumpflow:[0.015,0.22],natural:[0.0,0.26],bigjump:[0.015,0.24],tech:[0.0,0.42],slab:[0.0,0.36],steep:[0.0,0.52],link:[0.008,0.13]};
 function sm1(arr,r){const n=arr.length;const o=new Float32Array(n);let acc=0;const pre=new Float64Array(n+1);for(let i=0;i<n;i++)pre[i+1]=pre[i]+arr[i];
   for(let i=0;i<n;i++){const a=Math.max(0,i-r),b=Math.min(n-1,i+r);o[i]=(pre[b+1]-pre[a])/(b-a+1);}return o;}
 function nodePlane(N){const h=(mountainH(N.x,N.z)+mountainH(N.x+4,N.z)+mountainH(N.x-4,N.z)+mountainH(N.x,N.z+4)+mountainH(N.x,N.z-4))/5;const g=terrGrad(N.x,N.z,8);
@@ -550,7 +588,7 @@ function buildSegment(def,idx){
   let b=new Float32Array(n);for(let i=0;i<n;i++)b[i]=mountainH(tr.px[i],tr.pz[i]);
   b=sm1(sm1(b,10),7);
   const hA=A.plane(tr.px[0],tr.pz[0]),hB=B.plane(tr.px[n-1],tr.pz[n-1]);
-  const [gMin,gMax]=GRADE[def.style];
+  const [gMin,gMax]=def.grade||GRADE[def.style];
   b[0]=hA;b[n-1]=hB;
   for(let it=0;it<6;it++){
     for(let i=1;i<n-1;i++)b[i]=clamp(b[i],b[i-1]-gMax,b[i-1]-gMin);
@@ -589,6 +627,7 @@ function buildSegment(def,idx){
   computeSpeeds(tr,tr.featProfile);
   computeBanks(tr);
   indexObstacles(tr);
+  tr.bridges=tr.feats.filter(f=>f.type==='bigdrop'&&f.kind==='wood').map(f=>({s0:f.sb,s1:f.a,hw:f.hw,f}));
   return tr;
 }
 function computeSpeeds(tr,fp){ // speed of a rider who coasts but brakes for turns, and bank angles that suit it
@@ -600,6 +639,7 @@ function computeSpeeds(tr,fp){ // speed of a rider who coasts but brakes for tur
   if(tr.surf){const rockCap=['tech','slab','steep'].includes(tr.def.style)?7.5:9.5,rootCap=rockCap+1.5;
     for(let i=0;i<n;i++){const st2=tr.surf[i];const flat=Math.sqrt(G*0.55/Math.max(Math.abs(tr.kap[i]),1e-4));if(st2===3)vT[i]=Math.min(vT[i],rockCap,flat);else if(st2===2)vT[i]=Math.min(vT[i],rootCap,flat*1.1);}}
   if(tr.sideArr)for(let i=Math.max(0,n-26);i<n;i++)vT[i]=Math.min(vT[i],6.5);
+  if(tr.feats)for(const f of tr.feats)if(f.type==='bigdrop')for(let i=Math.max(0,Math.floor(f.s0-4));i<=Math.min(n-1,Math.ceil(f.a));i++)vT[i]=Math.min(vT[i],f.vt);
   const vmax=st.vmax||17;for(let i=0;i<n;i++){v=Math.min(v,vT[i],vmax);vd[i]=v;const Gr=i<n-1?hAt(i)-hAt(i+1):0;v=Math.sqrt(Math.max(v*v+2*(G*Gr-crr*G-kd*v*v),36));} // riders pedal to keep at least ~6 m/s on flats
   for(let i=n-2;i>=0;i--){const Gr=hAt(i)-hAt(i+1);const dec=Math.max(1.4,5.0-G*Gr);vd[i]=Math.min(vd[i],Math.sqrt(vd[i+1]*vd[i+1]+2*dec));}
   tr.vd=vd;
@@ -611,7 +651,7 @@ function computeBanks(tr){
     bank[i]=Math.sign(tr.kap[i])*(lim>=0?Math.min(need,lim):lim*smooth(need/0.3));}
   let bk=sm1(sm1(bank,5),4);
   const fade=new Float32Array(n).fill(1);
-  for(const f of tr.feats){if(f.type==='jump'||f.type==='drop'||f.type==='slab'||f.type==='ledge'||f.type==='chute'){for(let i=Math.floor(f.s0-12);i<=Math.ceil(f.s1+12);i++)if(i>=0&&i<n){const d=i<f.s0?f.s0-i:i>f.s1?i-f.s1:0;fade[i]=Math.min(fade[i],0.15+0.85*smooth(d/10));}}}
+  for(const f of tr.feats){if(f.type==='jump'||f.type==='drop'||f.type==='slab'||f.type==='ledge'||f.type==='chute'||f.type==='bigdrop'){const e1=f.type==='bigdrop'?f.sB:f.s1;for(let i=Math.floor(f.s0-12);i<=Math.ceil(e1+12);i++)if(i>=0&&i<n){const d=i<f.s0?f.s0-i:i>e1?i-e1:0;fade[i]=Math.min(fade[i],0.15+0.85*smooth(d/10));}}}
   for(let i=0;i<n;i++)bk[i]*=fade[i];
   tr.bank=bk;
 }
@@ -620,8 +660,54 @@ function freeAt(tr,s0,s1,gap){gap=gap||0;if(s0<30||s1>tr.len-30)return false;for
 function gradeAt(tr,s){const i=clamp(Math.round(s),2,tr.n-3);return (tr.base[i-2]-tr.base[i+2])/4;}
 
 // slabs, chutes, ledges and drops change the profile, so they go in first
+// big drops: a level deck (a wooden bridge or a rock shelf) carries on while the hill falls away, then you drop onto a steep landing
+function designDrop(v,Gr,H,gd,lo,hi){
+  // A knuckle a slow rider (lo*v) just clears, then a landing that curves steeper as it goes: at every point its slope is
+  // 70% of the flight that passes through that point, so riders anywhere from lo*v to hi*v touch down smoothly.
+  // Below the landing a round transition (radius sized for the landing speed) turns you back to the grade of the hill.
+  lo=lo||0.9;hi=hi||1.08;const face=0.35,cosT=Math.cos(Math.atan(gd)),b=Gr-gd;
+  const faceH=Math.max(1.0,H*0.45),yK=Math.max(0.2,H-faceH);const aOf=vv=>4.905/Math.pow(vv*0.98*cosT,2);const aS=aOf(v*lo),aH=aOf(v*hi);
+  // the flight is the bike's centre: it leaves level half a wheelbase past the lip, and touches down when the
+  // tyres (pitched to the slope) meet the landing, which is a little higher than the centre's own height suggests
+  const xo=0.6,He=H-0.2;const xk=Math.max(1.2,xo+(b+Math.sqrt(b*b+4*aS*(He+b*xo-yK)))/(2*aS));
+  const lp=[yK];let x=xk,y=yK,sl=0.5;const dx=0.25;
+  while(lp.length<320){const u=x-xo,a=(He+b*x-y)/(u*u);sl=Math.min(clamp(0.7*(2*a*u-b),0.3,1.5),0.04+(x-xk)*1.25); /* rounded knuckle */y-=sl*dx;x+=dx;lp.push(y);if(a<=aH&&x>xk+2)break;}
+  const xF=x,nLand=lp.length;
+  const vL=Math.sqrt(v*v*hi*hi+19.62*Math.max(0,H-y+Gr*x)),R=clamp(vL*vL/11,6,11);
+  let th=Math.atan(sl+Gr);const th0=Math.atan(Gr);
+  while(th>th0+1e-4&&lp.length<480){th=Math.max(th0,th-dx/Math.cos(th)/R);y-=(Math.tan(th)-Gr)*dx;x+=dx;lp.push(y);}
+  return {face,xk,yK,lp:new Float32Array(lp),sl,nLand,yBot:y,xB:x,xF,R};
+}
+function addBigDrop(tr,rnd,kind,H){
+  // tries lots of spots and keeps the one that needs the least digging (where the hill falls away steepest after the lip)
+  const F=tr.feats,L=tr.len;const gd=kind==='wood'?0.015:0.04;let best=null;
+  for(let attempt=0;attempt<140;attempt++){
+    const a=70+rnd()*(L-150);const ba=sampleArr(tr.base,a,1);
+    let s0=a;while(s0>a-38&&s0>12){if(sampleArr(tr.base,s0,1)>=ba+H+gd*(a-s0))break;s0-=0.5;}
+    if(a-s0<7||a-s0>34)continue;
+    const Gr=clamp((ba-sampleArr(tr.base,Math.min(L,a+8),1))/8,0,0.45);
+    // drops are taken at a steady speed: the flow speed, but no faster than suits the height
+    const vt=Math.min(Math.max(4.6,Math.min(tr.vd[Math.round(s0)],tr.vd[Math.round(a)])),4.3+0.45*H);
+    const D=designDrop(vt,Gr,H,gd);
+    // climb back out of any dig slowly, so the trail keeps running downhill after the landing
+    const sB=a+D.xB,Grec=clamp((sampleArr(tr.base,Math.min(L,sB),1)-sampleArr(tr.base,Math.min(L,sB+60),1))/60,0.03,0.4);
+    const Lrec=D.yBot<0?clamp(1.5*(-D.yBot)/(0.5*Grec),12,110):clamp(D.yBot*6,8,40);const s1=sB+Lrec;
+    if(s1>L-25||!freeAt(tr,s0-12,s1,8)||!straightAt(tr,s0-4,a-6,1/13)||!straightAt(tr,a-7,a+D.xF+2,1/22)||!straightAt(tr,a+D.xF,sB+2,1/14))continue;
+    const score=-D.yBot+Lrec*0.01+rnd()*0.4;
+    if(!best||score<best.score)best={score,a,s0,s1,ba,vt,D,Lrec,sB};
+  }
+  if(!best)return false;
+  const {a,s0,s1,ba,vt,D,Lrec,sB}=best;
+  const n=Math.ceil((a-s0)*4)+1;const dk=new Float32Array(n);
+  for(let k=0;k<n;k++){const s=s0+k*0.25;dk[k]=Math.max(0,ba+H+gd*(a-s)-sampleArr(tr.base,s,1))*smooth((s-s0)/4);}
+  let sb=s0;for(let k=0;k<n;k++)if(dk[k]>0.45){sb=s0+k*0.25;break;}
+  const hw=tr.def.diff==='blue'?1.2:tr.def.diff==='black'?1.0:0.9;
+  F.push({type:'bigdrop',kind,s0,a,s1,sB,H,gd,dk,sb,hw,v:vt,vt,rock:kind==='rock',win:[0.9,1.08],Lrec,land:s1-a,...D});
+  buildFeatTable(tr);computeSpeeds(tr,tr.featProfile);return true;
+}
 function placeProfileFeatures(tr,rnd){
   const sty=tr.def.style,F=tr.feats;const L=tr.len;
+  for(const [kind,H] of (tr.def.drops||[]))addBigDrop(tr,rnd,kind,H*(0.94+rnd()*0.12));
   const want={slab:{slab:[5,7],ledge:[4,6],chute:[1,2]},steep:{slab:[3,4],ledge:[2,3],chute:[2,3],drop:[2,3]},tech:{chute:[3,5],ledge:[3,4],drop:[1,2]},
     natural:{drop:[2,3]},bigjump:{},jumpflow:{},flowEasy:{},link:{}}[sty];
   const tries=[];for(const k in want){const c=want[k][0]+Math.floor(rnd()*(want[k][1]-want[k][0]+1));for(let i=0;i<c;i++)tries.push(k);}
@@ -657,7 +743,7 @@ function designJump(v,Gr,H,tanA,drop,lo,hi,digMax){ // drop: how far the landing
 function placeRideFeatures(tr,rnd){
   const sty=tr.def.style,F=tr.feats,L=tr.len,n=tr.n;
   const vAt=s=>tr.vd[clamp(Math.round(s),0,n-1)];
-  const addRollers=(s,amp,lam,cnt)=>{const len=cnt*lam;if(freeAt(tr,s,s+len,5)&&straightAt(tr,s-2,s+len+2,1/28)){F.push({type:'rollers',s0:s,s1:s+len,amp,lam});return len;}return 0;};
+  const addRollers=(s,amp,lam,cnt,kl)=>{const len=cnt*lam;if(freeAt(tr,s,s+len,5)&&straightAt(tr,s-2,s+len+2,kl||1/28)){F.push({type:'rollers',s0:s,s1:s+len,amp,lam});return len;}return 0;};
   const addJump=(s,H,tanA,kind,drop,vScale)=>{
     const v=vAt(s)*vScale;if(v<7)return 0;const Gr=clamp(gradeAt(tr,s+5),-0.05,0.4);
     if(sty==='mega'&&v<11.5)return 0;
@@ -687,9 +773,9 @@ function placeRideFeatures(tr,rnd){
     slab:['rocks','roots','rocks','rocks'],
     steep:['rocks','roots','rocks','rocks'],
   };
-  if(sty==='jumpflow'||sty==='bigjump'||sty==='flowEasy'||sty==='mega'){ // jump lines: fill every straight between berms
+  if(sty==='jumpflow'||sty==='bigjump'||sty==='flowEasy'||sty==='mega'||sty==='bermflow'){ // jump lines: fill every straight between berms
     const kLim=1/34;let i=30;
-    const kinds=sty==='mega'?['mtable','mgap','mstep','mgap','mtable','mstep']:sty==='bigjump'?['bigtable','gap','step','bigtable','gap']:sty==='jumpflow'?['table','table','step','table','rollers']:['smalltable','rollers','rollers'];let ki=Math.floor(rnd()*kinds.length);
+    const kinds=sty==='bermflow'?['brollers','brollers','table','brollers']:sty==='mega'?['mtable','mgap','mstep','mgap','mtable','mstep']:sty==='bigjump'?['bigtable','gap','step','bigtable','gap']:sty==='jumpflow'?['table','table','step','table','rollers']:['smalltable','rollers','rollers'];let ki=Math.floor(rnd()*kinds.length);
     while(i<n-30){
       if(Math.abs(tr.kap[i])>kLim){i++;continue;}
       let j=i;while(j<n-30&&Math.abs(tr.kap[j])<=kLim)j++;
@@ -697,6 +783,7 @@ function placeRideFeatures(tr,rnd){
       while(s<j-12){let used=0;
         for(let t=0;t<kinds.length&&!used;t++){const kind=kinds[(ki+t)%kinds.length];
           if(kind==='rollers')used=addRollers(s,sty==='flowEasy'?0.3+rnd()*0.12:0.45+rnd()*0.15,sty==='flowEasy'?8.5:7.5,3+Math.floor(rnd()*2));
+          else if(kind==='brollers')used=addRollers(s,0.8+rnd()*0.3,10.5+rnd()*2,2+Math.floor(rnd()*2),1/18);
           else if(kind==='smalltable')used=addJump(s,0.5+rnd()*0.2,0.3,'table',0,0.92);
           else if(kind==='table')used=addJump(s,0.85+rnd()*0.4,0.44,'table',0,0.94);
           else if(kind==='step')used=addJump(s,1.0+rnd()*0.4,0.46,'gap',sty==='bigjump'?1.2+rnd()*0.8:0.7+rnd()*0.4,0.95);
@@ -706,7 +793,7 @@ function placeRideFeatures(tr,rnd){
           else if(kind==='mgap')used=addJump(s,1.8+rnd()*0.4,0.45,'gap',0,1);
           else if(kind==='mstep')used=addJump(s,1.5+rnd()*0.3,0.42,'gap',1.2+rnd()*0.6,1);
           if(used)ki=(ki+t+1)%kinds.length;}
-        s+=used?used+(sty==='flowEasy'?14+rnd()*20:sty==='mega'?7+rnd()*8:5+rnd()*6):2;
+        s+=used?used+(sty==='flowEasy'?14+rnd()*20:sty==='mega'?7+rnd()*8:sty==='bermflow'?3+rnd()*5:5+rnd()*6):2;
       }
       i=j+1;
     }
@@ -743,6 +830,14 @@ function featH(f,s){
     if(s<f.a){const t=(s-f.s0)/f.Lin;return 0.5*H*t*t*(3-2*t);}
     if(s<f.a+0.25)return 0.5*H-H*(s-f.a)/0.25;
     const t=(s-f.a-0.25)/(f.Lout-0.25);return -0.5*H*(1-t*t*(3-2*t));}
+  if(f.type==='bigdrop'){
+    if(s<f.s0)return 0;const x=s-f.a;
+    if(x<=0)return sampleArr(f.dk,s-f.s0,0.25);
+    if(x<f.face)return lerp(f.H,f.yK,x/f.face); /* the face, then a flat table out to the knuckle: come up short and you just land flat */
+    if(x<f.xk)return f.yK;
+    const u=x-f.xk,Ll=(f.lp.length-1)*0.25;
+    if(u<=Ll)return sampleArr(f.lp,u,0.25);
+    const k=(u-Ll)/f.Lrec;return k>=1?0:f.yBot*(1-k*k*(3-2*k));}
   if(f.type==='jump'){
     const x=s-f.lip;const H=f.H;
     if(x<-f.Lt)return 0;
@@ -766,6 +861,7 @@ function buildFeatTable(tr){
     if(f.type==='rocks'||f.type==='roots'){for(let i=Math.floor(f.s0);i<=Math.ceil(f.s1)&&i<surf.length;i++)surf[i]=f.type==='rocks'?3:2;continue;}
     const a=Math.max(0,Math.floor(f.s0*4)),b=Math.min(m-1,Math.ceil((f.s1+16)*4));
     for(let k=a;k<=b;k++)fp[k]+=featH(f,k/4);
+    if(f.type==='bigdrop'){const st=f.kind==='rock'?Math.floor(f.s0+2):Math.floor(f.sb);for(let i=st;i<=Math.floor(f.a)+(f.kind==='rock'?1:0)&&i<surf.length;i++)if(i>=0)surf[i]=f.kind==='rock'?1:4;continue;}
     if(f.rock){for(let i=Math.floor(f.a-3);i<=Math.ceil(f.a+(f.Ls||1)+3)&&i<surf.length;i++)if(i>=0)surf[i]=1;}
   }
   tr.featProfile=fp;tr.feat=fp;tr.surf=surf;
@@ -835,7 +931,7 @@ const col=h=>new THREE.Color(h).convertSRGBToLinear();
 // ---------- settings + bests (per browser; optional) ----------
 const SKEY='singletrack.settings.v2',BKEY='singletrack.best.v2';
 const store={get(k,d){try{const v=localStorage.getItem(k);return v?JSON.parse(v):d;}catch(e){return d;}},set(k,v){try{localStorage.setItem(k,JSON.stringify(v));}catch(e){}}};
-const settings=Object.assign({assist:1,sound:true,quality:isPhone?'medium':'high',shadows:true,ctl:0},store.get(SKEY,{}));
+const settings=Object.assign({assist:1,sound:true,quality:isPhone?'medium':'high',shadows:true,ctl:0,cam:1},store.get(SKEY,{}));
 const bests=store.get(BKEY,{});
 const saveSettings=()=>store.set(SKEY,settings);
 const fmtTime=t=>{const m=Math.floor(t/60),s=t-m*60;return m+':'+(s<10?'0':'')+s.toFixed(1);};
@@ -1029,9 +1125,12 @@ function rootH(tr,s,d){
     if(dist<r.r*1.4&&Math.abs(ds*sa+dd*ca)<tr.w+0.8){const u=1-dist/(r.r*1.4);const v=r.r*0.62*u*u*(3-2*u);if(v>h)h=v;}}
   return h;
 }
+function bridgeAt(tr,s){const B=tr.bridges;if(!B)return null;for(let i=0;i<B.length;i++){const b=B[i];if(s>=b.s0&&s<=b.s1)return b;}return null;}
+function bridgeOpen(tr,s){const B=tr.bridges&&bridgeAt(tr,s);return !!B&&s>B.s0+0.8&&s<B.s1-1.2;} /* the stretch with open air under the boards (the ends sit on dirt abutments) */
 function surfType(tr,s){return tr.surf[clamp(Math.round(s),0,tr.surf.length-1)];}
 function surfH(tr,s,d,obst){
-  const b=sampleA(tr.base,s,1),f=sampleA(tr.feat,s,0.25),tb=sampleA(tr.bank,s,1);const w=tr.w;
+  const b=sampleA(tr.base,s,1),f=sampleA(tr.feat,s,0.25);if(tr.bridges&&bridgeAt(tr,s))return b+f; /* bridge boards: dead flat */
+  const tb=sampleA(tr.bank,s,1);const w=tr.w;
   let off=-tb*(d-Math.sign(tb)*w*0.3);if(off>0)off*=1+0.22*Math.abs(d)/w;
   const dn=d/w;const ez=Math.min(s,tr.len-s);let h=b+f+off+0.05*dn*dn+tr.st.rough*noise2(s*0.7,d*1.2+tr.idx*7)*(ez<32?smooth((ez-18)/14):1);
   if(obst){h+=rockH(tr,s,d)+rootH(tr,s,d);if(tr.surf[clamp(Math.round(s),0,tr.surf.length-1)]===1)h+=0.035*noise2(s*2.1,d*2.3);}
@@ -1045,7 +1144,7 @@ function trailPoint(tr,s,out){const f=clamp(s,0,tr.len);const i=Math.min(Math.fl
   out.x=lerp(tr.px[i],tr.px[i+1],t);out.z=lerp(tr.pz[i],tr.pz[i+1],t);const tx=lerp(tr.tx[i],tr.tx[i+1],t),tz=lerp(tr.tz[i],tr.tz[i+1],t);const l=Math.hypot(tx,tz)||1;out.tx=tx/l;out.tz=tz/l;return out;}
 
 // ---------- terrain grid ----------
-const TX0=-720,TX1=720,TZ0=-1300,TZ1=260,TS=4;
+const TX0=-960,TX1=960,TZ0=-1300,TZ1=260,TS=4;
 const NX=Math.round((TX1-TX0)/TS)+1,NZ=Math.round((TZ1-TZ0)/TS)+1;
 const TH=new Float32Array(NX*NZ),TDIST=new Float32Array(NX*NZ),TROCK=new Float32Array(NX*NZ);
 function gridH(x,z){
@@ -1057,6 +1156,7 @@ const LG={t:null,s:0,d:0,ad:1e9,over:0,dist:1e9};
 function groundH(x,z){
   const L=locate(x,z,LG); // own lookup object so height queries never disturb the rider's trail position
   if(L.t&&L.over<0.3){const tr=L.t;
+    if(tr.bridges){const B=bridgeAt(tr,L.s);if(B)return L.ad<=B.hw?surfH(tr,L.s,L.d,false):gridH(x,z);} /* off the side of a bridge is a fall to the forest floor */
     if(L.ad<=tr.w)return surfH(tr,L.s,L.d,true);
     if(L.ad<=tr.w+tr.sw)return shoulderH(tr,L.s,L.d,x,z);
     if(L.ad<=tr.w+tr.sw+SKIRT)return Math.max(gridH(x,z),blendT(tr,L.s,L.ad,x,z)-SKIRT_DROP*(L.ad-tr.w-tr.sw)/SKIRT);
@@ -1064,14 +1164,14 @@ function groundH(x,z){
   return gridH(x,z);
 }
 // rocky ground around slabs and ledges
-const ROCKZONES=[];TR.forEach(tr=>tr.feats.forEach(f=>{if(f.rock){const p={};trailPoint(tr,f.a+(f.Ls||0)/2,p);ROCKZONES.push({x:p.x,z:p.z,r:(f.Ls||2)*0.8+9});}}));
+const ROCKZONES=[];TR.forEach(tr=>tr.feats.forEach(f=>{if(f.rock){const p={};if(f.type==='bigdrop'){trailPoint(tr,(f.s0+f.a)/2,p);ROCKZONES.push({x:p.x,z:p.z,r:(f.a-f.s0)/2+9});}else{trailPoint(tr,f.a+(f.Ls||0)/2,p);ROCKZONES.push({x:p.x,z:p.z,r:(f.Ls||2)*0.8+9});}}}));
 function rockiness(x,z){let r=0;for(const Z of ROCKZONES){const d=Math.hypot(x-Z.x,z-Z.z);if(d<Z.r)r=Math.max(r,1-smooth((d-Z.r*0.45)/(Z.r*0.55)));}return r;}
 function buildTerrainHeights(){
   for(let j=0;j<NZ;j++){const z=TZ0+j*TS;for(let i=0;i<NX;i++){const x=TX0+i*TS;
     const L=locate(x,z);let h;const k=j*NX+i;TDIST[k]=1e9;
     if(L.t&&L.dist<L.t.w+8){const tr=L.t;TDIST[k]=L.dist-tr.w-tr.sw;
       h=blendT(tr,L.s,L.dist,x,z);
-      if(L.over<0.3&&L.ad<tr.w+tr.sw+SKIRT){const rib=L.ad<=tr.w?surfH(tr,L.s,L.d,false):L.ad<=tr.w+tr.sw?shoulderH(tr,L.s,L.d,x,z):h;h=Math.min(h,rib)-0.45;}
+      if(L.over<0.3&&L.ad<tr.w+tr.sw+SKIRT&&!bridgeOpen(tr,L.s)){const rib=L.ad<=tr.w?surfH(tr,L.s,L.d,false):L.ad<=tr.w+tr.sw?shoulderH(tr,L.s,L.d,x,z):h;h=Math.min(h,rib)-0.45;}
     }else h=mountainH(x,z);
     TH[k]=h;TROCK[k]=rockiness(x,z);}}
 }
@@ -1175,10 +1275,11 @@ function buildRibbon(tr){
   const NC=cols.length,ds=0.5,rows=Math.ceil(tr.len/ds)+1;
   const P=new Float32Array(rows*NC*3),C=new Float32Array(rows*NC*3),U=new Float32Array(rows*NC*2),M=new Float32Array(rows*NC*2);const p={};
   const tmp=new THREE.Color(),cLine=new THREE.Color(0.78,0.74,0.72),cEdge=new THREE.Color(1.12,1.08,1.02),cJump=new THREE.Color(1.18,1.1,0.98);
-  for(let r=0;r<rows;r++){const s=Math.min(r*ds,tr.len);trailPoint(tr,s,p);const nx=p.tz,nz=-p.tx;const f=sampleA(tr.feat,s,0.25);const st=surfType(tr,s);
+  for(let r=0;r<rows;r++){const s=Math.min(r*ds,tr.len);trailPoint(tr,s,p);const nx=p.tz,nz=-p.tx;const f=sampleA(tr.feat,s,0.25);const st=surfType(tr,s);const onB=tr.bridges&&bridgeAt(tr,s);
     const rockS=st===1?1:0;
     for(let c=0;c<NC;c++){const d=cols[c],ad=Math.abs(d);const x=p.x+nx*d,z=p.z+nz*d;let h;
       if(ad<=w+1e-4)h=surfH(tr,s,d,false)+(rockS?0.035*noise2(s*2.1,d*2.3):0);else if(ad<=w+sw+1e-4)h=shoulderH(tr,s,d,x,z);else h=blendT(tr,s,ad,x,z)-SKIRT_DROP;
+      if(onB&&ad<=w+sw+1e-4)h-=0.12; /* the dirt abutment sits just under the boards */
       const k=r*NC+c;P[k*3]=x;P[k*3+1]=h;P[k*3+2]=z;U[k*2]=(d+w+sw)/2.3;U[k*2+1]=s/2.3;
       // worn racing line darker, packed edges lighter, freshly shaped jumps lighter
       const lineW=Math.exp(-Math.pow((d+0.18*Math.sin(s*0.05+tr.idx))/(w*0.33),2));
@@ -1194,7 +1295,7 @@ function buildRibbon(tr){
   for(let r=0;r<rows;r++)for(let c=0;c<NC;c++){gp(r+1,c,a);gp(r-1,c,b);t1.subVectors(a,b);gp(r,c+1,a);gp(r,c-1,b);t2.subVectors(a,b);n.crossVectors(t1,t2).normalize();if(n.y<0)n.negate();const k=(r*NC+c)*3;N[k]=n.x;N[k+1]=n.y;N[k+2]=n.z;}
   // each trail draws at its own depth offset so overlapping ribbons at junctions never flicker
   const mat=ribbonMat.clone();mat.onBeforeCompile=ribbonMat.onBeforeCompile;mat.polygonOffsetUnits=-2-tr.idx*0.6;mat.polygonOffsetFactor=-2-tr.idx*0.15;
-  const CH=260;
+  const CH=260;const onBr=new Uint8Array(rows);if(tr.bridges)for(let r=0;r<rows;r++)onBr[r]=bridgeOpen(tr,r*ds)?1:0; /* bridges are drawn as boards, not dirt */
   for(let r0=0;r0<rows-1;r0+=CH){const r1=Math.min(rows-1,r0+CH),nr=r1-r0+1;
     const g=new THREE.BufferGeometry();
     g.setAttribute('position',new THREE.BufferAttribute(P.slice(r0*NC*3,(r1+1)*NC*3),3));
@@ -1202,7 +1303,7 @@ function buildRibbon(tr){
     g.setAttribute('color',new THREE.BufferAttribute(C.slice(r0*NC*3,(r1+1)*NC*3),3));
     g.setAttribute('uv',new THREE.BufferAttribute(U.slice(r0*NC*2,(r1+1)*NC*2),2));
     g.setAttribute('aMix',new THREE.BufferAttribute(M.slice(r0*NC*2,(r1+1)*NC*2),2));
-    const idx=[];for(let r=0;r<nr-1;r++)for(let c=0;c<NC-1;c++){const A=r*NC+c,B=A+1,C2=A+NC,D=C2+1;idx.push(A,C2,B,B,C2,D);}
+    const idx=[];for(let r=0;r<nr-1;r++){if(onBr[r0+r]&&onBr[r0+r+1])continue;for(let c=0;c<NC-1;c++){const A=r*NC+c,B=A+1,C2=A+NC,D=C2+1;idx.push(A,C2,B,B,C2,D);}}
     g.setIndex(idx);g.computeBoundingSphere();
     const m=new THREE.Mesh(g,mat);m.receiveShadow=true;scene.add(m);}
 }
@@ -1309,6 +1410,56 @@ function boulderGeo(detail,seed,mossy){const g=new THREE.IcosahedronGeometry(1,d
     const ax=Math.abs(n.getX(i)),ay=Math.abs(up),az=Math.abs(n.getZ(i));uv.push(...(ay>ax&&ay>az?[x*0.7,z*0.7]:ax>az?[z*0.7,y*0.7]:[x*0.7,y*0.7]));} // planar mapping per face direction
   g.setAttribute('color',new THREE.Float32BufferAttribute(c,3));g.setAttribute('uv',new THREE.Float32BufferAttribute(uv,2));return g;}
 
+// ---------- North Shore bridges: boards on stringers on posts, running level off the hill to the drop ----------
+function makePlankTex(){const c=mkCanvas(256,64),g=c.getContext('2d');
+  g.fillStyle='#8c6d50';g.fillRect(0,0,256,64);
+  for(let i=0;i<90;i++){const y=R()*64,l=R();g.strokeStyle=l<0.55?`rgba(58,38,22,${0.1+R()*0.25})`:`rgba(196,170,132,${0.08+R()*0.16})`;g.lineWidth=0.6+R()*1.8;
+    g.beginPath();g.moveTo(0,y);g.bezierCurveTo(85,y+R()*6-3,170,y+R()*6-3,256,y+R()*4-2);g.stroke();}
+  for(let i=0;i<40;i++){const x=R()*256,y=R()*64;g.fillStyle=`rgba(${R()<0.5?'40,26,14':'205,185,150'},${0.04+R()*0.08})`;g.fillRect(x,y,20+R()*80,1+R()*5);} /* weathering streaks */
+  const e=g.createLinearGradient(0,0,256,0);e.addColorStop(0,'rgba(36,24,12,.5)');e.addColorStop(0.05,'rgba(36,24,12,0)');e.addColorStop(0.95,'rgba(36,24,12,0)');e.addColorStop(1,'rgba(36,24,12,.5)');
+  g.fillStyle=e;g.fillRect(0,0,256,64);g.fillStyle='rgba(20,12,6,.35)';g.fillRect(0,0,256,2);g.fillRect(0,62,256,2);
+  return toTex(c,{repeat:false});}
+function buildBridges(){
+  const list=[];TR.forEach(tr=>(tr.bridges||[]).forEach(B=>list.push([tr,B])));if(!list.length)return;
+  const tex=makePlankTex();const deckM=new THREE.MeshStandardMaterial({map:tex,roughness:0.88,metalness:0});
+  const frameM=new THREE.MeshStandardMaterial({map:tex,roughness:0.92,metalness:0,color:0x9a8a78});
+  const boxX=new THREE.BoxGeometry(1,1,1);const boxY=new THREE.BoxGeometry(1,1,1).rotateZ(Math.PI/2); // long axis along x (boards, beams) / along y (posts)
+  const rnd=mulberry32(99);const p={},q={};
+  const E=new THREE.Euler(0,0,0,'YXZ'),Qt=new THREE.Quaternion(),S=new V3(),P=new V3(),M=new THREE.Matrix4(),X=new V3(1,0,0),D=new V3();
+  const deckY=(tr,s)=>sampleA(tr.base,s,1)+sampleA(tr.feat,s,0.25);
+  const put=(arr,x,y,z,qq,sx,sy,sz,c)=>{P.set(x,y,z);S.set(sx,sy,sz);M.compose(P,qq,S);arr.push(M.clone(),c);};
+  const beam=(arr,a,b,sy,sz,c)=>{D.subVectors(b,a);const L=D.length();D.divideScalar(L);Qt.setFromUnitVectors(X,D);put(arr,(a.x+b.x)/2,(a.y+b.y)/2,(a.z+b.z)/2,Qt,L,sy,sz,c);};
+  const at=(tr,s,d,y)=>{trailPoint(tr,s,q);return new V3(q.x+q.tz*d,y,q.z-q.tx*d);};
+  for(const [tr,B] of list){const hw=B.hw,s0=B.s0,s1=B.s1;const planks=[],beams=[],posts=[];
+    // boards: across the line, a finger's gap apart, each a slightly different shade
+    for(let s=s0+0.13;s<s1-0.08;s+=0.25){trailPoint(tr,s,p);const y=deckY(tr,s);const sl=(deckY(tr,s+0.15)-deckY(tr,s-0.15))/0.3;
+      const fl=rnd()<0.5;E.set(fl?-Math.atan(sl):Math.atan(sl),yawOf(p)+(rnd()-0.5)*0.02+(fl?Math.PI:0),0);Qt.setFromEuler(E);const g=0.78+rnd()*0.3,w=2*hw+(rnd()-0.5)*0.08,o=(rnd()-0.5)*0.05;
+      put(planks,p.x+p.tz*o,y-0.035,p.z-p.tx*o,Qt,w,0.07,0.215,new THREE.Color(g,g*0.97,g*0.93));}
+    // two stringers under the boards, in 2 m lengths
+    const sd=hw-0.24,top=s=>deckY(tr,s)-0.07-0.12;
+    for(let s=s0;s<s1-0.05;s+=2){const e=Math.min(s1,s+2);for(const sg of [-1,1])beam(beams,at(tr,s,sg*sd,top(s)),at(tr,e,sg*sd,top(e)),0.24,0.11,new THREE.Color(0.9,0.9,0.9));}
+    // posts on cap beams wherever there's air under the deck; braced where they get tall
+    const PS=[];for(let s=s0+0.4;;s+=2.1){const ss=Math.min(s,s1-0.15);PS.push(ss);if(ss>=s1-0.15)break;}
+    let prev=null;
+    for(const s of PS){const yc=deckY(tr,s)-0.07-0.24-0.09;const pair=[];
+      for(const sg of [-1,1]){const pt=at(tr,s,sg*(sd+0.02),0);const gy=gridH(pt.x,pt.z);const h=yc-0.09-gy;pair.push({pt,gy,h,sg});
+        if(h>0.12){trailPoint(tr,s,p);E.set(0,yawOf(p),0);Qt.setFromEuler(E);put(posts,pt.x,(yc-0.09+gy-0.35)/2,pt.z,Qt,0.17,h+0.35,0.17,new THREE.Color(0.85,0.85,0.85));}}
+      if(pair[0].h>0.12||pair[1].h>0.12){beam(beams,at(tr,s,-(hw+0.08),yc),at(tr,s,hw+0.08,yc),0.18,0.15,new THREE.Color(0.8,0.8,0.8));
+        const hh=Math.min(pair[0].h,pair[1].h);if(hh>1.7){const lo=Math.max(pair[0].gy,pair[1].gy)+0.35;const up=yc-0.2;
+          beam(beams,at(tr,s-0.1,-sd,up),at(tr,s-0.1,sd,lo),0.1,0.05,new THREE.Color(0.75,0.75,0.75));beam(beams,at(tr,s+0.1,sd,up),at(tr,s+0.1,-sd,lo),0.1,0.05,new THREE.Color(0.75,0.75,0.75));}}
+      if(prev){for(let k=0;k<2;k++){const A=prev[k],Bp=pair[k];if(Math.min(A.h,Bp.h)<1.1)continue;const sg=A.sg,dd=sg*(sd+0.12);const flip=((PS.indexOf(s))%2)===0;
+          const ya=deckY(tr,prev.s)-0.55,yb=Bp.gy+0.3,yb2=A.gy+0.3,yc2=deckY(tr,s)-0.55;
+          if(flip)beam(beams,at(tr,prev.s,dd,ya),at(tr,s,dd,yb),0.12,0.05,new THREE.Color(0.75,0.75,0.75));else beam(beams,at(tr,prev.s,dd,yb2),at(tr,s,dd,yc2),0.12,0.05,new THREE.Color(0.75,0.75,0.75));}}
+      pair.s=s;prev=pair;}
+    mkIM(boxX,deckM,planks);mkIM(boxX,frameM,beams);mkIM(boxY,frameM,posts);
+  }
+  function mkIM(geo,mat,arr){const n=arr.length/2;if(!n)return;const im=new THREE.InstancedMesh(geo.clone(),mat,n);for(let i=0;i<n;i++){im.setMatrixAt(i,arr[i*2]);im.setColorAt(i,arr[i*2+1]);}
+    im.instanceMatrix.needsUpdate=true;if(im.instanceColor)im.instanceColor.needsUpdate=true;im.castShadow=true;im.receiveShadow=true;im.frustumCulled=true;
+    // bounding sphere of every instance, so view culling drops bridges that are behind you
+    const bb=new THREE.Box3();for(let i=0;i<n;i++){const e=arr[i*2].elements;bb.expandByPoint(new V3(e[12],e[13],e[14]));}im.geometry.boundingSphere=bb.getBoundingSphere(new THREE.Sphere());im.geometry.boundingSphere.radius+=3;
+    scene.add(im);}
+}
+
 // ---------- templates, materials, impostors ----------
 let SPEC=null,SPEC_MID=null,VMAT=null,IMP=null;
 function buildTemplates(){
@@ -1375,6 +1526,7 @@ function buildImpostors(){
 // Every plant, rock and log is stored once in flat arrays. Around the rider, one instanced mesh per kind is refilled
 // with whatever is within range (a handful of draw calls in total); everything further away is a single mesh of tree cards.
 const TREES={x:[],z:[],y:[],r:[]};const TREEHASH=new Map();const TCELL=10;
+const CAMT={x:[],z:[],c:[]},CAMHASH=new Map(); // every tree and bush the chase camera should stay out of, with a clearance radius
 const VKIND=['t_fir','f_fir','t_hemlock','f_hemlock','t_cedar','f_cedar','t_alder','f_alder','t_young','f_young','fern','salal','grass','log','stump','boulder','trailrock','root'];
 const COVER=new Set(['fern','salal','grass','root','trailrock']);
 let VS=null,FAR=null,nearMeshes=[],nearC={x:1e9,z:1e9},FARU={c:{value:new THREE.Vector2(1e9,1e9)},r:{value:150}};
@@ -1390,6 +1542,8 @@ function addTree(sp,x,z,rnd,sc){
   const t=0.82+rnd()*0.3;_c.setRGB(t*(0.94+rnd()*0.1),t,t*(0.9+rnd()*0.14));
   vpush('t_'+sp,_m,new THREE.Color(1,1,1));vpush('f_'+sp,_m,_c);
   const D=IMP.dims[sp];const fm=new THREE.Matrix4().compose(_p,_q,new V3(D.w*sc,D.h*sc,D.w*sc));FAR.m.push(...fm.elements);FAR.c.push(_c.r,_c.g,_c.b);FAR.sp.push(IMP.names.indexOf(sp));
+  {const j=CAMT.x.length;CAMT.x.push(x);CAMT.z.push(z);CAMT.c.push(sp==='young'?1.7*sc+0.35:sp==='alder'?0.9:sp==='cedar'?2.4*sc+0.3:T.trunkR*sc+0.8);
+    const k=hkey(Math.floor(x/TCELL),Math.floor(z/TCELL));let arr=CAMHASH.get(k);if(!arr){arr=[];CAMHASH.set(k,arr);}arr.push(j);}
   if(sp!=='young'||sc>0.9){const i=TREES.x.length;TREES.x.push(x);TREES.z.push(z);TREES.y.push(y);TREES.r.push(T.trunkR*sc*1.05+0.04);
     const k=hkey(Math.floor(x/TCELL),Math.floor(z/TCELL));let arr=TREEHASH.get(k);if(!arr){arr=[];TREEHASH.set(k,arr);}arr.push(i);}
 }
@@ -1398,9 +1552,9 @@ function pickSpecies(x,z,h,rnd){const moist=fbm(x/160+9,z/160-3,3)+0.35*(-noise2
   if(h<45&&r<0.28)return 'alder';if(moist>0.15&&r<0.55)return 'cedar';if(r<0.52)return 'fir';if(r<0.86)return 'hemlock';return 'cedar';}
 function buildVegetation(){
   VS={};VKIND.forEach(k=>VS[k]={m:[],c:[],x:[],z:[]});FAR={m:[],c:[],sp:[]};
-  TREES.x.length=TREES.z.length=TREES.y.length=TREES.r.length=0;TREEHASH.clear();
+  TREES.x.length=TREES.z.length=TREES.y.length=TREES.r.length=0;TREEHASH.clear();CAMT.x.length=CAMT.z.length=CAMT.c.length=0;CAMHASH.clear();
   const rnd=mulberry32(4242);const SP=7.6;
-  const plateau=(x,z)=>z>Z_TOP-4&&z<100&&Math.abs(x)<190;
+  const plateau=(x,z)=>z>Z_TOP-4&&z<100&&Math.abs(x)<265;
   for(let z=TZ0+6;z<TZ1-6;z+=SP)for(let x=TX0+6;x<TX1-6;x+=SP){
     const px=x+(rnd()-0.5)*SP*0.95,pz=z+(rnd()-0.5)*SP*0.95;
     if(nearTrail(px,pz,1.6)||liftDist(px,pz)<11)continue;
@@ -1436,6 +1590,15 @@ function buildVegetation(){
     for(const rt of tr.roots){trailPoint(tr,rt.s,p);const x=p.x+p.tz*rt.d,z=p.z-p.tx*rt.d;const y=surfH(tr,rt.s,rt.d,false);const yaw=yawOf(p)+Math.PI/2+rt.ang;
       addItem('root',x,z,y-rt.r*0.2,[0,yaw,(rnd()-0.5)*0.08],rt.r,rt.r*0.9,(tr.w+0.9)*2);}
     for(const f of tr.feats){if(!f.rock)continue;
+      if(f.type==='bigdrop'){ // a granite outcrop: the face bulging out under the lip, boulders stacked up the shelf's flanks
+        trailPoint(tr,f.a-0.3,p);const yl=surfH(tr,f.a-0.05,0,false);const fh=f.H-f.yK;const sy=(fh+0.3)/1.42;
+        addItem('trailrock',p.x,p.z,yl-0.06-0.9*sy,[0,yawOf(p),0],(tr.w+0.7)/1.15,sy,0.55,new THREE.Color(0.86,0.86,0.84));
+        for(const sg of [-1,1]){const d=sg*(tr.w+0.9);trailPoint(tr,f.a+0.2,p);const x=p.x+p.tz*d,z=p.z-p.tx*d;const sc=0.6+fh*0.45;
+          addItem('trailrock',x,z,yl-0.25-sc*0.9,[rnd()*0.2,rnd()*6.28,rnd()*0.2],sc*1.1,sc,sc,new THREE.Color(0.85,0.85,0.83));}
+        for(let s=f.s0+2.5;s<f.a-0.4;s+=1.4+rnd()*0.9){const dk=sampleA(f.dk,s-f.s0,0.25);if(dk<0.35)continue;trailPoint(tr,s,p);const yd=surfH(tr,s,0,false);
+          for(const sg of [-1,1]){const sc=clamp(0.4+dk*0.5,0.5,2.0)*(0.85+rnd()*0.3);const d=sg*(tr.w+0.1+sc*0.8);const x=p.x+p.tz*d,z=p.z-p.tx*d;
+            const g=0.8+rnd()*0.25;addItem(rnd()<0.25?'boulder':'trailrock',x,z,yd-0.12-sc*0.9,[rnd()*0.25,rnd()*6.28,rnd()*0.25],sc*(1.1+rnd()*0.3),sc,sc*(1+rnd()*0.3),new THREE.Color(g,g,g*0.97));}}
+        continue;}
       if(f.type==='ledge'){trailPoint(tr,f.a-0.45,p);const y=surfH(tr,f.a,0,false);const hy=Math.max(0.5,f.H*0.9);
         addItem('trailrock',p.x,p.z,y-0.04-hy*0.99,[0,yawOf(p),0],(tr.w+0.35)/1.15,hy,0.42,new THREE.Color(0.9,0.9,0.88));}
       for(let k=0;k<6;k++){const s=f.a+rnd()*((f.Ls||2)+2);trailPoint(tr,s,p);const sg=k%2?1:-1;const sc=1.0+rnd()*2.0;const Rh=BOULDER_R*1.27*sc*1.3;
@@ -1606,6 +1769,16 @@ const bikeParts={};
   tube(new V3(0,0.235,-0.37),new V3(0,0.18,-0.18),0.0305,mDecal,bikeBody,12).scale.set(1.02,0.35,1.02);
   tube(ST,new V3(0,0.33,0.30),0.016,mBlack,bikeBody);
   const seat=new THREE.Mesh(new THREE.BoxGeometry(0.13,0.04,0.26),mBlack);seat.position.set(0,0.35,0.31);bikeBody.add(seat);
+  // drivetrain: chainring, crank arms (they turn when you pedal) and flat pedals that stay level
+  const crank=new THREE.Group();crank.position.copy(BB);bikeBody.add(crank);bikeParts.crank=crank;
+  const ring=new THREE.Mesh(new THREE.TorusGeometry(0.085,0.007,6,32),mSteel);ring.rotation.y=Math.PI/2;ring.position.x=0.052;crank.add(ring);
+  const spider=new THREE.Mesh(new THREE.CylinderGeometry(0.035,0.035,0.012,10),mBlack);spider.rotation.z=Math.PI/2;spider.position.x=0.05;crank.add(spider);
+  const axle=new THREE.Mesh(new THREE.CylinderGeometry(0.018,0.018,0.15,10),mBlack);axle.rotation.z=Math.PI/2;crank.add(axle);
+  for(const sx of [-1,1]){const arm=new THREE.Mesh(new THREE.BoxGeometry(0.022,0.03,0.18),mBlack);arm.position.set(sx*0.072,0,sx*-0.075);crank.add(arm);}
+  const chain=[];for(const y of [0.085,-0.085]){const g=new THREE.CylinderGeometry(0.004,0.004,0.47,4);g.rotateX(Math.PI/2);g.translate(0.052,y*(y>0?0.78:0.6),0.235);chain.push(g);}
+  const ch=new THREE.Mesh(mergeGeoms(chain),mSteel);ch.position.copy(BB);bikeBody.add(ch);
+  bikeParts.pedals=[-1,1].map(sx=>{const p=new THREE.Group();const plat=new THREE.Mesh(new THREE.BoxGeometry(0.1,0.018,0.1),mBlack);plat.position.x=sx*0.05;p.add(plat);
+    const sp=new THREE.Mesh(new THREE.CylinderGeometry(0.008,0.008,0.05,6),mSteel);sp.rotation.z=Math.PI/2;sp.position.x=-sx*0.01;p.add(sp);bikeBody.add(p);p.userData.sx=sx;return p;});
   const swing=new THREE.Group();swing.position.copy(BB).add(new V3(0,0.06,0.02));bikeBody.add(swing);bikeParts.swing=swing;
   const rw=wheel();bikeParts.rearWheel=rw;bikeBody.add(rw);
   for(const sx of [-1,1])tube(new V3(sx*0.06,0,0),new V3(sx*0.065,0,0.44),0.013,mFrame,swing);
@@ -1616,7 +1789,8 @@ const bikeParts={};
   tube(new V3(0,0,0),new V3(0,0.2,0),0.02,mBlack,steer);
   const stem=new THREE.Mesh(new THREE.BoxGeometry(0.046,0.042,0.075),mBlack);stem.position.set(0,0.19,-0.025);stem.castShadow=true;steer.add(stem);
   const cap=new THREE.Mesh(new THREE.CylinderGeometry(0.018,0.018,0.012,16),mSteel);cap.position.set(0,0.215,0);steer.add(cap);
-  const bars=new THREE.Group();bars.position.set(0,0.19,-0.055);bars.rotation.x=-0.436;steer.add(bars);
+  const bars=new THREE.Group();bars.position.set(0,0.19,-0.055);bars.rotation.x=-0.436;steer.add(bars);bikeParts.bars=bars;bikeParts.fpMats=[mGlove,mCuff,mSleeve];
+  for(const sx of [-1,1]){const a=new THREE.Object3D();a.position.set(sx*0.325,0.05,0.03);bars.add(a);bikeParts[sx<0?'gripL':'gripR']=a;}
   for(const sx of [-1,1]){
     tube(new V3(0,0,0),new V3(sx*0.1,0,0),0.0159,mBlack,bars);tube(new V3(sx*0.1,0,0),new V3(sx*0.16,0.034,0.004),0.0125,mBlack,bars);tube(new V3(sx*0.16,0.034,0.004),new V3(sx*0.395,0.042,0.03),0.0112,mBlack,bars);
     tube(new V3(sx*0.265,0.039,0.013),new V3(sx*0.395,0.043,0.031),0.0165,mGrip,bars,14);
@@ -1695,7 +1869,7 @@ const PH={M:92,MC:9,I:17,KS:[7400,8300],KP:[1.9e6,2.1e6],CC:[440,480],CR:[980,10
 // PITCH_DIRECT: share of the tyre forces' pitching moment that reaches the rider straight away (the rest goes through arms/legs)
 const MR=PH.M-2*PH.MC;let PITCH_DIRECT=0.6;const LZ0=[-MR*G/2/PH.KL[0],-MR*G/2/PH.KL[1]];
 // grip and rolling resistance per surface: dirt, rock slab, roots, rock garden
-const SURF=[{mu:1.05,crr:0.036,name:'dirt'},{mu:1.2,crr:0.026,name:'rock'},{mu:0.86,crr:0.046,name:'roots'},{mu:0.95,crr:0.05,name:'rocks'}];
+const SURF=[{mu:1.05,crr:0.036,name:'dirt'},{mu:1.2,crr:0.026,name:'rock'},{mu:0.86,crr:0.046,name:'roots'},{mu:0.95,crr:0.05,name:'rocks'},{mu:0.98,crr:0.022,name:'wood'}];
 const bike={pos:new V3(),vel:new V3(),yaw:0,pitch:0,pw:0,steer:0,comp:[0,0],cprev:[0,0],contact:[false,false],n:[new V3(0,1,0),new V3(0,1,0)],z:[0,0],zv:[0,0],fw:[0,0],
   spin:[0,0],lean:0,air:0,impact:0,slip:0,skid:0,chatter:0,vf:0,surf:'dirt',latA:0,bank:0,lastTrail:null,lastS:0,offTimer:0,cur:null,curS:0,hitCD:[0,0],land:null};
 const input={steer:0,lean:0,pedal:false,brake:false,pedalAmt:null,brakeAmt:null,keySteer:0,keys:{},auto:null};
@@ -1712,6 +1886,9 @@ function popLip(b){ // leaving a jump lip, the rider pops so the bike follows th
   const i=clamp(Math.round(f.lip),2,tr.n-3);const Gr=(tr.base[i-2]-tr.base[i+2])/4;const want=Math.atan(2*f.H/f.Lt-Gr)*0.97;
   const hs=Math.hypot(b.vel.x,b.vel.z);if(hs<3)return;const cur=Math.atan2(b.vel.y,hs);if(cur>=want)return;
   const sp=b.vel.length(),hx=b.vel.x/hs,hz=b.vel.z/hs;const a=cur+(want-cur)*0.9;b.vel.set(hx*sp*Math.cos(a),sp*Math.sin(a),hz*sp*Math.cos(a));}
+function dropPull(b){ // rolling off a big drop the rider lifts the front, so the bike leaves level instead of nosing over the edge
+  const tr=b.cur;if(!tr||!tr.feats)return;const s=b.curS;
+  for(const f of tr.feats){if(f.type==='bigdrop'&&s>f.a-1.8&&s<f.a+0.9){const e=-Math.atan(f.gd)+0.05-b.pitch;if(e>0)b.pw=Math.max(b.pw,e*9);return;}}}
 function predictLandSlope(b){ // where this flight comes down, and the slope of the ground there (along the direction of travel)
   let x=b.pos.x,y=b.pos.y-0.85,z=b.pos.z,vx=b.vel.x,vy=b.vel.y,vz=b.vel.z;const h=Math.hypot(vx,vz)||1;const hx=vx/h,hz=vz/h;
   for(let i=0;i<60;i++){vy-=G*0.05;x+=vx*0.05;y+=vy*0.05;z+=vz*0.05;if(vy<0&&y<=groundH(x,z))return Math.atan((groundH(x+hx*0.8,z+hz*0.8)-groundH(x-hx*0.8,z-hz*0.8))/1.6);}
@@ -1810,7 +1987,7 @@ function physStep(dt){
   }
   // braking pitches you forward; on steep ground riders drop their hips back, which shortens that lever
   const steepDown=clamp(-Math.sin(b.pitch)/0.3,0,1);torque+=Flong*(Flong<0?0.55-0.25*steepDown:0.55);
-  if(anyContact){b.pw+=(torque/PH.I)*dt;b.pw*=1-dt*2.5;}
+  if(anyContact){b.pw+=(torque/PH.I)*dt;b.pw*=1-dt*2.5;if(b.contact[1]&&!b.contact[0])dropPull(b);}
   else{ // in the air: the rider levels the bike toward the landing (strongly with assist), and can push the bars forward or pull back
     const hs=Math.hypot(b.vel.x,b.vel.z);const traj=Math.atan2(b.vel.y,Math.max(hs,1));
     b.predT=(b.predT||0)-1;if(b.predT<=0||b.landSlope==null){b.predT=8;b.landSlope=predictLandSlope(b);}const gAng=b.landSlope;
@@ -1864,11 +2041,11 @@ function placeBike(x,z,yaw,speed,pitch){
   const b=bike;b.yaw=yaw;b.pitch=pitch||0;b.pw=0;b.steer=0;b.lean=0;b.air=0;b.slip=0;b.impact=0;
   const h=Math.max(groundH(x,z),groundH(x-Math.sin(yaw)*0.62,z-Math.cos(yaw)*0.62),groundH(x+Math.sin(yaw)*0.62,z+Math.cos(yaw)*0.62));
   b.pos.set(x,h+BK.RW+0.27,z);b.vel.set(-Math.sin(yaw)*speed,0,-Math.cos(yaw)*speed);b.comp=[0,0];b.cprev=[0,0];b.z=[0,0];b.zv=[0,0];b.land=null;b.Ngrip=0;b.predT=0;b.landSlope=null;
-  const L=locate(x,z);b.cur=L.t&&L.dist<L.t.w+2?L.t:null;b.curS=L.s;wasAir=false;camState.init=false;
+  const L=locate(x,z);b.cur=L.t&&L.dist<L.t.w+2?L.t:null;b.curS=L.s;wasAir=false;camState.init=false;chase.init=false;
 }
 function respawnTop(){if(typeof liftRide!=='undefined'&&liftRide.on){liftRide.on=false;$('liftHud').hidden=true;$('speed').hidden=false;}placeBike(SPAWN.x,SPAWN.z,0,0,0);bike.finNote=false;cancelRun();setHint(true);JX.node=null;renderJunctionHUD();}
 function safeS(tr,s){
-  for(let k=0;k<40;k++){let bad=false;for(const f of tr.feats){if((f.type==='jump'||f.type==='drop'||f.type==='ledge'||f.type==='slab'||f.type==='chute')&&s>f.s0-28&&s<f.s1+4){s=f.s0-30;bad=true;}}if(!bad)break;}
+  for(let k=0;k<40;k++){let bad=false;for(const f of tr.feats){if((f.type==='jump'||f.type==='drop'||f.type==='ledge'||f.type==='slab'||f.type==='chute'||f.type==='bigdrop')&&s>f.s0-28&&s<(f.type==='bigdrop'?f.sB:f.s1)+4){s=f.s0-30;bad=true;}}if(!bad)break;}
   for(let k=0;k<20&&s>12&&Math.abs(tr.kap[Math.round(s)])>1/25;k++)s-=4;
   return clamp(s,4,tr.len-14);}
 function respawnOnTrail(tr,s){
@@ -1941,7 +2118,9 @@ function gameStep(dt){
   wasAir=inAir;
   if(b.land&&!b.land.done){b.land.done=true;const a=b.land.air;if(a>0.25)padRumble(Math.min(1,0.2+a*0.35+b.impact*0.06),0.35,110+Math.min(a,2)*90);}
   if(b.impact>6.5)return crash('Landed too hard');
-  if(b.pitch<-1.15)return crash('Over the bars');
+  { // over the bars: nose far below the ground you're on (a steep landing lets you point down further than flat ground)
+    const hx=-Math.sin(b.yaw),hz=-Math.cos(b.yaw);const gS=Math.atan((groundH(b.pos.x+hx*0.62,b.pos.z+hz*0.62)-groundH(b.pos.x-hx*0.62,b.pos.z-hz*0.62))/1.24);
+    if(b.pitch<Math.max(-1.5,Math.min(-1.15,gS-0.5)))return crash('Over the bars');}
   if(b.pitch>1.25)return crash('Looped out');
   checkTrees();if(state!=='ride')return;
   if(b.pos.y<WATER_Y-0.5||b.pos.x<TX0+30||b.pos.x>TX1-30||b.pos.z<TZ0+20||b.pos.z>TZ1-8){toast('Out of bounds','Back to the top');respawnTop();return;}
@@ -1962,9 +2141,12 @@ function updateBikeVisual(){
   bikeParts.lowers.position.y=-(0.56-b.comp[0]*0.95);bikeParts.steer.rotation.y=-b.steer;bikeParts.frontWheel.rotation.x=-b.spin[0];
   const er=BK.EMAX[1]-b.comp[1];bikeParts.rearWheel.position.set(0,-er,0.62);bikeParts.rearWheel.rotation.x=-b.spin[1];
   const sw=bikeParts.swing;sw.rotation.x=Math.atan2(-er-sw.position.y,0.62-sw.position.z);
+  if(state==='crash'){const t=clamp(crashT/0.6,0,1),e=t*t*(3-2*t);leanPivot.rotation.z=-b.lean*0.8-(b.lean>0?1:-1)*1.3*e;} // down it goes, onto the side you were leaning
+  updateRider();
 }
 function updateCamera(dt){
   const b=bike;
+  if(thirdPerson()){updateChaseCam(dt);return;}
   if(state==='crash'){
     camState.cv.y-=G*dt*0.8;camera.position.addScaledVector(camState.cv,dt);camState.cv.multiplyScalar(1-dt*1.2);
     const gh=groundH(camera.position.x,camera.position.z)+0.35;if(camera.position.y<gh){camera.position.y=gh;camState.cv.y=Math.abs(camState.cv.y)*0.3;camState.cv.x*=0.6;camState.cv.z*=0.6;}
@@ -1990,6 +2172,7 @@ function updateMenuCam(dt){
 // ---------- input ----------
 addEventListener('keydown',e=>{const k=e.key.toLowerCase();input.keys[k]=true;
   if(state==='ride'){if(k==='r')respawnNear();if(k==='t')respawnTop();}
+  if(k==='c'&&(state==='ride'||state==='crash'||state==='menu'))toggleCam();
   if((k==='escape'||k==='p')&&(state==='ride'||state==='crash'||state==='lift'))togglePause();
   if(['arrowup','arrowdown','arrowleft','arrowright',' '].includes(k)&&state!=='menu')e.preventDefault();});
 addEventListener('keyup',e=>{input.keys[e.key.toLowerCase()]=false;});
@@ -2028,8 +2211,9 @@ function readInput(dt){
   assistJumpSpeed();
 }
 // the next real jump ahead on the trail you're riding, and the approach speed it was built for
-function nextJump(tr,s,range){if(!tr||!tr.feats)return null;let best=null;for(const f of tr.feats){if(f.type!=='jump'||f.D<6)continue;const d=f.s0-s;if(d>-0.5&&d<(range||70)&&(!best||f.s0<best.s0))best=f;}return best;}
-function jumpWindow(f){const mega=f.D>13;return [f.v*(mega?0.97:0.94),f.v*(mega?1.03:1.05)];}
+function jumpKey(f){return f.type==='bigdrop'?f.a-1.5:f.s0;} // where the approach speed stops mattering
+function nextJump(tr,s,range){if(!tr||!tr.feats)return null;let best=null;for(const f of tr.feats){if(f.type!=='bigdrop'&&(f.type!=='jump'||f.D<6))continue;const k=jumpKey(f),d=k-s;if(d>-0.5&&d<(range||70)&&(!best||k<jumpKey(best)))best=f;}return best;}
+function jumpWindow(f){if(f.type==='bigdrop')return [f.v*0.92,f.v*1.06];const mega=f.D>13;return [f.v*(mega?0.97:0.94),f.v*(mega?1.03:1.05)];}
 function assistJumpSpeed(){ // full assist also sets your speed for the big jumps
   if(settings.assist!==2||state!=='ride')return;const J=nextJump(bike.cur,bike.curS,45);if(!J)return;const v=bike.vel.length();const w=jumpWindow(J);
   if(v>w[1]*0.995){input.brake=true;input.brakeAmt=clamp((v/w[1]-1)*10+0.25,0.25,1);input.pedal=false;}}
@@ -2128,9 +2312,12 @@ const audio=(()=>{
   function woodpecker(){const t=AC.currentTime;const pan=panner((R2()*2-1)*0.7);const out=gain(0.06);pan.connect(out);out.connect(amb);out.connect(revIn);let tt=t;
     for(let i=0;i<18;i++){burst(tt,V.clicks,'bandpass',1300,2,0.5*(1-i/24),0.03,0.001,1,pan);tt+=0.045-i*0.0006;}}
   // ---- per-frame update ----
+  let plankT=0;
   function update(dt,st){
     if(!AC||AC.state!=='running')return;const t=AC.currentTime;const k=0.06;const sp=st.speed;const riding=st.riding;const gnd=st.contact&&riding;
-    const surf=st.surf;const dirtK=surf==='dirt'||surf==='edge'?1:surf==='grass'?0.6:surf==='forest'?1.2:surf==='roots'?0.8:0.35;const rockK=surf==='rocks'?1:surf==='rock'?0.55:surf==='roots'?0.3:0;
+    const surf=st.surf;const dirtK=surf==='dirt'||surf==='edge'?1:surf==='grass'?0.6:surf==='forest'?1.2:surf==='roots'?0.8:surf==='wood'?0.1:0.35;const rockK=surf==='rocks'?1:surf==='rock'?0.55:surf==='roots'?0.3:surf==='wood'?0.25:0;
+    /* bridge planks: a hollow knock as each wheel rolls over the boards */
+    if(gnd&&surf==='wood'&&sp>0.8){plankT-=dt*sp/0.55;if(plankT<=0){plankT+=1;thump(t,150+R2()*30,70,0.07,Math.min(0.09,0.02+sp*0.008));}}
     V.rollG.gain.setTargetAtTime(gnd?Math.min(0.55,sp*0.034)*(0.7+0.5*rockK):0,t,k);V.rollF.frequency.setTargetAtTime(140+sp*28,t,k);
     V.gritG.gain.setTargetAtTime(gnd?Math.min(0.22,sp*0.016)*dirtK:0,t,k);V.gritS.playbackRate.setTargetAtTime(0.5+sp*0.07,t,k);V.gritF.frequency.setTargetAtTime(1300+sp*90,t,k);
     V.clkG.gain.setTargetAtTime(gnd?Math.min(0.4,sp*0.03)*rockK:0,t,0.03);V.clkS.playbackRate.setTargetAtTime(0.5+sp*0.09,t,k);
@@ -2355,6 +2542,7 @@ function pollPad(inAir){
     if(edge(BTN.OPT))togglePause();
     if(edge(BTN.TRI)&&state==='ride')respawnNear();
     if(edge(BTN.SHARE))showMap(true);
+    if(edge(BTN.UP))toggleCam();
     if(JX.node&&(edge(BTN.L1)||edge(BTN.LEFT)||edge(BTN.R1)||edge(BTN.RIGHT))){const dir=edge(BTN.L1)||edge(BTN.LEFT)?-1:1;JX.choice=clamp(JX.choice+dir,0,JX.node.out.length-1);renderJunctionHUD();}
   }
   PAD.prev=B.map(b=>b&&(b.pressed||(typeof b==='object'?b.value:b)>0.5));
@@ -2383,6 +2571,137 @@ function padMenu(root,g,edge,lx,ly){
 function padFocus(el){try{el.focus({preventScroll:false});}catch(_){el.focus();}document.querySelectorAll('.pad-focus').forEach(e=>e.classList.remove('pad-focus'));el.classList.add('pad-focus');}
 
 // ===================================================================
+//  Third-person view: a rider who pedals, stands, absorbs and leans with the bike, and a chase camera
+// ===================================================================
+const RIDER=(()=>{
+  const std=(c,r,m)=>new THREE.MeshStandardMaterial({color:col(c),roughness:r,metalness:m||0});
+  const M={jersey:std(0x364a5c,0.85),stripe:std(0xf3c13a,0.7),pants:std(0x2a2c30,0.9),pad:std(0x161719,0.75),shoe:std(0x3a3c40,0.85),
+    helmet:std(0xe8e4d8,0.4),visor:std(0x26282c,0.6),lens:std(0xd9912c,0.15,0.55),strap:std(0x1d1e21,0.8),skin:std(0xc39479,0.8),glove:std(0x2c2f33,0.85),pack:std(0x2f3d2c,0.9)};
+  const g=new THREE.Group();g.position.y=0.63;g.visible=false;leanPivot.add(g);
+  // a limb segment: its base sits on the first joint and it stretches to the next
+  const seg=(r0,r1,mat,sx,sz,n)=>{const geo=new THREE.CylinderGeometry(r1,r0,1,n||12,1);geo.translate(0,0.5,0);const m=new THREE.Mesh(geo,mat);m.userData.sx=sx||1;m.userData.sz=sz||1;g.add(m);return m;};
+  const ball=(r,mat,sx,sy,sz)=>{const m=new THREE.Mesh(new THREE.SphereGeometry(r,14,10),mat);m.scale.set(sx||1,sy||1,sz||1);g.add(m);return m;};
+  const P={
+    pelvis:ball(0.14,M.pants,1.2,0.78,0.95),
+    torso:seg(0.145,0.175,M.jersey,1.15,0.74,14),
+    band:seg(0.178,0.178,M.stripe,1.16,0.75,14),
+    pack:(()=>{const m=new THREE.Mesh(new THREE.BoxGeometry(0.25,0.3,0.09),M.pack);g.add(m);return m;})(),
+    neck:seg(0.05,0.045,M.jersey),
+    head:new THREE.Group(),
+    arm:[0,1].map(()=>({up:seg(0.052,0.044,M.jersey),lo:seg(0.044,0.036,M.jersey),cuff:seg(0.039,0.039,M.stripe,1,1,10),sh:ball(0.068,M.jersey),hand:ball(0.045,M.glove,1.1,0.85,1.25)})),
+    leg:[0,1].map(()=>({th:seg(0.078,0.06,M.pants),sh:seg(0.058,0.043,M.pants),knee:ball(0.066,M.pad,1,1.2,0.95),shoe:(()=>{const s=new THREE.Group();
+      const up=new THREE.Mesh(new THREE.BoxGeometry(0.1,0.07,0.25),M.shoe);up.position.set(0,0.035,-0.03);s.add(up);const so=new THREE.Mesh(new THREE.BoxGeometry(0.105,0.02,0.26),M.pad);so.position.set(0,-0.002,-0.03);s.add(so);g.add(s);return s;})()})),
+  };
+  { // head: face, trail helmet with a peak, goggles on the strap
+    const h=P.head;g.add(h);
+    const face=new THREE.Mesh(new THREE.SphereGeometry(0.095,14,10),M.skin);face.scale.set(0.95,1.08,1);h.add(face);
+    const hel=new THREE.Mesh(new THREE.SphereGeometry(0.127,18,12,0,Math.PI*2,0,Math.PI*0.56),M.helmet);hel.scale.set(1,0.95,1.12);hel.position.set(0,0.022,0.008);h.add(hel);
+    const vents=new THREE.Mesh(new THREE.BoxGeometry(0.03,0.02,0.16),M.visor);vents.position.set(0,0.14,0.0);h.add(vents);
+    const peak=new THREE.Mesh(new THREE.BoxGeometry(0.2,0.012,0.09),M.visor);peak.position.set(0,0.078,-0.135);peak.rotation.x=0.3;h.add(peak);
+    const strap=new THREE.Mesh(new THREE.TorusGeometry(0.119,0.013,6,28),M.strap);strap.rotation.x=Math.PI/2+0.12;strap.position.set(0,0.018,0.006);h.add(strap);
+    const lens=new THREE.Mesh(new THREE.BoxGeometry(0.165,0.055,0.035),M.lens);lens.position.set(0,0.02,-0.112);h.add(lens);
+    const frame=new THREE.Mesh(new THREE.BoxGeometry(0.18,0.07,0.028),M.strap);frame.position.set(0,0.02,-0.1);h.add(frame);
+    const chin=new THREE.Mesh(new THREE.SphereGeometry(0.06,10,8),M.skin);chin.position.set(0,-0.055,-0.045);h.add(chin);
+  }
+  g.traverse(o=>{if(o.isMesh){o.castShadow=false;o.receiveShadow=false;}});
+  return {g,P,M,phi:0,pose:{hx:0,hy:0.47,hz:0.36,ta:0.88,look:0},last:0};
+})();
+const _rv={a:new V3(),b:new V3(),c:new V3(),d:new V3(),p:new V3(),t:new V3(),j:new V3(),Y:new V3(0,1,0)};
+function limbPlace(m,a,b){const d=_rv.d.subVectors(b,a);const L=d.length()||1e-4;m.position.copy(a);m.quaternion.setFromUnitVectors(_rv.Y,d.divideScalar(L));m.scale.set(m.userData.sx,L,m.userData.sz);}
+// two-bone reach: where the knee (or elbow) goes so the chain from A ends at T, bending toward the pole
+function ik2(A,T,l1,l2,pole,J,end){
+  const d=_rv.t.subVectors(T,A);const L=d.length()||1e-4;d.divideScalar(L);const Lc=clamp(L,Math.abs(l1-l2)+0.01,l1+l2-0.005);
+  const a=(l1*l1-l2*l2+Lc*Lc)/(2*Lc),h=Math.sqrt(Math.max(0,l1*l1-a*a));
+  const p=_rv.p.copy(pole).addScaledVector(d,-pole.dot(d));if(p.lengthSq()<1e-6)p.set(0,1,0);p.normalize();
+  J.copy(A).addScaledVector(d,a).addScaledVector(p,h);end.copy(A).addScaledVector(d,Lc);}
+const _toG=new V3();
+function bikeToRider(obj,local,out){obj.localToWorld(out.copy(local));return RIDER.g.worldToLocal(out);}
+const riderPts={hip:new V3(),sh:new V3(),shL:new V3(),shR:new V3(),neck:new V3(),head:new V3(),hipL:new V3(),hipR:new V3(),knee:new V3(),ank:new V3(),elb:new V3(),hand:new V3(),ped:new V3(),tmp:new V3(),grip:new V3()};
+function updateRider(){
+  const R=RIDER,b=bike,P=R.P,Q=riderPts,now=performance.now();const dt=Math.min(0.1,(now-(R.last||now))/1000);R.last=now;
+  const riding=state==='ride'&&!paused,ground=b.contact[0]||b.contact[1],sp=b.vel.length();
+  // cranks: turn while you pedal, settle level (your good foot forward) while you coast
+  const pedalling=riding&&input.pedal&&ground;
+  if(pedalling)R.phi+=clamp(sp/BK.RW*0.36,5,11)*dt*(input.pedalAmt==null?1:0.5+0.5*input.pedalAmt);
+  else if(riding||state==='crash'){const tgt=Math.round(R.phi/Math.PI)*Math.PI;R.phi+=clamp(tgt-R.phi,-6*dt,6*dt);}
+  const phi=R.phi;bikeParts.crank.rotation.x=-phi;
+  const BBy=-0.28,BBz=0.16,CR=0.17;
+  for(const pd of bikeParts.pedals){const sx=pd.userData.sx,s=sx>0?1:-1;pd.position.set(sx*0.085,BBy-s*CR*Math.sin(phi),BBz-s*CR*Math.cos(phi));}
+  if(!R.g.visible)return;
+  bikeRoot.updateMatrixWorld(true);
+  // body pose: attack position, deeper and lower with speed; forward and up to pedal; back to brake; tall in the air
+  const aggr=clamp((sp-4)/10,0,1),braking=riding&&input.brake&&ground,air=!ground&&b.air>0.12,lean=air?clamp(input.lean||0,-1,1):0;
+  let hz=0.36+0.03*aggr,hy=0.47-0.06*aggr,ta=0.86+0.16*aggr;
+  if(pedalling){hz-=0.1;hy+=0.01-0.03*Math.abs(Math.cos(phi));ta-=0.12;}
+  if(braking){hz+=0.07;hy-=0.04;ta+=0.05;}
+  if(air){hy+=0.04;hz-=0.07*lean;ta+=0.1*lean;}
+  const k=1-Math.exp(-dt*10),pz=R.pose;pz.hz=lerp(pz.hz,hz,k);pz.hy=lerp(pz.hy,hy,k);pz.ta=lerp(pz.ta,ta,k);pz.hx=lerp(pz.hx,pedalling?0.025*Math.sin(phi):0,k);
+  Q.hip.set(pz.hx,pz.hy,pz.hz);
+  const tl=0.5;Q.sh.set(Q.hip.x*0.3,Q.hip.y+Math.cos(pz.ta)*tl,Q.hip.z-Math.sin(pz.ta)*tl);
+  P.pelvis.position.copy(Q.hip).add(Q.tmp.set(0,0.01,0.02));P.pelvis.rotation.set(-pz.ta*0.5,0,0);
+  limbPlace(P.torso,Q.hip,Q.sh);
+  Q.tmp.copy(Q.sh).sub(Q.hip).multiplyScalar(0.62).add(Q.hip);Q.neck.copy(Q.tmp).addScaledVector(_rv.a.subVectors(Q.sh,Q.hip).normalize(),0.07);limbPlace(P.band,Q.tmp,Q.neck);
+  // pack on the back
+  const tdir=_rv.a.subVectors(Q.sh,Q.hip).normalize();P.pack.position.copy(Q.hip).addScaledVector(tdir,0.27).add(Q.tmp.set(0,Math.sin(pz.ta)*0.125,Math.cos(pz.ta)*0.125));
+  P.pack.quaternion.setFromUnitVectors(_rv.Y,tdir);
+  Q.neck.copy(Q.sh).addScaledVector(tdir,0.02);Q.head.copy(Q.sh).add(Q.tmp.set(0,0.12,-0.09));limbPlace(P.neck,Q.neck,Q.head);
+  P.head.position.copy(Q.head).add(Q.tmp.set(0,0.05,-0.02));P.head.rotation.set(-0.2-b.pitch*0.5+(air?0.1:0),0,0);
+  // arms to the grips (the bars turn and the fork dives, so these follow the bike)
+  const pole=_rv.c;
+  for(let i=0;i<2;i++){const sx=i?1:-1,A=P.arm[i];const S=(i?Q.shR:Q.shL).set(Q.sh.x+sx*0.185,Q.sh.y-0.03,Q.sh.z+0.02);
+    bikeToRider(bikeParts[i?'gripR':'gripL'],_rv.b.set(0,0,0),Q.grip);
+    const wrist=Q.tmp.copy(Q.grip).add(_rv.b.set(sx*0.005,0.025,0.055));
+    ik2(S,wrist,0.3,0.28,pole.set(sx*1,-0.35,0.55),Q.elb,Q.hand);
+    limbPlace(A.up,S,Q.elb);limbPlace(A.lo,Q.elb,Q.hand);const cuffEnd=_rv.b.subVectors(Q.hand,Q.elb).multiplyScalar(0.84).add(Q.elb);limbPlace(A.cuff,cuffEnd,Q.hand);
+    A.sh.position.copy(S);A.hand.position.copy(Q.grip).add(_rv.b.set(0,0.012,0.01));A.hand.quaternion.copy(A.lo.quaternion);}
+  // legs to the pedals; knees forward and a touch out
+  for(let i=0;i<2;i++){const sx=i?1:-1,Lg=P.leg[i];const pd=bikeParts.pedals[i];
+    bikeToRider(bikeBody,_rv.b.copy(pd.position).add(_rv.a.set(sx*0.05,0.012,0)),Q.ped);
+    const Hj=(i?Q.hipR:Q.hipL).set(Q.hip.x+sx*0.1,Q.hip.y-0.04,Q.hip.z);
+    const ank=Q.tmp.copy(Q.ped).add(_rv.b.set(0,0.085,0.045));
+    ik2(Hj,ank,0.44,0.43,pole.set(sx*0.28,0.15,-1),Q.knee,Q.ank);
+    limbPlace(Lg.th,Hj,Q.knee);limbPlace(Lg.sh,Q.knee,Q.ank);
+    Lg.knee.position.copy(Q.knee).add(_rv.b.set(0,0,-0.035));Lg.knee.quaternion.copy(Lg.sh.quaternion);
+    Lg.shoe.position.copy(Q.ank).add(_rv.b.set(0,-0.085,0.03));Lg.shoe.rotation.set(bikeBody.rotation.x-0.05,0,0);}
+}
+
+// ---------- chase camera ----------
+function camClear(x,z,dx,dz,D){ // how much of the distance D behind the bike is clear of trees (as a fraction)
+  let f=1;const cx=Math.floor((x+dx*D*0.5)/TCELL),cz=Math.floor((z+dz*D*0.5)/TCELL);
+  for(let a=-1;a<=1;a++)for(let c=-1;c<=1;c++){const arr=CAMHASH.get(hkey(cx+a,cz+c));if(!arr)continue;
+    for(const i of arr){const ox=CAMT.x[i]-x,oz=CAMT.z[i]-z;const t=(ox*dx+oz*dz)/D,r=CAMT.c[i];if(t<0.15||t*D>D+r)continue;const px=ox-dx*D*t,pz=oz-dz*D*t;
+      if(px*px+pz*pz<r*r){const back=Math.sqrt(r*r-px*px-pz*pz)/D;f=Math.min(f,Math.max(0.42,t-back-0.06));}}}
+  return f;}
+const chase={init:false,pos:new V3(),dir:new V3(0,0,-1),look:new V3(),y:0,k:1};
+function updateChaseCam(dt){
+  const b=bike;const fx=-Math.sin(b.yaw),fz=-Math.cos(b.yaw);const hs=Math.hypot(b.vel.x,b.vel.z);
+  let hx=fx,hz=fz;if(hs>1.5&&state==='ride'){const w=clamp((hs-1.5)/3,0,0.6);hx=lerp(fx,b.vel.x/hs,w);hz=lerp(fz,b.vel.z/hs,w);}
+  if(!chase.init){chase.dir.set(hx,0,hz).normalize();}
+  const kd=state==='crash'?0:1-Math.exp(-dt*3.2);chase.dir.x=lerp(chase.dir.x,hx,kd);chase.dir.z=lerp(chase.dir.z,hz,kd);chase.dir.normalize();
+  const D0=3.3+Math.min(1.3,hs*0.07),H=1.25+Math.min(0.35,hs*0.02);
+  // pull in closer when a tree or bush would sit between you and the camera (quick to pull in, slow to ease back out)
+  const cl=camClear(b.pos.x,b.pos.z,-chase.dir.x,-chase.dir.z,D0);chase.k=chase.init?(cl<chase.k?lerp(chase.k,cl,1-Math.exp(-dt*14)):lerp(chase.k,cl,1-Math.exp(-dt*1.5))):cl;
+  const D=D0*chase.k;const tx=b.pos.x-chase.dir.x*D,tz=b.pos.z-chase.dir.z*D;
+  let ty=b.pos.y+H+(1-chase.k)*0.7; /* pulled in close: look over the rider's shoulders */const gh=Math.max(groundH(tx,tz),groundH(lerp(tx,b.pos.x,0.5),lerp(tz,b.pos.z,0.5))-0.2)+0.75;if(ty<gh)ty=gh;
+  if(!chase.init){chase.pos.set(tx,ty,tz);chase.init=true;}
+  if(state==='crash'){chase.pos.y=Math.max(chase.pos.y,groundH(chase.pos.x,chase.pos.z)+0.6);}
+  else{const kp=1-Math.exp(-dt*8),ky=1-Math.exp(-dt*(b.air>0.2?3.5:7));chase.pos.x=lerp(chase.pos.x,tx,kp);chase.pos.z=lerp(chase.pos.z,tz,kp);chase.pos.y=lerp(chase.pos.y,ty,ky);
+    chase.pos.y=Math.max(chase.pos.y,groundH(chase.pos.x,chase.pos.z)+0.55);}
+  camera.position.copy(chase.pos);
+  chase.look.set(b.pos.x+chase.dir.x*2.2,b.pos.y+0.45,b.pos.z+chase.dir.z*2.2);camera.lookAt(chase.look);
+  const sh=reduceMotion?0:Math.min(0.006,b.chatter*0.0005);if(sh&&state==='ride'){camera.rotation.x+=(Math.random()-0.5)*sh;camera.rotation.y+=(Math.random()-0.5)*sh;}
+  const f=(window.innerWidth<window.innerHeight?84:70)+Math.min(8,hs*0.45);if(Math.abs(f-camera.fov)>0.05){camera.fov=lerp(camera.fov,f,1-Math.exp(-dt*3));camera.updateProjectionMatrix();}
+}
+function thirdPerson(){return settings.cam===1;}
+function applyCamMode(){const tp=thirdPerson();RIDER.g.visible=tp;
+  bikeBody.traverse(o=>{if(o.isMesh&&bikeParts.fpMats.includes(o.material))o.visible=!tp;});
+  chase.init=false;camState.init=false;const el=$('btnCam');if(el){el.setAttribute('aria-label',tp?'Switch to first person view':'Switch to third person view');el.classList.toggle('on',tp);}
+  if(typeof setToggles==='function'&&$('tCam'))$('tCam').querySelector('b').textContent=tp?'Third person':'First person';
+  document.querySelectorAll('#segCam button').forEach(bt=>bt.setAttribute('aria-checked',String(+bt.dataset.v===(settings.cam|0))));}
+function toggleCam(){settings.cam=thirdPerson()?0:1;applyCamMode();saveSettings();if(state==='ride'&&typeof toast==='function')toast(thirdPerson()?'Third person':'First person','',900);}
+applyCamMode();
+
+// ===================================================================
 //  UI: trail map, minimap, junction chooser, menus, main loop, boot
 // ===================================================================
 const SYMSVG={
@@ -2396,7 +2715,7 @@ function toast(big,small,ms){const el=$('toast');el.textContent=big;if(small){co
 let airT=null;function airFlash(t){const el=$('air');el.textContent=t.toFixed(1)+' s air';el.classList.add('on');clearTimeout(airT);airT=setTimeout(()=>el.classList.remove('on'),1100);}
 
 // ---------- trail map (menu, pause, and the board at the top) ----------
-const MAPB={x0:-500,x1:500,z0:-1058,z1:98};
+const MAPB={x0:-850,x1:850,z0:-1058,z1:98};
 const diffCol=d=>d==='green'?'#1f9d4a':d==='blue'?'#1f63c8':'#101010';
 function drawTrailMap(W,header){
   const top=header?Math.round(W*0.11):0;const mh=Math.round(W*(MAPB.z1-MAPB.z0)/(MAPB.x1-MAPB.x0));const H=mh+top;
@@ -2509,6 +2828,7 @@ function fade(on){$('fade').style.opacity=on?1:0;}
 $('btnStart').onclick=()=>{audio.init();fade(true);setTimeout(()=>{respawnTop();state='ride';showRideUI();fade(false);},320);};
 $('btnMap').onclick=()=>showMap(false);
 function togglePause(){if(state==='finish'||state==='menu')return;$('liftHud').hidden=paused?state!=='lift':true;paused=!paused;$('pause').hidden=!paused;$('touch').hidden=paused||!isTouch||state==='lift'||PAD.active;unzoom();if(!paused&&touchState.idle)requestAnimationFrame(touchState.idle);if(paused){audio.silence();setToggles();try{$('btnResume').focus({preventScroll:true});}catch(e){}}}
+$('btnCam').onclick=()=>{toggleCam();try{$('btnCam').blur();}catch(_){}};$('tCam').onclick=toggleCam;document.querySelectorAll('#segCam button').forEach(bt=>bt.onclick=()=>{settings.cam=+bt.dataset.v;applyCamMode();saveSettings();});
 $('btnPause').onclick=togglePause;$('btnResume').onclick=togglePause;
 $('btnRespawn').onclick=()=>{togglePause();state='ride';fade(false);camera.rotation.z=0;respawnNear();};
 $('btnTop').onclick=()=>{togglePause();state='ride';fade(false);camera.rotation.z=0;respawnTop();showRideUI();};
@@ -2550,7 +2870,7 @@ function updateJumpSpeed(){const el=$('jspd');const J=state==='ride'&&!paused?ne
   if(!J||bike.air>0){if(jsShown){el.hidden=true;jsShown=false;}return;}
   const w=jumpWindow(J),v=bike.vel.length();const lo=Math.round(w[0]*3.6),hi=Math.round(w[1]*3.6);
   const st=v<w[0]?'up':v>w[1]?'down':'ok';el.style.setProperty('--jc',st==='ok'?'#7fd36b':st==='up'?'#7fb8ff':'#ff9a6a');
-  el.textContent=(st==='up'?'▲ ':st==='down'?'▼ ':'')+'Jump '+lo+'–'+hi;if(!jsShown){el.hidden=false;jsShown=true;}}
+  el.textContent=(st==='up'?'▲ ':st==='down'?'▼ ':'')+(J.type==='bigdrop'?'Drop ':'Jump ')+lo+'–'+hi;if(!jsShown){el.hidden=false;jsShown=true;}}
 
 // ---------- cached shadows + view culling ----------
 let lastFull=false,cullYaw=1e9;const cullPos=new V3(1e9,0,0);
@@ -2615,7 +2935,7 @@ async function boot(){
   woodMat=new THREE.MeshStandardMaterial({color:col(0x5c3a22),roughness:0.85});postMat=new THREE.MeshStandardMaterial({color:col(0x3b2a1c),roughness:0.9});
   await step('Shaping the mountain',20);buildSky();buildTerrainHeights();
   await step('Shaping the mountain',34);buildTerrainMesh();buildFar();
-  await step('Cutting the trails',46);TR.forEach(buildRibbon);
+  await step('Cutting the trails',46);TR.forEach(buildRibbon);buildBridges();
   await step('Growing the forest',58);buildTemplates();
   await step('Planting trees',70);buildVegetation();vegBuilt=true;
   await step('Putting up the signs',86);
@@ -2631,7 +2951,7 @@ async function boot(){
   $('loading').hidden=true;$('menu').hidden=false;state='menu';
   setTimeout(()=>{try{$('btnStart').focus({preventScroll:true});}catch(e){}},30);
 }
-window.__st={bike,input,TR,NET,NODE,locate,groundH,settings,run,stats,camera,CAM,JX,trailPoint,yawOf,respawnOnTrail,respawnTop,placeBike,treeCount:()=>TREES.x.length,LIFT,liftRide,startLift,endLift,updateLift,updateLOD,checkLiftBoarding,
+window.__st={CAMT,VSK:()=>VS,chase,bike,input,TR,NET,NODE,locate,groundH,settings,run,stats,camera,CAM,JX,trailPoint,yawOf,respawnOnTrail,respawnTop,placeBike,treeCount:()=>TREES.x.length,LIFT,liftRide,startLift,endLift,updateLift,updateLOD,checkLiftBoarding,
   get state(){return state;},set state(v){state=v;}};
 requestAnimationFrame(frame);
 const start=()=>{boot().catch(err=>{$('loadMsg').textContent='';const e=$('loadErr');e.hidden=false;e.textContent='Something went wrong while building the mountain. Reload the page to try again.';console.error(err);});};
