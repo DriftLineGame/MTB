@@ -168,6 +168,37 @@ dl.keys dt{font-family:var(--disp);font-weight:700;font-size:16px;color:var(--hi
 .tips{margin:0;padding-left:18px;display:grid;gap:7px;font-size:15px;line-height:1.45;color:var(--soft)}.tips b{color:var(--ink)}
 .chip{display:inline-block;background:var(--panel);color:#7fd36b;font-family:var(--disp);font-weight:700;padding:0 6px;border-radius:4px}
 @media (max-width:700px){.gpanel{grid-template-columns:1fr}.gsvg{max-width:340px;margin:0 auto}}
+.btn.primary.alt{background:#f5f6ef;color:#16241a}
+/* career */
+.cr-card{max-width:880px}.cr-prog{margin:0 0 6px;color:var(--soft)}
+.cr-lvl{display:flex;align-items:center;gap:10px;font-family:var(--disp);font-weight:800;font-size:22px;margin:18px 0 8px;border-left:4px solid var(--c);padding-left:10px}
+.cr-lvl svg{width:22px;height:22px}.cr-lvl small{font-family:var(--body,inherit);font-weight:500;font-size:14px;color:var(--soft)}
+.cr-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:8px}
+.cr-ev{display:flex;align-items:center;gap:10px;text-align:left;border:0;border-radius:8px;padding:10px 12px;background:rgba(245,246,239,.08);color:var(--ink);min-height:62px}
+.cr-ev.next{background:rgba(242,193,58,.2);outline:2px solid var(--hi)}.cr-ev.locked{opacity:.45}
+.cr-n{font-family:var(--disp);font-weight:800;font-size:20px;min-width:24px;color:var(--soft)}
+.cr-nm{flex:1;min-width:0}.cr-nm b{display:block;font-family:var(--disp);font-size:19px}.cr-nm small{display:block;font-size:12.5px;color:var(--soft);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.cr-st{font-family:var(--disp);font-weight:700;font-size:16px;white-space:nowrap}.cr-st.done{color:#7fd36b}.cr-st.go{color:var(--hi)}.cr-st.lock svg{width:18px;height:18px}
+.cr-rw{width:16px;height:16px;border-radius:50%;background:var(--c);box-shadow:0 0 0 2px rgba(255,255,255,.5)}
+.cd-kick{margin:0 0 4px;color:var(--soft);font-size:15px}
+.cd-reward{display:flex;align-items:center;gap:12px;background:rgba(245,246,239,.08);border-radius:8px;padding:10px 12px;margin:0 0 14px}
+.cd-sw{width:34px;height:34px;border-radius:50%;background:var(--c);box-shadow:0 0 0 3px rgba(255,255,255,.6);flex:none}
+.cd-reward em{font-style:normal;font-family:var(--disp);font-weight:700;font-size:19px}.cd-reward small{display:block;color:var(--soft);font-size:13px}
+.cd-all{color:#7fd36b;font-weight:600}
+/* garage */
+#garage{background:transparent;justify-content:flex-end;align-items:stretch;pointer-events:none}
+.garage-panel{pointer-events:auto;background:rgba(14,24,17,.9);width:min(460px,46vw);height:100%;overflow-y:auto;padding:calc(env(safe-area-inset-top,0px) + 18px) calc(env(safe-area-inset-right,0px) + 20px) 20px 22px;box-sizing:border-box}
+@media (orientation:portrait),(max-width:700px){#garage{align-items:flex-end}.garage-panel{width:100%;height:auto;max-height:58vh}}
+#garTabs{margin:0 0 12px}.gar-row{margin:0 0 14px}.gar-row .opt-l small{font-weight:500;color:var(--soft);font-size:15px;margin-left:6px}
+.swatches{display:flex;flex-wrap:wrap;gap:9px}
+.swatch{width:44px;height:44px;border-radius:50%;border:0;background:var(--c);box-shadow:inset 0 -6px 10px rgba(0,0,0,.25);display:grid;place-items:center;color:#fff;position:relative}
+.swatch[aria-pressed="true"]{outline:3px solid var(--hi);outline-offset:3px}
+.swatch.locked{opacity:.5;filter:grayscale(.35)}.swatch.locked svg{width:18px;height:18px;filter:drop-shadow(0 1px 2px rgba(0,0,0,.6))}
+.bike-pick{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:0 0 16px}
+.bike-card{border:0;border-radius:8px;padding:12px;text-align:left;background:rgba(245,246,239,.08);color:var(--ink)}
+.bike-card b{display:block;font-family:var(--disp);font-size:20px;margin-bottom:3px}.bike-card span{font-size:13.5px;color:var(--soft)}
+.bike-card[aria-pressed="true"]{outline:3px solid var(--hi);background:rgba(242,193,58,.14)}
+.gar-note{color:var(--soft);font-size:14px;margin:4px 0 0}.gar-tip{color:var(--soft);font-size:13px;margin:10px 0 0}
 #fade{position:fixed;inset:0;background:#000;opacity:0;pointer-events:none;z-index:30;transition:opacity .3s}
 </style>
 
@@ -182,8 +213,8 @@ dl.keys dt{font-family:var(--disp);font-weight:700;font-size:16px;color:var(--hi
   <div class="menu-wrap">
     <div class="menu-card">
       <h1>Singletrack</h1>
-      <p class="lede">Twenty-one trails, bridges, big drops and a chairlift on one coastal BC mountain. Pick a line at the top, then choose your way at every junction.</p>
-      <div class="row start-row"><button id="btnStart" class="btn primary">Ride to the top</button><button id="btnMap" class="btn">Trail map</button><button id="btnGuide" class="btn">Controls</button></div>
+      <p class="lede">Thirty-two trails on one coastal BC mountain: bridges, big drops, long traverses and a chairlift. Ride free, or work through the Career from green to double black.</p>
+      <div class="row start-row"><button id="btnStart" class="btn primary">Ride to the top</button><button id="btnCareer" class="btn primary alt">Career</button><button id="btnGarage" class="btn">Garage</button><button id="btnMap" class="btn">Trail map</button><button id="btnGuide" class="btn">Controls</button></div>
       <ul class="trails" id="trailList"></ul>
       <div class="opts">
       <div class="opt"><span class="opt-l" id="lblAssist">Steering assist</span>
@@ -272,6 +303,9 @@ dl.keys dt{font-family:var(--disp);font-weight:700;font-size:16px;color:var(--hi
       <li><b>Drops.</b> Wooden bridges run level while the hill falls away, and granite shelves end in a 5 to 10 foot drop. Hold your speed off the end and the rider lifts the front; come in slow and you land on the flat top.</li>
       <li><b>Landings.</b> In the air a gauge shows your bike against the landing. Match them and it turns green.</li>
       <li><b>Junctions.</b> Trails split and join. Signs and buttons show where each line goes. Your time follows the lines you ride.</li>
+      <li><b>Traverses.</b> Highline, Long Haul and Sidewinder cut across the mountain. At a junction you can turn onto the trail they meet. Everywhere else they bridge over it, or drop over it, so you can keep going.</li>
+      <li><b>Career.</b> Every trail and link in order, from green to double black. You start at the top of each one; reach the end and it's done. Each trail you finish unlocks a colour in the Garage.</li>
+      <li><b>Garage.</b> Pick the trail bike or the downhill bike (more travel and takes bigger landings, but slower to pedal), then colours for the frame, fork, rims and the rider's kit.</li>
       <li><b>Chairlift.</b> Finish a run and choose Ride the chairlift, or roll into the loading area in the meadow. Two minutes to the top, drag to look around, skip any time.</li>
       <li><b>Steering assist.</b> Off, you steer everything. Light helps round berms. Full follows the trail and sets jump speed.</li>
     </ul>
@@ -311,6 +345,7 @@ dl.keys dt{font-family:var(--disp);font-weight:700;font-size:16px;color:var(--hi
     <h2>Paused</h2>
     <div class="stack">
       <button class="btn primary" id="btnResume">Resume</button>
+      <button class="btn" id="btnRestart" hidden>Restart this trail</button>
       <button class="btn" id="btnRespawn">Respawn on the trail</button>
       <button class="btn" id="btnLift">Ride the chairlift up</button>
       <button class="btn" id="btnTop">Straight to the top</button>
@@ -341,6 +376,36 @@ dl.keys dt{font-family:var(--disp);font-weight:700;font-size:16px;color:var(--hi
       <button class="btn" id="btnFinSkip">Straight to the top</button>
       <button class="btn" id="btnFinAgain">Ride it again</button>
     </div>
+  </div>
+</div>
+<div id="career" class="screen" hidden role="dialog" aria-labelledby="crTitle">
+  <div class="card guide-card cr-card">
+    <div class="guide-top"><h2 id="crTitle">Career</h2><button class="btn" id="btnCareerClose">Close</button></div>
+    <p class="cr-prog" id="crProg"></p>
+    <div id="crList"></div>
+  </div>
+</div>
+<div id="careerDone" class="screen" hidden>
+  <div class="card" id="cdCard">
+    <p class="cd-kick" id="cdKick"></p>
+    <h2 id="cdTitle"></h2>
+    <div class="bigtime" id="cdTime"></div>
+    <p class="best" id="cdBest"></p>
+    <div class="cd-reward" id="cdReward" hidden><span class="cd-sw"></span><span><b>Unlocked</b> <em id="cdRewardName"></em><small>Pick it in the Garage</small></span></div>
+    <p class="cd-all" id="cdAll" hidden>That's every trail on the mountain. Career complete.</p>
+    <div class="row">
+      <button class="btn primary" id="btnCdNext">Next trail</button>
+      <button class="btn" id="btnCdAgain">Ride it again</button>
+      <button class="btn" id="btnCdCareer">Career</button>
+    </div>
+  </div>
+</div>
+<div id="garage" class="screen" hidden role="dialog" aria-labelledby="garTitle">
+  <div class="garage-panel">
+    <div class="guide-top"><h2 id="garTitle">Garage</h2><button class="btn primary" id="btnGarageClose">Done</button></div>
+    <div class="seg" role="tablist" id="garTabs"><button role="tab" data-t="bike">Bike</button><button role="tab" data-t="rider">Rider</button></div>
+    <div id="garBody"></div>
+    <p class="gar-tip">Drag the bike to spin it round.</p>
   </div>
 </div>
 <div id="fade"></div>
@@ -409,7 +474,8 @@ const NODES={
   thF:{x:-172,z:26,top:true},thA:{x:-105,z:26,top:true},thB:{x:-38,z:26,top:true},thC:{x:30,z:26,top:true},thD:{x:98,z:26,top:true},thE:{x:190,z:26,top:true},
   u1:{x:72,z:-262},ml:{x:-300,z:-440},mc:{x:-30,z:-522},mr:{x:252,z:-482},
   f1:{x:384,z:-132},c1:{x:340,z:-300},k1:{x:-588,z:-430},f2:{x:-416,z:-620},
-  fFern:{x:-372,z:-985,fin:true},fKing:{x:-178,z:-985,fin:true},fAir:{x:-52,z:-990,fin:true},fRoot:{x:84,z:-990,fin:true},fSlab:{x:214,z:-985,fin:true},fCedar:{x:366,z:-980,fin:true},fFree:{x:512,z:-985,fin:true},fCoho:{x:-600,z:-985,fin:true}
+  J1:{x:150,z:-130,x4:true},J2:{x:-115,z:-262,x4:true},J3:{x:-162,z:-700,x4:true},J4:{x:-378,z:-790,x4:true},J5:{x:338,z:-600,x4:true},
+  fFern:{x:-372,z:-985,fin:true},fKing:{x:-178,z:-985,fin:true},fAir:{x:-52,z:-990,fin:true},fRoot:{x:84,z:-990,fin:true},fSlab:{x:214,z:-985,fin:true},fCedar:{x:366,z:-980,fin:true},fFree:{x:512,z:-985,fin:true},fCoho:{x:-600,z:-985,fin:true},fLong:{x:-488,z:-985,fin:true},fEast:{x:592,z:-985,fin:true}
 };
 // styles: w half-width, sw shoulder, gT target grade, thMax max traverse angle, thS forced S-turn angle, rhythm S-turn spacing,
 // R turn radius range, mea meander, rough surface noise, bank max berm slope, spd pedal-in speed
@@ -423,6 +489,7 @@ const STYLES={
   steep:{w:1.2,sw:2.2,gT:0.3,thMax:0.6,thS:0.35,rhythm:[18,34],R:[6,11],mea:0.3,rough:0.05,bankMax:0.45},
   link:{w:1.5,sw:2.2,gT:0.06,thMax:0.2,thS:0.25,rhythm:[30,50],R:[10,16],mea:0.2,rough:0.02,bankMax:0.7},
   bermflow:{w:1.9,sw:2.5,gT:0.09,thMax:1.3,thS:0.78,rhythm:[28,42],R:[9,13],mea:0.06,rough:0.008,bankMax:1.35},
+  traverse:{w:1.55,sw:2.3,gT:0.07,thMax:0.2,thS:0.24,rhythm:[40,64],R:[15,24],mea:0.14,rough:0.012,bankMax:0.95},
   mega:{straight:true,w:2.1,sw:2.8,gT:0.14,thMax:0,thS:0,rhythm:[400,400],R:[30,30],mea:0,rough:0.006,bankMax:1.0,vmax:15.5,corners:[20,30]},
 };
 const DIFF={green:{label:'Green circle',word:'Easy',color:'#1f9d4a',symbol:'circle',rank:0},blue:{label:'Blue square',word:'Intermediate',color:'#1f63c8',symbol:'square',rank:1},
@@ -432,22 +499,30 @@ const SEGDEFS=[
     spine:[[-105,26],[-105,-12],[-200,-70],[-290,-180],[-310,-330],[-300,-440]]},
   {id:'fern',name:'Fern Gully',diff:'green',style:'flowEasy',from:'ml',to:'f2',W:80,gT:0.08,seed:12,desc:'Rolling berms through the ferns',
     spine:[[-300,-440],[-330,-520],[-416,-620]]},
-  {id:'fernL',name:'Lower Fern',diff:'green',style:'flowEasy',from:'f2',to:'fFern',W:90,gT:0.08,seed:24,desc:'Rolling berms down to the meadow',
-    spine:[[-416,-620],[-380,-720],[-370,-860],[-372,-985]]},
+  {id:'fernL',name:'Lower Fern',diff:'green',style:'flowEasy',from:'f2',to:'J4',W:80,gT:0.08,seed:24,grade:[0.012,0.19],desc:'Rolling berms down to the Long Haul',
+    spine:[[-416,-620],[-392,-700],[-378,-790]]},
+  {id:'fernB',name:'Fern Bottoms',diff:'green',style:'flowEasy',from:'J4',to:'fFern',W:80,gT:0.08,seed:29,desc:'Easy rolling berms to the meadow',
+    spine:[[-378,-790],[-372,-880],[-372,-985]]},
   {id:'hemlock',name:'Hemlock Link',diff:'blue',style:'link',from:'ml',to:'mc',W:9,seed:13,desc:'Connector from Salal to the centre junction',
     spine:[[-300,-440],[-262,-470],[-190,-500],[-110,-516],[-30,-522]]},
-  {id:'kingU',name:'Kingfisher',diff:'blue',style:'jumpflow',from:'thB',to:'mc',W:30,seed:14,desc:'Berm, tabletop, berm. Pure flow',
-    spine:[[-38,26],[-38,-12],[-92,-120],[-115,-260],[-100,-390],[-48,-470],[-30,-522]]},
-  {id:'kingL',name:'Lower Kingfisher',diff:'blue',style:'jumpflow',from:'mc',to:'fKing',W:40,gT:0.1,seed:15,desc:'More berms and bigger tables',
-    spine:[[-30,-522],[-72,-562],[-138,-630],[-162,-760],[-168,-860],[-178,-985]]},
+  {id:'kingU',name:'Kingfisher',diff:'blue',style:'jumpflow',from:'thB',to:'J2',W:30,seed:14,desc:'Berm, tabletop, berm. Pure flow down to the Highline',
+    spine:[[-38,26],[-38,-12],[-92,-120],[-115,-262]]},
+  {id:'kingM',name:'Middle Kingfisher',diff:'blue',style:'jumpflow',from:'J2',to:'mc',W:30,seed:27,desc:'Tables and berms from the Highline to the centre junction',
+    spine:[[-115,-262],[-110,-330],[-100,-390],[-48,-470],[-30,-522]]},
+  {id:'kingL',name:'Lower Kingfisher',diff:'blue',style:'jumpflow',from:'mc',to:'J3',W:30,gT:0.1,seed:15,desc:'More berms and bigger tables down to the Long Haul',
+    spine:[[-30,-522],[-72,-562],[-120,-630],[-162,-700]]},
+  {id:'kingB',name:'Kingfisher Bottoms',diff:'blue',style:'jumpflow',from:'J3',to:'fKing',W:40,gT:0.1,seed:28,desc:'The last tables into the meadow',
+    spine:[[-162,-700],[-165,-800],[-168,-880],[-178,-985]]},
   {id:'widowU',name:'Widowmaker',diff:'dbl',style:'steep',from:'thC',to:'u1',W:18,seed:16,desc:'Steep fall line, rock gardens and drops',
     spine:[[30,26],[30,-12],[50,-130],[72,-262]]},
   {id:'chute',name:'Widowmaker Chute',diff:'dbl',style:'steep',from:'u1',to:'mc',W:16,seed:17,desc:'The steepest line: slabs and big drops',
     spine:[[72,-262],[50,-370],[8,-460],[-30,-522]]},
   {id:'deadfall',name:'Deadfall',diff:'black',style:'tech',from:'u1',to:'mr',W:20,seed:18,desc:'Roots, rocks and off-camber turns',
     spine:[[72,-262],[124,-300],[168,-372],[222,-432],[252,-482]]},
-  {id:'cedarU',name:'Cedar Line',diff:'blue',style:'natural',from:'thD',to:'c1',W:50,gT:0.1,seed:19,desc:'Natural loam, roots and small drops',
-    spine:[[98,26],[98,-12],[150,-130],[290,-225],[340,-300]]},
+  {id:'cedarU',name:'Cedar Line',diff:'blue',style:'natural',from:'thD',to:'J1',W:36,gT:0.1,seed:19,desc:'Natural loam and roots down to the Highline',
+    spine:[[98,26],[98,-12],[150,-130]]},
+  {id:'cedarB',name:'Cedar Bench',diff:'blue',style:'natural',from:'J1',to:'c1',W:40,gT:0.1,seed:26,desc:'Loamy benches and a wooden drop',
+    spine:[[150,-130],[215,-172],[290,-225],[340,-300]]},
   {id:'cedarM',name:'Middle Cedar',diff:'blue',style:'natural',from:'c1',to:'mr',W:44,gT:0.1,seed:25,desc:'Loamy turns and a wooden drop',
     spine:[[340,-300],[340,-390],[252,-482]]},
   {id:'air',name:'Air Traffic',diff:'black',style:'bigjump',from:'mc',to:'fAir',W:20,seed:20,desc:'Big tables, gaps and step-downs',
@@ -456,8 +531,10 @@ const SEGDEFS=[
     spine:[[-30,-522],[4,-562],[62,-604],[84,-700],[88,-830],[84,-990]]},
   {id:'slab',name:'Slab City',diff:'black',style:'slab',from:'mr',to:'fSlab',W:30,seed:22,desc:'Rock faces, ledges and rock gardens',
     spine:[[252,-482],[218,-560],[200,-705],[202,-850],[214,-985]]},
-  {id:'cedarL',name:'Lower Cedar',diff:'blue',style:'natural',from:'mr',to:'fCedar',W:50,gT:0.1,seed:23,desc:'Fast and flowy with a few roots',
-    spine:[[252,-482],[318,-535],[368,-665],[382,-820],[366,-980]]},
+  {id:'cedarL',name:'Lower Cedar',diff:'blue',style:'natural',from:'mr',to:'J5',W:40,gT:0.1,seed:23,desc:'Fast and flowy with a few roots, down to Sidewinder',
+    spine:[[252,-482],[300,-530],[338,-600]]},
+  {id:'cedarX',name:'Cedar Bottoms',diff:'blue',style:'natural',from:'J5',to:'fCedar',W:50,gT:0.1,seed:30,desc:'Loam and a bridge drop into the meadow',
+    spine:[[338,-600],[370,-680],[382,-820],[366,-980]]},
   {id:'freefall',name:'Freefall',diff:'dbl',style:'mega',from:'thE',to:'f1',W:0,seed:31,desc:'Dead straight, huge tables and gaps. Watch your speed',
     spine:[[190,26],[190,-12],[384,-132]]},
   {id:'freefallL',name:'Lower Freefall',diff:'dbl',style:'mega',from:'f1',to:'fFree',W:0,seed:33,corners:[30],desc:'Straight down the fall line, the biggest jumps on the hill',
@@ -468,11 +545,23 @@ const SEGDEFS=[
     spine:[[-172,26],[-172,-8],[-400,-58],[-545,-190],[-588,-430]]},
   {id:'cohoL',name:'Lower Coho',diff:'blue',style:'bermflow',from:'k1',to:'fCoho',W:30,seed:35,desc:'More big berms all the way to the meadow',
     spine:[[-588,-430],[-570,-560],[-566,-760],[-600,-985]]},
+  {id:'hl1',name:'Highline',diff:'blue',style:'traverse',from:'J1',to:'J2',W:12,seed:41,desc:'A long traverse across the mountain, bridging over whatever it meets',
+    spine:[[150,-130],[70,-172],[-10,-205],[-99,-227],[-115,-262]]},
+  {id:'hl2',name:'Highline West',diff:'blue',style:'traverse',from:'J2',to:'ml',W:12,seed:42,grade:[0.02,0.19],desc:'Bridges and drops over Salal Flow on the way to the Salal junction',
+    spine:[[-115,-262],[-180,-300],[-250,-345],[-310,-402],[-300,-440]]},
+  {id:'ll1',name:'Long Haul',diff:'blue',style:'traverse',from:'c1',to:'J3',W:14,seed:43,grade:[0.02,0.2],desc:'Right across the lower mountain, over the tech lines on bridges',
+    spine:[[340,-300],[270,-380],[180,-470],[80,-545],[-30,-590],[-110,-640],[-162,-700]]},
+  {id:'ll2',name:'Long Haul West',diff:'blue',style:'traverse',from:'J3',to:'J4',W:12,seed:44,desc:'Keeps traversing west to Fern',
+    spine:[[-162,-700],[-240,-730],[-320,-750],[-378,-790]]},
+  {id:'ll3',name:'Long Haul Finish',diff:'blue',style:'flowEasy',from:'J4',to:'fLong',W:40,gT:0.09,seed:45,desc:'Swooping berms to its own finish in the meadow',
+    spine:[[-378,-790],[-430,-860],[-470,-925],[-488,-985]]},
+  {id:'side',name:'Sidewinder',diff:'blue',style:'traverse',from:'J5',to:'fEast',W:14,seed:46,grade:[0.02,0.2],desc:'Traverses east and drops over Lower Freefall, then winds down to its own finish',
+    spine:[[338,-600],[420,-640],[500,-690],[570,-760],[592,-860],[592,-985]]},
   {id:'salmon',name:'Salmonberry',diff:'blue',style:'link',from:'k1',to:'f2',W:14,seed:36,grade:[0.01,0.2],desc:'Link from Coho across to Fern Gully',
     spine:[[-588,-430],[-560,-470],[-480,-560],[-416,-620]]},
 ];
 // big drops on each trail: wooden bridges ('wood') and rock shelves ('rock'), height in metres (3 m is about 10 ft)
-const DROPS={cedarU:[['wood',1.5]],cedarM:[['wood',1.7]],cedarL:[['rock',1.4],['wood',1.6]],kingL:[['wood',1.5]],salmon:[['wood',1.4]],
+const DROPS={cedarB:[['wood',1.5]],cedarM:[['wood',1.7]],cedarL:[['rock',1.4]],cedarX:[['wood',1.6]],kingB:[['wood',1.5]],salmon:[['wood',1.4]],ll3:[['rock',1.6]],kingM:[['wood',1.8]],
   deadfall:[['rock',2.3]],root:[['wood',2.4]],slab:[['rock',2.8]],air:[['wood',2.6]],
   widowU:[['rock',3.0]],chute:[['wood',3.0]],freefallL:[['wood',3.1]]};
 for(const d of SEGDEFS)if(DROPS[d.id])d.drops=DROPS[d.id];
@@ -509,8 +598,29 @@ function straightPath(def){ // straight legs joined by round berms of radius R (
   }
   return out;
 }
+function traversePath(def){
+  // a traverse holds a steady grade across the mountain: it heads for the next junction but bends toward the fall line
+  // whenever it's running high, and away from it when it's running low, so it rides the hillside instead of a huge fill or cut
+  const st=STYLES[def.style],A=NODES[def.from],B=NODES[def.to],sp=def.spine,rnd=mulberry32(def.seed*7919+3);
+  const hA=mountainH(A.x,A.z),hB=mountainH(B.x,B.z);let Lsp=0;for(let i=1;i<sp.length;i++)Lsp+=Math.hypot(sp[i][0]-sp[i-1][0],sp[i][1]-sp[i-1][1]);
+  const g=(hA-hB)/(Math.hypot(B.x-A.x,B.z-A.z)*1.18);const cum=polyInfo(sp);const U=cum[cum.length-1];
+  let x=A.x,z=A.z,psi=psiOf(sp[1][0]-sp[0][0],sp[1][1]-sp[0][1]),s=0;const pts=[[x,z]];const R=lerp(st.R[0],st.R[1],rnd()),ph=rnd()*6.28,lam=50+rnd()*30;
+  let leadIn=false,vi=1;
+  for(let step=0;step<U*4;step++){
+    const dB=Math.hypot(B.x-x,B.z-z);if(dB<1.5)break;
+    let want;const Pd=24;const px=B.dir?B.x-B.dir[0]*Pd:B.x,pz=B.dir?B.z-B.dir[1]*Pd:B.z;const dP=Math.hypot(px-x,pz-z);
+    if(B.dir&&(leadIn||dP<4)){leadIn=true;if(dB<5){pts.push([B.x,B.z]);break;}want=psiOf(B.x-x,B.z-z);const d0=wrapA(want-psi);psi+=clamp(d0,-1/8,1/8);const dv=dirOf(psi);x+=dv[0];z+=dv[1];pts.push([x,z]);s++;continue;}
+    while(vi<sp.length-1&&Math.hypot(sp[vi][0]-x,sp[vi][1]-z)<22)vi++; // head for each waypoint in turn, then the lead-in
+    const last=vi>=sp.length-1;const tx=last?px:sp[vi][0],tz=last?pz:sp[vi][1];
+    const toT=psiOf(tx-x,tz-z);const fade=last?smooth((dP-35)/60):0.6;
+    const err=mountainH(x,z)-(hA-g*s);const gr=terrGrad(x,z,6);const fall=psiOf(-gr[0],-gr[1]);const sd=Math.sign(wrapA(fall-toT))||1;
+    want=toT+fade*(clamp(err*0.12,-0.75,0.75)*sd+0.12*Math.sin(s/lam*6.283+ph));
+    psi+=clamp(wrapA(want-psi),-1/R,1/R);const dv=dirOf(psi);x+=dv[0];z+=dv[1];pts.push([x,z]);s++;
+  }
+  return pts;
+}
 function walkSegment(def){
-  const st=STYLES[def.style];if(st.straight)return straightPath(def);const rnd=mulberry32(def.seed*7919+3);
+  const st=STYLES[def.style];if(st.straight)return straightPath(def);if(st===STYLES.traverse)return traversePath(def);const rnd=mulberry32(def.seed*7919+3);
   const sp=def.spine;const cum=polyInfo(sp);const U=cum[cum.length-1];
   const A=NODES[def.from],B=NODES[def.to];
   let x=sp[0][0],z=sp[0][1];
@@ -531,7 +641,8 @@ function walkSegment(def){
       else if(leadIn||dP<3||(dP<14&&dP>lastDP+0.01)){leadIn=true;w2=psiOf(B.x-x,B.z-z);}
       else if(dP<finalIn+R*1.5+16||rem<finalIn+LEADIN+12){const back=0;w2=psiOf(px-B.dir[0]*back-x,pz-B.dir[1]*back-z);}
       lastDP=dP;
-      if(w2!==null){const d0=wrapA(w2-psi);psi+=clamp(d0,-1/R,1/R);const dv0=dirOf(psi);x+=dv0[0];z+=dv0[1];pts.push([x,z]);continue;}
+      if(leadIn&&dB<5){pts.push([B.x,B.z]);break;} /* close enough: finish on the node rather than circling it */
+      if(w2!==null){const Rl=leadIn?Math.min(R,9):R;const d0=wrapA(w2-psi);psi+=clamp(d0,-1/Rl,1/Rl);const dv0=dirOf(psi);x+=dv0[0];z+=dv0[1];pts.push([x,z]);continue;}
     }
     const sPsi=psiOf(pr.tx,pr.tz);
     if(pr.u<straightIn){want=sPsi+0.8*Math.atan(-pr.e/8);}           // leave the node in line
@@ -570,7 +681,7 @@ function smoothPoly(P,iters,keep){ // laplacian smoothing, endpoints fixed
 }
 
 // ---------------- segment building: profile, speed, berms, features ----------------
-const GRADE={bermflow:[0.02,0.2],mega:[0.0,0.34],flowEasy:[0.012,0.155],jumpflow:[0.015,0.22],natural:[0.0,0.26],bigjump:[0.015,0.24],tech:[0.0,0.42],slab:[0.0,0.36],steep:[0.0,0.52],link:[0.008,0.13]};
+const GRADE={bermflow:[0.02,0.2],mega:[0.0,0.34],flowEasy:[0.012,0.155],jumpflow:[0.015,0.22],natural:[0.0,0.26],bigjump:[0.015,0.24],tech:[0.0,0.42],slab:[0.0,0.36],steep:[0.0,0.52],link:[0.008,0.13],traverse:[0.02,0.14]};
 function sm1(arr,r){const n=arr.length;const o=new Float32Array(n);let acc=0;const pre=new Float64Array(n+1);for(let i=0;i<n;i++)pre[i+1]=pre[i]+arr[i];
   for(let i=0;i<n;i++){const a=Math.max(0,i-r),b=Math.min(n-1,i+r);o[i]=(pre[b+1]-pre[a])/(b-a+1);}return o;}
 function nodePlane(N){const h=(mountainH(N.x,N.z)+mountainH(N.x+4,N.z)+mountainH(N.x-4,N.z)+mountainH(N.x,N.z+4)+mountainH(N.x,N.z-4))/5;const g=terrGrad(N.x,N.z,8);
@@ -617,8 +728,12 @@ function buildSegment(def,idx){
   if(B.dir){const k=Math.max(0,n-8);const a1=Math.atan2(tr.tz[k],tr.tx[k]),a2=Math.atan2(B.dir[1],B.dir[0]);tr.sideArr=Math.abs(wrapA(a1-a2))>0.9;}
   for(let i=0;i<n;i++){const z=zone(i);const N=i<n/2?A:B;const z0=N.top||N.fin?10:LEADIN+2;if(z<z0+14)tr.bLim[i]*=smooth((z-z0)/14);}
   computeSpeeds(tr,new Float32Array(n));
-  // --- features
+  tr.rnd=rnd;tr.cross=[];return tr;
+}
+function finishSegment(tr){ // features go in once every trail's path is known, so crossings can be planned first
+  const rnd=tr.rnd;
   tr.feats=[];tr.rocks=[];tr.roots=[];
+  placeCrossings(tr,rnd);
   placeProfileFeatures(tr,rnd);
   buildFeatTable(tr);
   computeSpeeds(tr,tr.featProfile);
@@ -627,8 +742,47 @@ function buildSegment(def,idx){
   computeSpeeds(tr,tr.featProfile);
   computeBanks(tr);
   indexObstacles(tr);
-  tr.bridges=tr.feats.filter(f=>f.type==='bigdrop'&&f.kind==='wood').map(f=>({s0:f.sb,s1:f.a,hw:f.hw,f}));
-  return tr;
+  tr.bridges=tr.feats.filter(f=>f.type==='bigdrop'&&f.kind==='wood').map(f=>({s0:f.sb,s1:f.a,hw:f.hw,f}))
+    .concat(tr.feats.filter(f=>f.type==='overpass').map(f=>({s0:f.b0-0.8,s1:f.b1+1.2,hw:f.hw,f,over:true})));
+  // stretches where another trail passes over or under this one: the game keeps you on your own trail there
+  tr.xz=tr.feats.filter(f=>f.type==='under'||f.type==='overpass'||(f.type==='bigdrop'&&f.over)).map(f=>[f.s0-4,(f.type==='bigdrop'?f.sB:f.s1)+4]);
+  delete tr.rnd;return tr;
+}
+// ---- crossings: where a traverse meets another trail it goes over it on a bridge (or off a drop), and the other trail dips underneath
+function segCross(a,b){
+  const C=10,H=new Map(),key=(i,j)=>i*100003+j;
+  for(let j=0;j<b.n-1;j++){const x0=Math.min(b.px[j],b.px[j+1]),x1=Math.max(b.px[j],b.px[j+1]),z0=Math.min(b.pz[j],b.pz[j+1]),z1=Math.max(b.pz[j],b.pz[j+1]);
+    for(let ci=Math.floor(x0/C);ci<=Math.floor(x1/C);ci++)for(let cj=Math.floor(z0/C);cj<=Math.floor(z1/C);cj++){const k=key(ci,cj);let L=H.get(k);if(!L){L=[];H.set(k,L);}L.push(j);}}
+  const out=[];
+  for(let i=0;i<a.n-1;i++){const ax=a.px[i],az=a.pz[i],bx=a.px[i+1],bz=a.pz[i+1];const seen=new Set();
+    for(let ci=Math.floor(Math.min(ax,bx)/C);ci<=Math.floor(Math.max(ax,bx)/C);ci++)for(let cj=Math.floor(Math.min(az,bz)/C);cj<=Math.floor(Math.max(az,bz)/C);cj++){
+      const L=H.get(key(ci,cj));if(!L)continue;
+      for(const j of L){if(seen.has(j))continue;seen.add(j);const cx=b.px[j],cz=b.pz[j],dx=b.px[j+1],dz=b.pz[j+1];
+        const r1x=bx-ax,r1z=bz-az,r2x=dx-cx,r2z=dz-cz;const den=r1x*r2z-r1z*r2x;if(Math.abs(den)<1e-9)continue;
+        const t=((cx-ax)*r2z-(cz-az)*r2x)/den,u=((cx-ax)*r1z-(cz-az)*r1x)/den;if(t>=0&&t<1&&u>=0&&u<=1)out.push([i+t,j+u]);}}}
+  return out;
+}
+function planCrossings(segs){
+  for(const T of segs){if(T.def.style!=='traverse')continue;
+    for(const X of segs){if(X===T||X.def.style==='traverse')continue;
+      for(const [sa,sb] of segCross(T,X)){if(sa<28||sa>T.len-28||sb<24||sb>X.len-24)continue;
+        const i=Math.round(sa),j=Math.round(sb);const ang=Math.acos(Math.min(1,Math.abs(T.tx[i]*X.tx[j]+T.tz[i]*X.tz[j])));if(ang<0.4)continue;
+        const hc=(X.w+X.sw+1.3)/Math.max(0.45,Math.sin(ang))+0.6;
+        const dlt=sampleArr(X.base,sb,1)-sampleArr(T.base,sa,1);const dp=clamp(2.05+0.5*Math.max(0,dlt),1.7,2.3);const need=Math.max(1.0,3.1+dlt-dp);
+        T.cross.push({s:sa,role:'over',other:X,so:sb,hc,need,ang,dlt});X.cross.push({s:sb,role:'under',other:T,so:sa,dp,ang,dlt});}}}
+}
+function placeCrossings(tr,rnd){
+  if(!tr.cross.length)return;const F=tr.feats;
+  for(const c of tr.cross)if(c.role==='under'){const Lh=11+c.dp*4;F.push({type:'under',s0:c.s-Lh,s1:c.s+Lh,sc:c.s,dp:c.dp,Lh,other:c.other.id});}
+  const ups=tr.cross.filter(c=>c.role==='over').sort((a,b)=>a.s-b.s);const groups=[];
+  for(const c of ups){const g=groups[groups.length-1];if(g&&c.s-c.hc<g.hi+32){ /* close together: one long bridge over both */g.hi=Math.max(g.hi,c.s+c.hc);g.need=Math.max(g.need,c.need);g.list.push(c);}else groups.push({lo:c.s-c.hc,hi:c.s+c.hc,need:c.need,list:[c]});}
+  const hw=tr.def.diff==='green'?1.3:1.15;let singles=0;
+  groups.forEach((g,k)=>{
+    // every other crossing ends in a drop off the end of the bridge, if the trail runs straight enough to land it
+    if(g.list.length===1&&(singles++)%2===0&&addBigDrop(tr,rnd,'wood',0,{lip:g.hi+1.2,lo:g.lo,need:g.need,maxH:tr.def.diff==='blue'||tr.def.diff==='green'?2.4:3.3}))return;
+    const Hb=g.need,Lu=Math.max(9,Hb/0.1);
+    F.push({type:'overpass',s0:g.lo-1.6-Lu,s1:g.hi+1.6+Lu,b0:g.lo-1.6,b1:g.hi+1.6,Hb,Lu,hw,xs:g.list.map(c=>c.other.id)});});
+  buildFeatTable(tr);computeSpeeds(tr,tr.featProfile);
 }
 function computeSpeeds(tr,fp){ // speed of a rider who coasts but brakes for turns, and bank angles that suit it
   const n=tr.n,b=tr.base,st=tr.st;const kd=0.5*1.2*0.7/92,crr=0.038;
@@ -651,7 +805,7 @@ function computeBanks(tr){
     bank[i]=Math.sign(tr.kap[i])*(lim>=0?Math.min(need,lim):lim*smooth(need/0.3));}
   let bk=sm1(sm1(bank,5),4);
   const fade=new Float32Array(n).fill(1);
-  for(const f of tr.feats){if(f.type==='jump'||f.type==='drop'||f.type==='slab'||f.type==='ledge'||f.type==='chute'||f.type==='bigdrop'){const e1=f.type==='bigdrop'?f.sB:f.s1;for(let i=Math.floor(f.s0-12);i<=Math.ceil(e1+12);i++)if(i>=0&&i<n){const d=i<f.s0?f.s0-i:i>e1?i-e1:0;fade[i]=Math.min(fade[i],0.15+0.85*smooth(d/10));}}}
+  for(const f of tr.feats){if(f.type==='jump'||f.type==='drop'||f.type==='slab'||f.type==='ledge'||f.type==='chute'||f.type==='bigdrop'||f.type==='overpass'||f.type==='under'){const e1=f.type==='bigdrop'?f.sB:f.s1;for(let i=Math.floor(f.s0-12);i<=Math.ceil(e1+12);i++)if(i>=0&&i<n){const d=i<f.s0?f.s0-i:i>e1?i-e1:0;fade[i]=Math.min(fade[i],0.15+0.85*smooth(d/10));}}}
   for(let i=0;i<n;i++)bk[i]*=fade[i];
   tr.bank=bk;
 }
@@ -678,13 +832,15 @@ function designDrop(v,Gr,H,gd,lo,hi){
   while(th>th0+1e-4&&lp.length<480){th=Math.max(th0,th-dx/Math.cos(th)/R);y-=(Math.tan(th)-Gr)*dx;x+=dx;lp.push(y);}
   return {face,xk,yK,lp:new Float32Array(lp),sl,nLand,yBot:y,xB:x,xF,R};
 }
-function addBigDrop(tr,rnd,kind,H){
+function addBigDrop(tr,rnd,kind,H,opt){
   // tries lots of spots and keeps the one that needs the least digging (where the hill falls away steepest after the lip)
+  // with opt.lip it's a bridge over another trail: the lip is fixed just past the crossing, and it has to be high enough over it
   const F=tr.feats,L=tr.len;const gd=kind==='wood'?0.015:0.04;let best=null;
-  for(let attempt=0;attempt<140;attempt++){
-    const a=70+rnd()*(L-150);const ba=sampleArr(tr.base,a,1);
-    let s0=a;while(s0>a-38&&s0>12){if(sampleArr(tr.base,s0,1)>=ba+H+gd*(a-s0))break;s0-=0.5;}
-    if(a-s0<7||a-s0>34)continue;
+  for(let attempt=0;attempt<(opt?1:140);attempt++){
+    const a=opt?opt.lip:70+rnd()*(L-150);const ba=sampleArr(tr.base,a,1);
+    if(opt){H=opt.need-gd*(a-opt.lo)+(sampleArr(tr.base,opt.lo,1)-ba);if(H>(opt.maxH||3.3))return false;H=Math.max(H,1.3);}
+    let s0=a;const back=opt?60:38;while(s0>a-back&&s0>12){if(sampleArr(tr.base,s0,1)>=ba+H+gd*(a-s0))break;s0-=0.5;}
+    if(a-s0<7||a-s0>(opt?58:34))continue;if(opt&&s0>opt.lo-4)continue;
     const Gr=clamp((ba-sampleArr(tr.base,Math.min(L,a+8),1))/8,0,0.45);
     // drops are taken at a steady speed: the flow speed, but no faster than suits the height
     const vt=Math.min(Math.max(4.6,Math.min(tr.vd[Math.round(s0)],tr.vd[Math.round(a)])),4.3+0.45*H);
@@ -692,7 +848,7 @@ function addBigDrop(tr,rnd,kind,H){
     // climb back out of any dig slowly, so the trail keeps running downhill after the landing
     const sB=a+D.xB,Grec=clamp((sampleArr(tr.base,Math.min(L,sB),1)-sampleArr(tr.base,Math.min(L,sB+60),1))/60,0.03,0.4);
     const Lrec=D.yBot<0?clamp(1.5*(-D.yBot)/(0.5*Grec),12,110):clamp(D.yBot*6,8,40);const s1=sB+Lrec;
-    if(s1>L-25||!freeAt(tr,s0-12,s1,8)||!straightAt(tr,s0-4,a-6,1/13)||!straightAt(tr,a-7,a+D.xF+2,1/22)||!straightAt(tr,a+D.xF,sB+2,1/14))continue;
+    const kL=opt?1/15:1/22;if(s1>L-25||!freeAt(tr,s0-12,s1,8)||!straightAt(tr,s0-4,a-6,opt?1/9:1/13)||!straightAt(tr,a-7,a+D.xF+2,kL)||!straightAt(tr,a+D.xF,sB+2,1/12))continue;
     const score=-D.yBot+Lrec*0.01+rnd()*0.4;
     if(!best||score<best.score)best={score,a,s0,s1,ba,vt,D,Lrec,sB};
   }
@@ -702,14 +858,14 @@ function addBigDrop(tr,rnd,kind,H){
   for(let k=0;k<n;k++){const s=s0+k*0.25;dk[k]=Math.max(0,ba+H+gd*(a-s)-sampleArr(tr.base,s,1))*smooth((s-s0)/4);}
   let sb=s0;for(let k=0;k<n;k++)if(dk[k]>0.45){sb=s0+k*0.25;break;}
   const hw=tr.def.diff==='blue'?1.2:tr.def.diff==='black'?1.0:0.9;
-  F.push({type:'bigdrop',kind,s0,a,s1,sB,H,gd,dk,sb,hw,v:vt,vt,rock:kind==='rock',win:[0.9,1.08],Lrec,land:s1-a,...D});
+  F.push({type:'bigdrop',kind,s0,a,s1,sB,H,gd,dk,sb,hw,v:vt,vt,rock:kind==='rock',win:[0.9,1.08],Lrec,land:s1-a,over:!!opt,...D});
   buildFeatTable(tr);computeSpeeds(tr,tr.featProfile);return true;
 }
 function placeProfileFeatures(tr,rnd){
   const sty=tr.def.style,F=tr.feats;const L=tr.len;
   for(const [kind,H] of (tr.def.drops||[]))addBigDrop(tr,rnd,kind,H*(0.94+rnd()*0.12));
   const want={slab:{slab:[5,7],ledge:[4,6],chute:[1,2]},steep:{slab:[3,4],ledge:[2,3],chute:[2,3],drop:[2,3]},tech:{chute:[3,5],ledge:[3,4],drop:[1,2]},
-    natural:{drop:[2,3]},bigjump:{},jumpflow:{},flowEasy:{},link:{}}[sty];
+    natural:{drop:[2,3]},bigjump:{},jumpflow:{},flowEasy:{},link:{},traverse:{},bermflow:{},mega:{}}[sty];
   const tries=[];for(const k in want){const c=want[k][0]+Math.floor(rnd()*(want[k][1]-want[k][0]+1));for(let i=0;i<c;i++)tries.push(k);}
   for(let i=tries.length-1;i>0;i--){const j=Math.floor(rnd()*(i+1));[tries[i],tries[j]]=[tries[j],tries[i]];}
   for(const kind of tries){
@@ -760,7 +916,10 @@ function placeRideFeatures(tr,rnd){
       tr.rocks.push({s:rs,d:rd,r:Math.max(r,h*2.2),h});}
     F.push({type:'rocks',s0:s,s1:s+len,line:{ph,lam,amp}});return len;};
   const addRoots=(s,len,cnt)=>{if(!freeAt(tr,s,s+len,4)||!straightAt(tr,s-3,s+len+3,sty==='tech'||sty==='steep'?1/6:1/20))return 0;
-    for(let k=0;k<cnt;k++){tr.roots.push({s:s+rnd()*len,d:(rnd()*2-1)*tr.w*0.6,ang:(rnd()*2-1)*0.7,r:0.05+rnd()*0.06});}
+    // roots come out of the bank from a tree beside the trail: thick where they leave the soil, tapering as they snake part or all the way across
+    const side0=rnd()<0.5?-1:1;
+    for(let k=0;k<cnt;k++){const sg=rnd()<0.7?side0:-side0;const edge=sg*(tr.w+0.4+rnd()*0.5);const L=tr.w*(0.6+rnd()*1.3);const a1=edge-sg*L;
+      tr.roots.push({s:s+rnd()*len,d:0,ang:(rnd()*2-1)*0.5,r:0.045+rnd()*0.055,a0:Math.min(edge,a1),a1:Math.max(edge,a1),edge,L,seed:rnd()*100});}
     F.push({type:'roots',s0:s,s1:s+len});return len;};
   // walk the trail placing features in rhythm; berms come from the turns themselves
   const plans={
@@ -772,6 +931,7 @@ function placeRideFeatures(tr,rnd){
     tech:['roots','rocks','roots','rocks','roots'],
     slab:['rocks','roots','rocks','rocks'],
     steep:['rocks','roots','rocks','rocks'],
+    traverse:['rollers','roots','rollers','rocks','rollers'],
   };
   if(sty==='jumpflow'||sty==='bigjump'||sty==='flowEasy'||sty==='mega'||sty==='bermflow'){ // jump lines: fill every straight between berms
     const kLim=1/34;let i=30;
@@ -800,7 +960,7 @@ function placeRideFeatures(tr,rnd){
     return;
   }
   const plan=plans[sty];let s=34,pi=0,fails=0;
-  const gapR={flowEasy:[18,40],link:[25,50],jumpflow:[8,20],bigjump:[10,22],natural:[12,30],tech:[6,18],slab:[8,22],steep:[6,16]}[sty];
+  const gapR={traverse:[22,48],flowEasy:[18,40],link:[25,50],jumpflow:[8,20],bigjump:[10,22],natural:[12,30],tech:[6,18],slab:[8,22],steep:[6,16]}[sty];
   while(s<L-40){
     const kind=plan[pi%plan.length];let used=0;
     switch(kind){
@@ -830,6 +990,8 @@ function featH(f,s){
     if(s<f.a){const t=(s-f.s0)/f.Lin;return 0.5*H*t*t*(3-2*t);}
     if(s<f.a+0.25)return 0.5*H-H*(s-f.a)/0.25;
     const t=(s-f.a-0.25)/(f.Lout-0.25);return -0.5*H*(1-t*t*(3-2*t));}
+  if(f.type==='overpass'){if(s<f.s0||s>f.s1)return 0;if(s<f.b0){const t=(s-f.s0)/f.Lu;return f.Hb*t*t*(3-2*t);}if(s<=f.b1)return f.Hb;const t=(f.s1-s)/f.Lu;return f.Hb*t*t*(3-2*t);}
+  if(f.type==='under'){if(s<f.s0||s>f.s1)return 0;const u=(s-f.sc)/f.Lh;return -f.dp*0.5*(1+Math.cos(Math.PI*u));}
   if(f.type==='bigdrop'){
     if(s<f.s0)return 0;const x=s-f.a;
     if(x<=0)return sampleArr(f.dk,s-f.s0,0.25);
@@ -861,6 +1023,7 @@ function buildFeatTable(tr){
     if(f.type==='rocks'||f.type==='roots'){for(let i=Math.floor(f.s0);i<=Math.ceil(f.s1)&&i<surf.length;i++)surf[i]=f.type==='rocks'?3:2;continue;}
     const a=Math.max(0,Math.floor(f.s0*4)),b=Math.min(m-1,Math.ceil((f.s1+16)*4));
     for(let k=a;k<=b;k++)fp[k]+=featH(f,k/4);
+    if(f.type==='overpass'){for(let i=Math.floor(f.b0-0.8);i<=Math.ceil(f.b1+1.2)&&i<surf.length;i++)if(i>=0)surf[i]=4;continue;}
     if(f.type==='bigdrop'){const st=f.kind==='rock'?Math.floor(f.s0+2):Math.floor(f.sb);for(let i=st;i<=Math.floor(f.a)+(f.kind==='rock'?1:0)&&i<surf.length;i++)if(i>=0)surf[i]=f.kind==='rock'?1:4;continue;}
     if(f.rock){for(let i=Math.floor(f.a-3);i<=Math.ceil(f.a+(f.Ls||1)+3)&&i<surf.length;i++)if(i>=0)surf[i]=1;}
   }
@@ -873,6 +1036,7 @@ function indexObstacles(tr){
 }
 function buildNetwork(){
   const segs=SEGDEFS.map((d,i)=>buildSegment(d,i));
+  planCrossings(segs);segs.forEach(finishSegment);
   const byId={};segs.forEach(s=>byId[s.id]=s);
   // junctions: for every node, which segments leave it, sorted left-to-right as seen when riding in
   for(const k in NODES){const N=NODES[k];N.id=k;N.out=segs.filter(s=>s.from===k);N.inc=segs.filter(s=>s.to===k);
@@ -1100,6 +1264,11 @@ function locate(x,z,out){
   if(bt<0)return out;
   return projectOn(TR[bt],bi,x,z,out);
 }
+function nearTrails(x,z){ // nearest point on each trail within the lookup cells
+  const cx=Math.floor(x/HC),cz=Math.floor(z/HC);const best=new Map();
+  for(let a=-2;a<=2;a++)for(let b=-2;b<=2;b++){const arr=THASH.get(hkey(cx+a,cz+b));if(!arr)continue;
+    for(let k=0;k<arr.length;k++){const code=arr[k];const t=code>>16,i=code&65535;const tr=TR[t];const dx=x-tr.px[i],dz=z-tr.pz[i];const d2=dx*dx+dz*dz;const e=best.get(t);if(!e||d2<e[0])best.set(t,[d2,i]);}}
+  const out=[];for(const [t,[d2,i]] of best)out.push(projectOn(TR[t],i,x,z,{}));return out;}
 function projectOn(tr,bi,x,z,out){
   const dx=x-tr.px[bi],dz=z-tr.pz[bi];
   let s=bi+dx*tr.tx[bi]+dz*tr.tz[bi];const d=dx*tr.tz[bi]-dz*tr.tx[bi];
@@ -1118,11 +1287,12 @@ function rockH(tr,s,d){
   return h;
 }
 function rootH(tr,s,d){
-  const Rt=tr.roots;if(!Rt.length)return 0;const i0=tr.rootIdx[clamp(Math.floor(s-1.2),0,tr.n+1)];let h=0;
-  for(let k=i0;k<Rt.length;k++){const r=Rt[k];if(r.s>s+1.2)break;
-    // distance from (s,d) to a line across the trail through (r.s,r.d) tilted by r.ang
-    const ca=Math.cos(r.ang),sa=Math.sin(r.ang);const ds=s-r.s,dd=d-r.d;const dist=Math.abs(ds*ca-dd*sa);
-    if(dist<r.r*1.4&&Math.abs(ds*sa+dd*ca)<tr.w+0.8){const u=1-dist/(r.r*1.4);const v=r.r*0.62*u*u*(3-2*u);if(v>h)h=v;}}
+  const Rt=tr.roots;if(!Rt.length)return 0;const i0=tr.rootIdx[clamp(Math.floor(s-1.8),0,tr.n+1)];let h=0;
+  for(let k=i0;k<Rt.length;k++){const r=Rt[k];if(r.s>s+1.8)break;
+    // distance from (s,d) to the root's line through (r.s,r.d) tilted by r.ang; it only runs between a0 and a1 along that line
+    const ca=Math.cos(r.ang),sa=Math.sin(r.ang);const ds=s-r.s,dd=d-r.d;const al=ds*sa+dd*ca;if(al<r.a0||al>r.a1)continue;
+    const t=Math.abs(al-r.edge)/r.L,rr=r.r*(1-0.55*t);const dist=Math.abs(ds*ca-dd*sa);
+    if(dist<rr*1.4){const u=1-dist/(rr*1.4);const v=rr*0.78*u*u*(3-2*u)*smooth((1-t)/0.15);if(v>h)h=v;}}
   return h;
 }
 function bridgeAt(tr,s){const B=tr.bridges;if(!B)return null;for(let i=0;i<B.length;i++){const b=B[i];if(s>=b.s0&&s<=b.s1)return b;}return null;}
@@ -1152,9 +1322,15 @@ function gridH(x,z){
   const i=fx|0,j=fz|0,u=fx-i,v=fz-j;const a=TH[j*NX+i],b=TH[j*NX+i+1],c=TH[(j+1)*NX+i],d=TH[(j+1)*NX+i+1];
   return (u+v<=1)?a+(b-a)*u+(c-a)*v:d+(c-d)*(1-u)+(b-d)*(1-v);
 }
-const LG={t:null,s:0,d:0,ad:1e9,over:0,dist:1e9};
+const LG={t:null,s:0,d:0,ad:1e9,over:0,dist:1e9},LG2={t:null,s:0,d:0,ad:1e9,over:0,dist:1e9},LOCP={t:null,s:0,d:0,ad:1e9,over:0,dist:1e9};
+// where one trail bridges over another, the ground under you depends on which trail you're riding
+let GH_PREF=null,GH_S=0;
+function inXZ(tr,s){const Z=tr.xz;if(!Z||!Z.length)return false;for(let i=0;i<Z.length;i++)if(s>Z[i][0]&&s<Z[i][1])return true;return false;}
+function prefLocate(x,z,out,out2){let L=locate(x,z,out);
+  if(GH_PREF&&L.t!==GH_PREF&&inXZ(GH_PREF,GH_S)){const P=locateOn(GH_PREF,x,z,GH_S,out2);if(P.ad<GH_PREF.w+GH_PREF.sw+SKIRT&&P.over<0.3)L=P;}
+  return L;}
 function groundH(x,z){
-  const L=locate(x,z,LG); // own lookup object so height queries never disturb the rider's trail position
+  const L=prefLocate(x,z,LG,LG2); // own lookup object so height queries never disturb the rider's trail position
   if(L.t&&L.over<0.3){const tr=L.t;
     if(tr.bridges){const B=bridgeAt(tr,L.s);if(B)return L.ad<=B.hw?surfH(tr,L.s,L.d,false):gridH(x,z);} /* off the side of a bridge is a fall to the forest floor */
     if(L.ad<=tr.w)return surfH(tr,L.s,L.d,true);
@@ -1172,6 +1348,8 @@ function buildTerrainHeights(){
     if(L.t&&L.dist<L.t.w+8){const tr=L.t;TDIST[k]=L.dist-tr.w-tr.sw;
       h=blendT(tr,L.s,L.dist,x,z);
       if(L.over<0.3&&L.ad<tr.w+tr.sw+SKIRT&&!bridgeOpen(tr,L.s)){const rib=L.ad<=tr.w?surfH(tr,L.s,L.d,false):L.ad<=tr.w+tr.sw?shoulderH(tr,L.s,L.d,x,z):h;h=Math.min(h,rib)-0.45;}
+      if(tr.xz&&inXZ(tr,L.s))for(const o of nearTrails(x,z)){if(o.t===tr||o.over>0.3||o.ad>o.t.w+o.t.sw+SKIRT||bridgeOpen(o.t,o.s))continue; // a trail passing under this one's bridge
+        const rib=o.ad<=o.t.w?surfH(o.t,o.s,o.d,false):o.ad<=o.t.w+o.t.sw?shoulderH(o.t,o.s,o.d,x,z):blendT(o.t,o.s,o.ad,x,z);h=Math.min(h,rib-0.45);}
     }else h=mountainH(x,z);
     TH[k]=h;TROCK[k]=rockiness(x,z);}}
 }
@@ -1442,7 +1620,8 @@ function buildBridges(){
     const PS=[];for(let s=s0+0.4;;s+=2.1){const ss=Math.min(s,s1-0.15);PS.push(ss);if(ss>=s1-0.15)break;}
     let prev=null;
     for(const s of PS){const yc=deckY(tr,s)-0.07-0.24-0.09;const pair=[];
-      for(const sg of [-1,1]){const pt=at(tr,s,sg*(sd+0.02),0);const gy=gridH(pt.x,pt.z);const h=yc-0.09-gy;pair.push({pt,gy,h,sg});
+      for(const sg of [-1,1]){const pt=at(tr,s,sg*(sd+0.02),0);const clear=!nearTrails(pt.x,pt.z).some(o=>o.t!==tr&&o.over<0.5&&o.ad<o.t.w+o.t.sw+0.4);
+        const gy=clear?gridH(pt.x,pt.z):1e9;const h=clear?yc-0.09-gy:0;pair.push({pt,gy,h,sg});
         if(h>0.12){trailPoint(tr,s,p);E.set(0,yawOf(p),0);Qt.setFromEuler(E);put(posts,pt.x,(yc-0.09+gy-0.35)/2,pt.z,Qt,0.17,h+0.35,0.17,new THREE.Color(0.85,0.85,0.85));}}
       if(pair[0].h>0.12||pair[1].h>0.12){beam(beams,at(tr,s,-(hw+0.08),yc),at(tr,s,hw+0.08,yc),0.18,0.15,new THREE.Color(0.8,0.8,0.8));
         const hh=Math.min(pair[0].h,pair[1].h);if(hh>1.7){const lo=Math.max(pair[0].gy,pair[1].gy)+0.35;const up=yc-0.2;
@@ -1458,6 +1637,35 @@ function buildBridges(){
     // bounding sphere of every instance, so view culling drops bridges that are behind you
     const bb=new THREE.Box3();for(let i=0;i<n;i++){const e=arr[i*2].elements;bb.expandByPoint(new V3(e[12],e[13],e[14]));}im.geometry.boundingSphere=bb.getBoundingSphere(new THREE.Sphere());im.geometry.boundingSphere.radius+=3;
     scene.add(im);}
+}
+
+// ---------- roots: tapering, half-buried tubes that snake out of the bank (the same shape the tyres feel) ----------
+function buildRoots(){
+  const mat=new THREE.MeshStandardMaterial({map:TXS.barkWood,roughness:0.9,metalness:0,vertexColors:true,color:0x8a7e72,polygonOffset:true,polygonOffsetFactor:-2,polygonOffsetUnits:-4});
+  const p={},c=new V3(),T=new V3(),N=new V3(),Bv=new V3(),up=new V3(0,1,0);const RS=6;
+  for(const tr of TR){if(!tr.roots.length)continue;
+    let pos=[],nor=[],uv=[],col=[],idx=[],cnt=0,sMin=1e9,sMax=-1e9;
+    const flush=()=>{if(!cnt)return;const g=new THREE.BufferGeometry();g.setAttribute('position',new THREE.Float32BufferAttribute(pos,3));g.setAttribute('normal',new THREE.Float32BufferAttribute(nor,3));
+      g.setAttribute('uv',new THREE.Float32BufferAttribute(uv,2));g.setAttribute('color',new THREE.Float32BufferAttribute(col,3));g.setIndex(idx);g.computeBoundingSphere();
+      const m=new THREE.Mesh(g,mat);m.receiveShadow=true;scene.add(m);pos=[];nor=[];uv=[];col=[];idx=[];cnt=0;};
+    for(const r of tr.roots){
+      const ca=Math.cos(r.ang),sa=Math.sin(r.ang),sg=Math.sign(r.edge)||1;const out=0.55; // run on past the edge, back into the soil
+      const aS=r.edge+sg*out,aE=r.edge-sg*r.L;const n=Math.max(6,Math.ceil(Math.abs(aE-aS)/0.1));const pts=[],rad=[];
+      for(let i=0;i<=n;i++){const al=lerp(aS,aE,i/n);const s=r.s+al*sa,d=r.d+al*ca;trailPoint(tr,s,p);const x=p.x+p.tz*d,z=p.z-p.tx*d;
+        const t=clamp((al-r.edge)*-sg/r.L,-1,1);const rr=r.r*(1-0.55*Math.max(0,t))*(t<0?1+0.5*(-t/(out/r.L)):1);
+        const inside=Math.abs(d)<=tr.w;const gy=inside?surfH(tr,s,d,false):groundH(x,z);
+        const wig=-0.45*rr*Math.max(0,noise2(al*1.7+r.seed,r.seed*0.3));const sink=t<0?(-t*r.L/out)*rr*1.3:t>0.85?(t-0.85)/0.15*rr*0.9:0;
+        const rv=rr*1.55;pts.push(new V3(x,gy+0.015+0.12*rv+wig*0.6-sink*1.4,z));rad.push(rv);}
+      const base=cnt;
+      for(let i=0;i<pts.length;i++){const a=pts[Math.max(0,i-1)],b=pts[Math.min(pts.length-1,i+1)];T.subVectors(b,a).normalize();N.copy(up).addScaledVector(T,-up.dot(T)).normalize();Bv.crossVectors(T,N);
+        for(let k=0;k<=RS;k++){const th=(k/RS-0.5)*3.5,cs=Math.cos(th),sn=Math.sin(th); /* the top of the tube only: the rest is under the dirt */
+          c.copy(N).multiplyScalar(cs*0.78).addScaledVector(Bv,sn*1.12);const rr=rad[i];
+          pos.push(pts[i].x+c.x*rr,pts[i].y+c.y*rr,pts[i].z+c.z*rr);c.normalize();nor.push(c.x,c.y,c.z);uv.push(i*0.12,k/RS);
+          const g=(0.72+0.45*Math.max(0,c.y))*(0.9+0.1*Math.sin(i*0.7+r.seed));col.push(g,g*0.96,g*0.9);cnt++;}}
+      for(let i=0;i<pts.length-1;i++)for(let k=0;k<RS;k++){const A=base+i*(RS+1)+k,B=A+RS+1;idx.push(A,B,A+1,A+1,B,B+1);}
+      sMin=Math.min(sMin,r.s);sMax=Math.max(sMax,r.s);if(sMax-sMin>90){flush();sMin=1e9;sMax=-1e9;}
+    }
+    flush();}
 }
 
 // ---------- templates, materials, impostors ----------
@@ -1573,7 +1781,7 @@ function buildVegetation(){
     if(rnd()<0.05+rockiness(px,pz)*0.4){const ox=px+(rnd()-0.5)*5,oz=pz+(rnd()-0.5)*5;const s=0.5+rnd()*rnd()*2.4,sx=s*(1+rnd()*0.5);
       if(clearOfTread(ox,oz,BOULDER_R*sx+0.6))addItem('boulder',ox,oz,gridH(ox,oz)-s*0.25,[rnd()*0.3,rnd()*6.28,rnd()*0.3],sx,s*(0.6+rnd()*0.5),s);}
   }
-  for(let i=0;i<14000;i++){const top=i<8000;const x=top?(rnd()-0.5)*440:(rnd()-0.5)*1000,z=top?Z_TOP-8+rnd()*115:Z_BOT-6-rnd()*140;if(nearTrail(x,z,0.3)||nearStation(x,z,9))continue;const h=gridH(x,z);if(h<WATER_Y+1)continue;
+  for(let i=0;i<14000;i++){const top=i<8000;const x=top?(rnd()-0.5)*440:(rnd()-0.5)*1000,z=top?Z_TOP-8+rnd()*115:Z_BOT-6-rnd()*140;if(nearTrail(x,z,0.3)||nearStation(x,z,9)||nearApron(x,z))continue;const h=gridH(x,z);if(h<WATER_Y+1)continue;
     const t=0.8+rnd()*0.35;addItem('grass',x,z,h-0.03,[0,rnd()*6.28,0],0.8+rnd()*0.8,0.7+rnd()*0.7,0.8+rnd()*0.8,new THREE.Color(t,t,t*0.9));}
   const p={};
   for(const tr of TR){
@@ -1587,8 +1795,10 @@ function buildVegetation(){
         const hx=p.tx*L/2,hz=p.tz*L/2;if(lineClear(x-hx,z-hz,x+hx,z+hz,r+0.4))addItem('log',x,z,groundH(x,z)+r*0.35,[0,Math.atan2(-p.tz,p.tx),0],L,r,r);}}
     for(const r of tr.rocks){trailPoint(tr,r.s,p);const x=p.x+p.tz*r.d,z=p.z-p.tx*r.d;const y=surfH(tr,r.s,r.d,false);const g=0.75+rnd()*0.4;
       addItem('trailrock',x,z,y-r.h*0.06,[rnd()*0.08,rnd()*6.28,rnd()*0.08],r.r*0.72,r.h*1.12,r.r*0.72,new THREE.Color(g,g,g*0.96));}
-    for(const rt of tr.roots){trailPoint(tr,rt.s,p);const x=p.x+p.tz*rt.d,z=p.z-p.tx*rt.d;const y=surfH(tr,rt.s,rt.d,false);const yaw=yawOf(p)+Math.PI/2+rt.ang;
-      addItem('root',x,z,y-rt.r*0.2,[0,yaw,(rnd()-0.5)*0.08],rt.r,rt.r*0.9,(tr.w+0.9)*2);}
+    if(NODE[tr.from].top){ // frame the trailhead: a few granite boulders and ferns round the edge of the dirt apron
+      for(let k=0;k<5;k++){const sg=k%2?1:-1;const s=-1+k*2.2+rnd()*1.5;trailPoint(tr,Math.max(0,s),p);const d=sg*(tr.w+tr.sw+1.2+rnd()*2.2);const x=p.x+p.tz*d-p.tx*Math.min(0,s),z=p.z-p.tx*d-p.tz*Math.min(0,s);
+        const sc=0.45+rnd()*0.55;if(!clearOfTread(x,z,BOULDER_R*sc*1.2+0.4))continue;const g=0.82+rnd()*0.2;addItem(rnd()<0.5?'trailrock':'boulder',x,z,groundH(x,z)-sc*0.3,[rnd()*0.2,rnd()*6.28,rnd()*0.2],sc*1.2,sc*0.8,sc,new THREE.Color(g,g,g*0.97));
+        for(let j=0;j<3;j++){const ox=x+(rnd()-0.5)*2.5,oz=z+(rnd()-0.5)*2.5;if(nearTrail(ox,oz,0.2))continue;const t=0.85+rnd()*0.3;addItem(rnd()<0.6?'fern':'salal',ox,oz,groundH(ox,oz)-0.04,[0,rnd()*6.28,0],0.7+rnd()*0.5,0.7+rnd()*0.4,0.7+rnd()*0.5,new THREE.Color(t,t,t*0.92));}}}
     for(const f of tr.feats){if(!f.rock)continue;
       if(f.type==='bigdrop'){ // a granite outcrop: the face bulging out under the lip, boulders stacked up the shelf's flanks
         trailPoint(tr,f.a-0.3,p);const yl=surfH(tr,f.a-0.05,0,false);const fh=f.H-f.yK;const sy=(fh+0.3)/1.42;
@@ -1665,26 +1875,77 @@ function woodBg(g,w,h){g.fillStyle='#5f3b22';g.fillRect(0,0,w,h);for(let i=0;i<7
   for(let i=1;i<4;i++){g.fillStyle='rgba(30,16,6,.45)';g.fillRect(0,h*i/4-1,w,2);}}
 const DISP='"Barlow Condensed","Arial Narrow",sans-serif';
 let woodMat,postMat;
-function signMesh(tex,w,h){const face=new THREE.MeshStandardMaterial({map:tex,roughness:0.85});return new THREE.Mesh(new THREE.BoxGeometry(w,h,0.07),[woodMat,woodMat,woodMat,woodMat,face,woodMat]);}
+function signMesh(tex,w,h,both){ // a wooden board: one draw for the wood, one for the painted face(s) (a box with six materials costs six)
+  const d=0.07;const face=new THREE.MeshStandardMaterial({map:tex,roughness:0.85});const g=new THREE.Group();
+  const box=new THREE.Mesh(new THREE.BoxGeometry(w*0.995,h*0.995,d),woodMat);box.castShadow=true;box.receiveShadow=true;g.add(box);
+  const f1=new THREE.PlaneGeometry(w,h);f1.translate(0,0,d/2+0.002);let fg=f1;
+  if(both){const f2=new THREE.PlaneGeometry(w,h);f2.rotateY(Math.PI);f2.translate(0,0,-d/2-0.002);fg=mergeGeoms([f1.toNonIndexed(),f2.toNonIndexed()]);}
+  const fm=new THREE.Mesh(fg,face);fm.receiveShadow=true;g.add(fm);
+  Object.defineProperty(g,'castShadow',{set(v){box.castShadow=v;},get(){return box.castShadow;}});Object.defineProperty(g,'receiveShadow',{set(v){box.receiveShadow=v;fm.receiveShadow=v;},get(){return box.receiveShadow;}});
+  return g;}
 function addTrailheadSign(tr){
   const D=DIFF[tr.def.diff];const tex=toTex((()=>{const c=mkCanvas(512,300),g=c.getContext('2d');woodBg(g,512,300);g.strokeStyle='rgba(20,10,4,.7)';g.lineWidth=10;g.strokeRect(5,5,502,290);
     symbolDraw(g,D.symbol,100,140,62);g.fillStyle='#f6f1e4';g.font='800 66px '+DISP;g.fillText(tr.def.name,188,122);g.font='600 36px '+DISP;g.fillStyle='#e9dcc0';g.fillText(D.label,190,172);
-    g.font='500 27px Barlow,sans-serif';const nxt=NODE[tr.to].out.map(s=>s.def.name);g.fillText(nxt.length?'Leads to '+nxt.slice(0,2).join(' or '):'To the meadow',190,222);g.fillText((tr.len/1000).toFixed(1)+' km to the junction',190,258);return c;})(),{repeat:false});
+    const nxt=NODE[tr.to].out.map(s=>s.def.name);const lt=nxt.length?'Leads to '+nxt.slice(0,2).join(' or '):'To the meadow';let fs=27;g.font='500 27px Barlow,sans-serif';while(fs>17&&g.measureText(lt).width>305){fs--;g.font=`500 ${fs}px Barlow,sans-serif`;}g.fillText(lt,190,222);g.font='500 27px Barlow,sans-serif';g.fillText((tr.len/1000).toFixed(1)+' km to the junction',190,258);return c;})(),{repeat:false});
   const p={};trailPoint(tr,6,p);const d=tr.w+tr.sw+0.6;const x=p.x+p.tz*d,z=p.z-p.tx*d;
   const grp=new THREE.Group();grp.position.set(x,gridH(x,z),z);grp.rotation.y=yawOf(p)+0.45;grp.scale.setScalar(1.3);
   const board=signMesh(tex,1.9,1.12);board.position.y=1.85;
-  const p1=new THREE.Mesh(new THREE.BoxGeometry(0.14,2.6,0.14),postMat);p1.position.set(-0.7,1.3,-0.08);const p2=p1.clone();p2.position.x=0.7;
-  [board,p1,p2].forEach(m=>{m.castShadow=true;m.receiveShadow=true;grp.add(m);});scene.add(grp);
+  const LM=gateLogMat();const p1=new THREE.Mesh(new THREE.CylinderGeometry(0.075,0.09,3.05,8),LM);p1.position.set(-0.78,1.5,-0.08);const p2=p1.clone();p2.position.x=0.78;
+  const roofM=gateMats().roof;const r1=new THREE.Mesh(new THREE.BoxGeometry(2.3,0.05,0.62),roofM);r1.position.set(0,2.98,-0.3);r1.rotation.x=-0.42;const r2=r1.clone();r2.position.z=0.14;r2.rotation.x=0.42;
+  const ridge=new THREE.Mesh(new THREE.CylinderGeometry(0.05,0.05,2.35,6),LM);ridge.rotation.z=Math.PI/2;ridge.position.set(0,3.1,-0.08);
+  [board,p1,p2,r1,r2,ridge].forEach(m=>{m.castShadow=true;m.receiveShadow=true;grp.add(m);});mergeChildren(grp);scene.add(grp);
 }
+let logMat=null,GM=null;
+function gateLogMat(){if(!logMat)logMat=new THREE.MeshStandardMaterial({map:TXS.barkWood,roughness:0.92,color:0xb08c6a});return logMat;}
+function gateMats(){if(!GM)GM={cap:new THREE.MeshStandardMaterial({color:0xc9a57c,roughness:0.8}),eye:new THREE.MeshStandardMaterial({color:0x1b1c1f,roughness:0.5}),
+  red:new THREE.MeshBasicMaterial({color:0xff3b2f}),green:new THREE.MeshBasicMaterial({color:0x39d353}),chain:new THREE.MeshStandardMaterial({color:0x777a7e,metalness:0.6,roughness:0.4}),roof:new THREE.MeshStandardMaterial({color:0x4a4f4a,roughness:0.75})};return GM;}
 function addGate(tr,s,label,checker){
-  const D=DIFF[tr.def.diff];const p={};trailPoint(tr,s,p);const half=tr.w+0.6;const hy=surfH(tr,s,0,false);
+  // two peeled-log posts, a log crossbeam, a carved sign hanging on chains, timing eyes, and a painted strip across the dirt
+  const D=DIFF[tr.def.diff];const p={};trailPoint(tr,s,p);const half=tr.w+0.8;const hy=surfH(tr,s,0,false);const LM=gateLogMat();
   const grp=new THREE.Group();grp.position.set(p.x,hy,p.z);grp.rotation.y=yawOf(p);
-  for(const sg of [-1,1]){const d=sg*half;const yy=groundH(p.x+p.tz*d,p.z-p.tx*d);const post=new THREE.Mesh(new THREE.BoxGeometry(0.18,3.5,0.18),postMat);post.position.set(-sg*half,yy-hy+1.65,0);post.castShadow=true;grp.add(post);}
-  const tex=toTex((()=>{const c=mkCanvas(512,96),g=c.getContext('2d');g.fillStyle=checker?'#f5f6ef':(tr.def.diff==='blue'?'#1f63c8':tr.def.diff==='green'?'#1f9d4a':'#111');g.fillRect(0,0,512,96);
-    if(checker){for(let i=0;i<32;i++)for(let j=0;j<2;j++){if((i+j)%2){g.fillStyle='#111';g.fillRect(i*16,j*16+64,16,16);g.fillRect(i*16,(1-j)*16,16,16);}}}
-    symbolDraw(g,D.symbol,54,48,26);g.fillStyle=checker?'#111':'#fff';g.font='800 50px '+DISP;g.textAlign='center';g.textBaseline='middle';g.fillText(label,276,50);return c;})(),{repeat:false});
-  const tm=new THREE.MeshStandardMaterial({map:tex,roughness:0.8});
-  const ban=new THREE.Mesh(new THREE.BoxGeometry(half*2+0.3,0.55,0.05),[postMat,postMat,postMat,postMat,tm,tm]);ban.position.y=3.15;ban.castShadow=true;grp.add(ban);scene.add(grp);
+  for(const sg of [-1,1]){const d=sg*half;const yy=groundH(p.x+p.tz*d,p.z-p.tx*d)-hy;const post=new THREE.Mesh(new THREE.CylinderGeometry(0.15,0.19,4.3-yy,10),LM);post.position.set(-sg*half,(4.0+yy-0.3)/2,0);post.castShadow=true;grp.add(post);
+    const cap=new THREE.Mesh(new THREE.CylinderGeometry(0.16,0.15,0.06,10),gateMats().cap);cap.position.set(-sg*half,4.0,0);grp.add(cap);
+    const eye=new THREE.Mesh(new THREE.BoxGeometry(0.12,0.16,0.1),gateMats().eye);eye.position.set(-sg*(half-0.2),0.95,0);grp.add(eye);
+    const lens=new THREE.Mesh(new THREE.SphereGeometry(0.028,8,6),checker?gateMats().green:gateMats().red);lens.position.set(-sg*(half-0.27),0.97,0);grp.add(lens);}
+  const beam=new THREE.Mesh(new THREE.CylinderGeometry(0.13,0.13,half*2+0.6,10),LM);beam.rotation.z=Math.PI/2;beam.position.y=3.72;beam.castShadow=true;grp.add(beam);
+  const W=Math.min(3.2,half*1.6),Hs=0.72;
+  const tex=toTex((()=>{const c=mkCanvas(1024,Math.round(1024*Hs/W)),g=c.getContext('2d');const w=c.width,h=c.height;woodBg(g,w,h);
+    g.strokeStyle='rgba(20,10,4,.75)';g.lineWidth=12;g.strokeRect(6,6,w-12,h-12);
+    if(checker){for(let i=0;i<40;i++)for(let j=0;j<2;j++){if((i+j)%2){g.fillStyle='rgba(15,15,15,.85)';g.fillRect(14+i*25,14+j*14,25,14);g.fillRect(14+i*25,h-42+j*14,25,14);}else{g.fillStyle='rgba(240,238,228,.9)';g.fillRect(14+i*25,14+j*14,25,14);g.fillRect(14+i*25,h-42+j*14,25,14);}}}
+    symbolDraw(g,D.symbol,h*0.52,h/2,h*0.24);g.fillStyle='#f6f1e4';g.textBaseline='middle';g.font=`800 ${Math.round(h*0.36)}px ${DISP}`;g.fillText(label.toUpperCase(),h*0.95,h*0.4);
+    g.font=`600 ${Math.round(h*0.2)}px ${DISP}`;g.fillStyle='#ead9b8';g.fillText(tr.def.name,h*0.97,h*0.72);return c;})(),{repeat:false});
+  const board=signMesh(tex,W,Hs,true);board.position.y=3.15;grp.add(board);
+  for(const sx of [-1,1]){const ch=new THREE.Mesh(new THREE.CylinderGeometry(0.012,0.012,0.22,5),gateMats().chain);ch.position.set(sx*(W/2-0.25),3.6,0);grp.add(ch);}
+  mergeChildren(grp);scene.add(grp);
+  // timing strip painted across the tread, following its shape
+  const ps=[],uvs=[],ix=[];const N=10;for(let j=0;j<2;j++)for(let i=0;i<=N;i++){const d=lerp(-tr.w*0.97,tr.w*0.97,i/N),ss=s+(j?0.22:-0.22);const q={};trailPoint(tr,ss,q);ps.push(q.x+q.tz*d,surfH(tr,ss,d,false)+0.012,q.z-q.tx*d);uvs.push(i/N,j);}
+  for(let i=0;i<N;i++){const a=i,b=i+1,c=i+N+1,d=i+N+2;ix.push(a,c,b,b,c,d);}
+  const sg=new THREE.BufferGeometry();sg.setAttribute('position',new THREE.Float32BufferAttribute(ps,3));sg.setAttribute('uv',new THREE.Float32BufferAttribute(uvs,2));sg.setIndex(ix);sg.computeVertexNormals();
+  const st=toTex((()=>{const c=mkCanvas(256,32),g=c.getContext('2d');if(checker){for(let i=0;i<32;i++)for(let j=0;j<4;j++){g.fillStyle=(i+j)%2?'#1a1a1a':'#eeeae0';g.fillRect(i*8,j*8,8,8);}}
+    else{g.fillStyle='#eeeae0';g.fillRect(0,0,256,32);g.fillStyle=tr.def.diff==='blue'?'#1f63c8':tr.def.diff==='green'?'#1f9d4a':'#1a1a1a';g.fillRect(0,11,256,10);}
+    g.globalCompositeOperation='destination-out';for(let i=0;i<260;i++){g.fillStyle=`rgba(0,0,0,${0.2+R()*0.5})`;g.fillRect(R()*256,R()*32,1+R()*4,1+R()*2);}return c;})(),{repeat:false});
+  const sm=new THREE.Mesh(sg,new THREE.MeshStandardMaterial({map:st,transparent:true,roughness:0.9,polygonOffset:true,polygonOffsetFactor:-6,polygonOffsetUnits:-10,depthWrite:false}));sm.receiveShadow=true;sm.renderOrder=1;scene.add(sm);
+}
+// a soft-edged apron of packed dirt where each trail leaves the meadow, so the trail doesn't just start at a hard edge
+const APRONS=[];
+function nearApron(x,z){for(const a of APRONS){if(Math.hypot(x-a.x,z-a.z)<a.r*0.85)return true;}return false;}
+function planAprons(){APRONS.length=0;for(const tr of TR){if(!NODE[tr.from].top)continue;const p={};trailPoint(tr,1.5,p);APRONS.push({x:p.x-p.tx*1.5,z:p.z-p.tz*1.5,r:6.5+tr.w,tr});}}
+let apronTex=null;
+function addAprons(){
+  if(!apronTex){const S=512,c=mkCanvas(S,S),g=c.getContext('2d');const img=TXS.dirt.map.image;const pat=g.createPattern(img,'repeat');g.save();g.scale(0.5,0.5);g.fillStyle=pat;g.fillRect(0,0,S*2,S*2);g.restore();
+    g.fillStyle='rgba(60,40,24,.12)';g.fillRect(0,0,S,S);
+    for(let i=0;i<900;i++){const x=R()*S,y=R()*S;g.fillStyle=R()<0.65?'rgba(40,28,16,.3)':'rgba(190,165,128,.18)';g.beginPath();g.arc(x,y,0.5+R()*1.3,0,7);g.fill();}
+    // ragged, soft edge
+    const m=mkCanvas(S,S),q=m.getContext('2d');const id=q.createImageData(S,S);
+    for(let y=0;y<S;y++)for(let x=0;x<S;x++){const u=x/S*2-1,v=y/S*2-1;const r=Math.hypot(u,v);const a=Math.atan2(v,u);const edge=0.78+0.12*noise2(Math.cos(a)*2.2+5,Math.sin(a)*2.2)+0.05*noise2(u*9,v*9);
+      const al=clamp((edge-r)/0.16,0,1);id.data[(y*S+x)*4+3]=al*al*(3-2*al)*255;}
+    q.putImageData(id,0,0);g.globalCompositeOperation='destination-in';g.drawImage(m,0,0);apronTex=toTex(c,{repeat:false});}
+  const mat=new THREE.MeshStandardMaterial({map:apronTex,transparent:true,depthWrite:false,roughness:0.95,metalness:0,polygonOffset:true,polygonOffsetFactor:-3,polygonOffsetUnits:-6,color:0xcdbcaa});
+  for(const a of APRONS){const R0=a.r,G=18;const ps=[],uv=[],ix=[];
+    for(let j=0;j<=G;j++)for(let i=0;i<=G;i++){const u=i/G*2-1,v=j/G*2-1;const x=a.x+u*R0,z=a.z+v*R0;ps.push(x,groundH(x,z)+0.03,z);uv.push(i/G,1-j/G);}
+    for(let j=0;j<G;j++)for(let i=0;i<G;i++){const A=j*(G+1)+i,B=A+1,C=A+G+1,D=C+1;ix.push(A,C,B,B,C,D);}
+    const g=new THREE.BufferGeometry();g.setAttribute('position',new THREE.Float32BufferAttribute(ps,3));g.setAttribute('uv',new THREE.Float32BufferAttribute(uv,2));g.setIndex(ix);g.computeVertexNormals();
+    const m=new THREE.Mesh(g,mat);m.receiveShadow=true;m.renderOrder=1;scene.add(m);}
 }
 const MARKERS={post:[],plate:{}};
 function addMarkers(tr){
@@ -1739,81 +2000,107 @@ const bikeRoot=new THREE.Group();scene.add(bikeRoot);
 const leanPivot=new THREE.Group();leanPivot.position.y=-0.63;bikeRoot.add(leanPivot);
 const bikeBody=new THREE.Group();bikeBody.position.y=0.63;leanPivot.add(bikeBody);
 const bikeParts={};
-(function buildBike(){
-  const std=(c,r,m)=>new THREE.MeshStandardMaterial({color:col(c),roughness:r,metalness:m});
-  const mFrame=std(0x2a8a93,0.3,0.2),mBlack=std(0x2e3034,0.5,0.1),mGold=std(0xe0ad4c,0.3,0.35),mTire=std(0x242424,0.95,0),mRim=std(0x34363a,0.45,0.15),mGum=std(0xa9814f,0.85,0),
-        mSteel=std(0xb9bcbf,0.35,0.3),mGrip=std(0x151515,0.9,0),mGlove=std(0x2c2f33,0.85,0),mCuff=std(0xf3c13a,0.7,0),mSleeve=std(0x364a5c,0.9,0),mDecal=std(0xf3c13a,0.5,0.1);
+const BIKE_MATS=(()=>{const std=(c,r,m)=>new THREE.MeshStandardMaterial({color:col(c),roughness:r,metalness:m});
+  return {frame:std(0x2a8a93,0.3,0.2),black:std(0x2e3034,0.5,0.1),fork:std(0xe0ad4c,0.3,0.35),tire:std(0x242424,0.95,0),rim:std(0x34363a,0.45,0.15),gum:std(0xa9814f,0.85,0),
+    steel:std(0xb9bcbf,0.35,0.3),grip:std(0x151515,0.9,0),glove:std(0x2c2f33,0.85,0),cuff:std(0xf3c13a,0.7,0),sleeve:std(0x364a5c,0.9,0),decal:std(0xf3c13a,0.5,0.1),
+    spring:std(0xe2622a,0.4,0.3),caliper:std(0x333333,0.4,0.3)};})();
+// two bikes: the trail bike, and a downhill bike with a dual-crown fork, a coil shock, a slacker head angle and fatter tyres
+function buildBikeModel(dh){
+  const M=BIKE_MATS,mFrame=M.frame,mBlack=M.black,mGold=M.fork,mTire=M.tire,mRim=M.rim,mGum=M.gum,mSteel=M.steel,mGrip=M.grip,mGlove=M.glove,mCuff=M.cuff,mSleeve=M.sleeve,mDecal=M.decal;
+  const G0=new THREE.Group();bikeBody.add(G0);const P={};
   const up=new V3(0,1,0);
   function tube(a,b,r,mat,parent,seg){const d=new V3().subVectors(b,a);const L=d.length();const m=new THREE.Mesh(new THREE.CylinderGeometry(r,r,L,seg||12),mat);m.position.copy(a).addScaledVector(d,0.5);m.quaternion.setFromUnitVectors(up,d.normalize());m.castShadow=true;parent.add(m);return m;}
   const rotM=new THREE.Matrix4();
   function wheel(){
-    const w=new THREE.Group();
-    const tire=new THREE.Mesh(new THREE.TorusGeometry(0.338,0.034,14,56),mTire);tire.rotation.y=Math.PI/2;w.add(tire);
-    for(const sx of [-1,1]){const gw=new THREE.Mesh(new THREE.TorusGeometry(0.328,0.012,8,56),mGum);gw.rotation.y=Math.PI/2;gw.position.x=sx*0.024;w.add(gw);}
-    const knobs=[];for(let i=0;i<64;i++){const a=i/64*Math.PI*2;for(const sx of [-1,0,1]){if(sx!==0&&i%2)continue;const g=new THREE.BoxGeometry(sx?0.012:0.022,0.012,0.016);
-        g.rotateX(a);const rr=0.370-(sx?0.006:0);g.translate(sx*0.026,Math.cos(a)*rr,Math.sin(a)*rr);knobs.push(g);}}
+    const w=new THREE.Group();const tw=dh?0.041:0.034,kh=dh?0.016:0.012;
+    const tire=new THREE.Mesh(new THREE.TorusGeometry(0.338,tw,14,56),mTire);tire.rotation.y=Math.PI/2;w.add(tire);
+    for(const sx of [-1,1]){const gw=new THREE.Mesh(new THREE.TorusGeometry(0.326,0.012,8,56),mGum);gw.rotation.y=Math.PI/2;gw.position.x=sx*(tw-0.01);w.add(gw);}
+    const knobs=[];for(let i=0;i<64;i++){const a=i/64*Math.PI*2;for(const sx of [-1,0,1]){if(sx!==0&&i%2)continue;const g=new THREE.BoxGeometry(sx?0.013:0.024,kh,0.017);
+        g.rotateX(a);const rr=0.338+tw-0.002-(sx?0.006:0);g.translate(sx*(tw-0.008),Math.cos(a)*rr,Math.sin(a)*rr);knobs.push(g);}}
     w.add(new THREE.Mesh(mergeGeoms(knobs),mTire));
-    const rim=new THREE.Mesh(new THREE.TorusGeometry(0.305,0.014,8,48),mRim);rim.rotation.y=Math.PI/2;w.add(rim);
+    const rim=new THREE.Mesh(new THREE.TorusGeometry(0.305,dh?0.017:0.014,8,48),mRim);rim.rotation.y=Math.PI/2;w.add(rim);
     const sp=[];const q=new THREE.Quaternion();
-    for(let i=0;i<28;i++){const a=i/28*Math.PI*2;const side=i%2?1:-1;const a2=a+side*0.35;
+    for(let i=0;i<32;i++){const a=i/32*Math.PI*2;const side=i%2?1:-1;const a2=a+side*0.35;
       const A=new V3(side*0.03,Math.cos(a2)*0.028,Math.sin(a2)*0.028),B=new V3(0,Math.cos(a)*0.298,Math.sin(a)*0.298);const d=new V3().subVectors(B,A);
-      const g=new THREE.CylinderGeometry(0.0013,0.0013,d.length(),4);q.setFromUnitVectors(up,d.normalize());g.applyMatrix4(rotM.makeRotationFromQuaternion(q));
+      const g=new THREE.CylinderGeometry(0.0014,0.0014,d.length(),4);q.setFromUnitVectors(up,d.normalize());g.applyMatrix4(rotM.makeRotationFromQuaternion(q));
       g.translate((A.x+B.x)/2,(A.y+B.y)/2,(A.z+B.z)/2);sp.push(g);}
     w.add(new THREE.Mesh(mergeGeoms(sp),mSteel));
-    const hub=new THREE.Mesh(new THREE.CylinderGeometry(0.022,0.022,0.1,12),mBlack);hub.rotation.z=Math.PI/2;w.add(hub);
-    const rot=new THREE.Mesh(new THREE.RingGeometry(0.068,0.1,28),new THREE.MeshStandardMaterial({color:col(0xc9ccd0),metalness:0.3,roughness:0.4,side:THREE.DoubleSide}));rot.rotation.y=Math.PI/2;rot.position.x=-0.055;w.add(rot);
+    const hub=new THREE.Mesh(new THREE.CylinderGeometry(0.024,0.024,0.11,12),mBlack);hub.rotation.z=Math.PI/2;w.add(hub);
+    const rot=new THREE.Mesh(new THREE.RingGeometry(0.068,dh?0.11:0.1,28),new THREE.MeshStandardMaterial({color:col(0xc9ccd0),metalness:0.3,roughness:0.4,side:THREE.DoubleSide}));rot.rotation.y=Math.PI/2;rot.position.x=-0.058;w.add(rot);
     w.traverse(o=>{if(o.isMesh)o.castShadow=true;});return w;
   }
-  const HT=new V3(0,0.325,-0.33),HB=new V3(0,0.195,-0.39),BB=new V3(0,-0.28,0.16),ST=new V3(0,0.2,0.24);
-  tube(HB,HT,0.029,mFrame,bikeBody);tube(new V3(0,0.30,-0.325),ST,0.022,mFrame,bikeBody);tube(new V3(0,0.20,-0.38),BB,0.03,mFrame,bikeBody);tube(BB,ST.clone().add(new V3(0,0.02,0.01)),0.024,mFrame,bikeBody);
-  tube(new V3(0,0.235,-0.37),new V3(0,0.18,-0.18),0.0305,mDecal,bikeBody,12).scale.set(1.02,0.35,1.02);
-  tube(ST,new V3(0,0.33,0.30),0.016,mBlack,bikeBody);
-  const seat=new THREE.Mesh(new THREE.BoxGeometry(0.13,0.04,0.26),mBlack);seat.position.set(0,0.35,0.31);bikeBody.add(seat);
+  const BB=new V3(0,-0.28,0.16);
+  const HT=dh?new V3(0,0.345,-0.27):new V3(0,0.325,-0.33),HB=dh?new V3(0,0.2,-0.33):new V3(0,0.195,-0.39),ST=dh?new V3(0,0.16,0.21):new V3(0,0.2,0.24);
+  const hAng=dh?0.56:0.436;
+  if(dh){ // beefy hydroformed tubes, a gusset, a coil shock between the down tube and the rocker
+    tube(HB,HT,0.033,mFrame,G0);tube(new V3(0,0.315,-0.27),ST,0.027,mFrame,G0);tube(new V3(0,0.215,-0.315),BB,0.038,mFrame,G0);tube(BB,ST.clone().add(new V3(0,0.03,0.01)),0.029,mFrame,G0);
+    tube(new V3(0,0.25,-0.3),new V3(0,0.15,-0.2),0.036,mDecal,G0,12).scale.set(1.03,0.4,1.03);
+    tube(new V3(0,0.12,-0.12),new V3(0,0.05,0.12),0.022,mFrame,G0);
+    const shA=new V3(0,-0.02,-0.06),shB=new V3(0,0.07,0.17);tube(shA,shB,0.022,mBlack,G0);tube(shA.clone().lerp(shB,0.72),shB,0.03,M.steel,G0);
+    const d=new V3().subVectors(shB,shA);const L=d.length();
+    class Helix extends THREE.Curve{getPoint(t,o){o=o||new V3();const a=t*Math.PI*2*7.5;return o.set(Math.cos(a)*0.034,t*L*0.6,Math.sin(a)*0.034);}}
+    const coil=new THREE.Mesh(new THREE.TubeGeometry(new Helix(),160,0.0065,6,false),M.spring);coil.position.copy(shA).addScaledVector(d,0.12);coil.quaternion.setFromUnitVectors(up,d.clone().normalize());G0.add(coil);
+    tube(ST,new V3(0,0.21,0.27),0.017,mBlack,G0);
+    const seat=new THREE.Mesh(new THREE.BoxGeometry(0.13,0.04,0.25),mBlack);seat.position.set(0,0.225,0.29);seat.rotation.x=0.08;G0.add(seat);
+    const guide=new THREE.Mesh(new THREE.BoxGeometry(0.012,0.07,0.12),mBlack);guide.position.set(0.062,0.07,0.16);G0.add(guide);
+  }else{
+    tube(HB,HT,0.029,mFrame,G0);tube(new V3(0,0.30,-0.325),ST,0.022,mFrame,G0);tube(new V3(0,0.20,-0.38),BB,0.03,mFrame,G0);tube(BB,ST.clone().add(new V3(0,0.02,0.01)),0.024,mFrame,G0);
+    tube(new V3(0,0.235,-0.37),new V3(0,0.18,-0.18),0.0305,mDecal,G0,12).scale.set(1.02,0.35,1.02);
+    tube(ST,new V3(0,0.33,0.30),0.016,mBlack,G0);
+    const seat=new THREE.Mesh(new THREE.BoxGeometry(0.13,0.04,0.26),mBlack);seat.position.set(0,0.35,0.31);G0.add(seat);
+  }
   // drivetrain: chainring, crank arms (they turn when you pedal) and flat pedals that stay level
-  const crank=new THREE.Group();crank.position.copy(BB);bikeBody.add(crank);bikeParts.crank=crank;
+  const crank=new THREE.Group();crank.position.copy(BB);G0.add(crank);P.crank=crank;
   const ring=new THREE.Mesh(new THREE.TorusGeometry(0.085,0.007,6,32),mSteel);ring.rotation.y=Math.PI/2;ring.position.x=0.052;crank.add(ring);
   const spider=new THREE.Mesh(new THREE.CylinderGeometry(0.035,0.035,0.012,10),mBlack);spider.rotation.z=Math.PI/2;spider.position.x=0.05;crank.add(spider);
   const axle=new THREE.Mesh(new THREE.CylinderGeometry(0.018,0.018,0.15,10),mBlack);axle.rotation.z=Math.PI/2;crank.add(axle);
   for(const sx of [-1,1]){const arm=new THREE.Mesh(new THREE.BoxGeometry(0.022,0.03,0.18),mBlack);arm.position.set(sx*0.072,0,sx*-0.075);crank.add(arm);}
   const chain=[];for(const y of [0.085,-0.085]){const g=new THREE.CylinderGeometry(0.004,0.004,0.47,4);g.rotateX(Math.PI/2);g.translate(0.052,y*(y>0?0.78:0.6),0.235);chain.push(g);}
-  const ch=new THREE.Mesh(mergeGeoms(chain),mSteel);ch.position.copy(BB);bikeBody.add(ch);
-  bikeParts.pedals=[-1,1].map(sx=>{const p=new THREE.Group();const plat=new THREE.Mesh(new THREE.BoxGeometry(0.1,0.018,0.1),mBlack);plat.position.x=sx*0.05;p.add(plat);
-    const sp=new THREE.Mesh(new THREE.CylinderGeometry(0.008,0.008,0.05,6),mSteel);sp.rotation.z=Math.PI/2;sp.position.x=-sx*0.01;p.add(sp);bikeBody.add(p);p.userData.sx=sx;return p;});
-  const swing=new THREE.Group();swing.position.copy(BB).add(new V3(0,0.06,0.02));bikeBody.add(swing);bikeParts.swing=swing;
-  const rw=wheel();bikeParts.rearWheel=rw;bikeBody.add(rw);
-  for(const sx of [-1,1])tube(new V3(sx*0.06,0,0),new V3(sx*0.065,0,0.44),0.013,mFrame,swing);
-  const steerAxis=new THREE.Group();steerAxis.position.set(0,0.195,-0.39);steerAxis.rotation.x=0.436;bikeBody.add(steerAxis);
-  const steer=new THREE.Group();steerAxis.add(steer);bikeParts.steer=steer;
-  const crown=new THREE.Mesh(new THREE.BoxGeometry(0.2,0.05,0.07),mBlack);crown.position.set(0,0,-0.03);crown.castShadow=true;steer.add(crown);
-  for(const sx of [-1,1])tube(new V3(sx*0.058,0.02,-0.035),new V3(sx*0.058,-0.25,-0.035),0.0185,mGold,steer);
-  tube(new V3(0,0,0),new V3(0,0.2,0),0.02,mBlack,steer);
-  const stem=new THREE.Mesh(new THREE.BoxGeometry(0.046,0.042,0.075),mBlack);stem.position.set(0,0.19,-0.025);stem.castShadow=true;steer.add(stem);
-  const cap=new THREE.Mesh(new THREE.CylinderGeometry(0.018,0.018,0.012,16),mSteel);cap.position.set(0,0.215,0);steer.add(cap);
-  const bars=new THREE.Group();bars.position.set(0,0.19,-0.055);bars.rotation.x=-0.436;steer.add(bars);bikeParts.bars=bars;bikeParts.fpMats=[mGlove,mCuff,mSleeve];
-  for(const sx of [-1,1]){const a=new THREE.Object3D();a.position.set(sx*0.325,0.05,0.03);bars.add(a);bikeParts[sx<0?'gripL':'gripR']=a;}
+  const ch=new THREE.Mesh(mergeGeoms(chain),mSteel);ch.position.copy(BB);G0.add(ch);
+  P.pedals=[-1,1].map(sx=>{const p=new THREE.Group();const plat=new THREE.Mesh(new THREE.BoxGeometry(0.1,0.018,0.1),mBlack);plat.position.x=sx*0.05;p.add(plat);
+    const sp=new THREE.Mesh(new THREE.CylinderGeometry(0.008,0.008,0.05,6),mSteel);sp.rotation.z=Math.PI/2;sp.position.x=-sx*0.01;p.add(sp);G0.add(p);p.userData.sx=sx;return p;});
+  const swing=new THREE.Group();swing.position.copy(BB).add(new V3(0,0.06,0.02));G0.add(swing);P.swing=swing;
+  const rw=wheel();P.rearWheel=rw;G0.add(rw);
+  for(const sx of [-1,1])tube(new V3(sx*0.06,0,0),new V3(sx*0.065,0,0.44),dh?0.017:0.013,mFrame,swing);
+  if(dh){const rock=new THREE.Mesh(new THREE.BoxGeometry(0.1,0.03,0.12),mFrame);rock.position.set(0,0.02,0.12);swing.add(rock);}
+  const steerAxis=new THREE.Group();steerAxis.position.copy(HB);steerAxis.rotation.x=hAng;G0.add(steerAxis);
+  const steer=new THREE.Group();steerAxis.add(steer);P.steer=steer;
+  const crown=new THREE.Mesh(new THREE.BoxGeometry(dh?0.21:0.2,0.05,0.07),mBlack);crown.position.set(0,0,-0.03);crown.castShadow=true;steer.add(crown);
+  const topY=dh?0.215:0.19; // dual crown: stanchions run up past the head tube to a top crown; the stem bolts on top of it
+  for(const sx of [-1,1])tube(new V3(sx*0.06,dh?topY+0.03:0.02,-0.035),new V3(sx*0.06,-0.25,-0.035),dh?0.0195:0.0185,mGold,steer);
+  if(dh){const c2=new THREE.Mesh(new THREE.BoxGeometry(0.2,0.04,0.065),mBlack);c2.position.set(0,topY,-0.03);steer.add(c2);}
+  tube(new V3(0,0,0),new V3(0,topY+0.01,0),0.02,mBlack,steer);
+  const stem=new THREE.Mesh(new THREE.BoxGeometry(0.05,0.035,dh?0.05:0.075),mBlack);stem.position.set(0,topY+(dh?0.03:0),dh?-0.02:-0.025);stem.castShadow=true;steer.add(stem);
+  const cap=new THREE.Mesh(new THREE.CylinderGeometry(0.018,0.018,0.012,16),mSteel);cap.position.set(0,topY+0.025,0);steer.add(cap);
+  const bars=new THREE.Group();bars.position.set(0,topY+(dh?0.035:0),dh?-0.04:-0.055);bars.rotation.x=-hAng;steer.add(bars);P.bars=bars;P.fpMats=[mGlove,mCuff,mSleeve];
+  for(const sx of [-1,1]){const a=new THREE.Object3D();a.position.set(sx*0.325,0.05,0.03);bars.add(a);P[sx<0?'gripL':'gripR']=a;}
+  const rise=dh?0.055:0.034;
   for(const sx of [-1,1]){
-    tube(new V3(0,0,0),new V3(sx*0.1,0,0),0.0159,mBlack,bars);tube(new V3(sx*0.1,0,0),new V3(sx*0.16,0.034,0.004),0.0125,mBlack,bars);tube(new V3(sx*0.16,0.034,0.004),new V3(sx*0.395,0.042,0.03),0.0112,mBlack,bars);
-    tube(new V3(sx*0.265,0.039,0.013),new V3(sx*0.395,0.043,0.031),0.0165,mGrip,bars,14);
-    tube(new V3(sx*0.235,0.05,0.005),new V3(sx*0.3,0.034,-0.07),0.006,mSteel,bars,6);
-    const lever=new THREE.Mesh(new THREE.BoxGeometry(0.05,0.03,0.035),mBlack);lever.position.set(sx*0.225,0.052,0.004);bars.add(lever);
-    const glove=new THREE.Mesh(new THREE.SphereGeometry(0.05,14,10),mGlove);glove.scale.set(1.25,0.85,1.0);glove.position.set(sx*0.325,0.058,0.03);glove.castShadow=true;bars.add(glove);
-    const fing=new THREE.Mesh(new THREE.CylinderGeometry(0.02,0.02,0.1,10),mGlove);fing.rotation.z=Math.PI/2;fing.position.set(sx*0.33,0.03,-0.012);bars.add(fing);
-    tube(new V3(sx*0.28,0.07,0.035),new V3(sx*0.265,0.05,-0.005),0.013,mGlove,bars,8);
-    const cuffA=new V3(sx*0.345,0.075,0.085),elbow=new V3(sx*0.62,0.2,0.36);
-    tube(new V3(sx*0.33,0.064,0.05),cuffA,0.034,mCuff,bars,12);
+    tube(new V3(0,0,0),new V3(sx*0.1,0,0),0.0159,mBlack,bars);tube(new V3(sx*0.1,0,0),new V3(sx*0.16,rise,0.004),0.0125,mBlack,bars);tube(new V3(sx*0.16,rise,0.004),new V3(sx*0.395,rise+0.008,0.03),0.0112,mBlack,bars);
+    tube(new V3(sx*0.265,rise+0.005,0.013),new V3(sx*0.395,rise+0.009,0.031),0.0165,mGrip,bars,14);
+    tube(new V3(sx*0.235,rise+0.016,0.005),new V3(sx*0.3,rise,-0.07),0.006,mSteel,bars,6);
+    const lever=new THREE.Mesh(new THREE.BoxGeometry(0.05,0.03,0.035),mBlack);lever.position.set(sx*0.225,rise+0.018,0.004);bars.add(lever);
+    const glove=new THREE.Mesh(new THREE.SphereGeometry(0.05,14,10),mGlove);glove.scale.set(1.25,0.85,1.0);glove.position.set(sx*0.325,rise+0.024,0.03);glove.castShadow=true;bars.add(glove);
+    const fing=new THREE.Mesh(new THREE.CylinderGeometry(0.02,0.02,0.1,10),mGlove);fing.rotation.z=Math.PI/2;fing.position.set(sx*0.33,rise-0.004,-0.012);bars.add(fing);
+    tube(new V3(sx*0.28,rise+0.036,0.035),new V3(sx*0.265,rise+0.016,-0.005),0.013,mGlove,bars,8);
+    const cuffA=new V3(sx*0.345,rise+0.041,0.085),elbow=new V3(sx*0.62,rise+0.166,0.36);
+    tube(new V3(sx*0.33,rise+0.03,0.05),cuffA,0.034,mCuff,bars,12);
     const arm=tube(cuffA,elbow,0.036,mSleeve,bars,14);arm.geometry.dispose();arm.geometry=new THREE.CylinderGeometry(0.046,0.036,cuffA.distanceTo(elbow),14);
   }
-  const lowers=new THREE.Group();steer.add(lowers);bikeParts.lowers=lowers;
-  for(const sx of [-1,1])tube(new V3(sx*0.058,0,-0.035),new V3(sx*0.058,0.33,-0.035),0.027,mBlack,lowers);
-  const arch=new THREE.Mesh(new THREE.BoxGeometry(0.16,0.035,0.03),mBlack);arch.position.set(0,0.28,-0.075);lowers.add(arch);
-  const cal=new THREE.Mesh(new THREE.BoxGeometry(0.03,0.07,0.05),std(0x333333,0.4,0.3));cal.position.set(-0.07,0.09,0.03);lowers.add(cal);
-  const fw=wheel();fw.position.set(0,0,-0.044);lowers.add(fw);bikeParts.frontWheel=fw;
-  const inv=new THREE.MeshBasicMaterial({colorWrite:false,depthWrite:false});
-  const rider=new THREE.Group();bikeBody.add(rider);
-  const box=(sx,sy,sz,x,y,z,rx)=>{const m=new THREE.Mesh(new THREE.BoxGeometry(sx,sy,sz),inv);m.position.set(x,y,z);m.rotation.x=rx||0;m.castShadow=true;rider.add(m);};
-  box(0.36,0.62,0.2,0,0.78,0.12,-0.75);const head=new THREE.Mesh(new THREE.SphereGeometry(0.13,10,8),inv);head.position.set(0,1.02,-0.02);head.castShadow=true;rider.add(head);
-  for(const sx of [-1,1]){box(0.12,0.5,0.12,sx*0.13,0.05,0.22,0.35);box(0.1,0.5,0.1,sx*0.12,-0.1,0.1,-0.45);}
-})();
+  for(const sx of [-1,1])P[sx<0?'gripL':'gripR'].position.y=rise+0.016;
+  const lowers=new THREE.Group();steer.add(lowers);P.lowers=lowers;P.forkL=dh?0.6:0.56;
+  for(const sx of [-1,1])tube(new V3(sx*0.06,0,-0.035),new V3(sx*0.06,dh?0.36:0.33,-0.035),dh?0.029:0.027,mBlack,lowers);
+  if(!dh){const arch=new THREE.Mesh(new THREE.BoxGeometry(0.16,0.035,0.03),mBlack);arch.position.set(0,0.28,-0.075);lowers.add(arch);}
+  const cal=new THREE.Mesh(new THREE.BoxGeometry(0.03,0.07,0.05),M.caliper);cal.position.set(-0.07,0.09,0.03);lowers.add(cal);
+  const fw=wheel();fw.position.set(0,0,-0.044);lowers.add(fw);P.frontWheel=fw;
+  return {group:G0,parts:P};
+}
+const BIKES={trail:buildBikeModel(false),dh:buildBikeModel(true)};
+// how each bike rides: travel, pedalling power, and how hard a landing it takes before you crash
+const BIKE_STATS={trail:{trv:[0.16,0.15],power:520,crash:6.5},dh:{trv:[0.2,0.2],power:465,crash:8.2}};
+let CRASH_IMPACT=6.5;
+function setBikeModel(kind){if(!BIKES[kind])kind='trail';for(const k in BIKES)BIKES[k].group.visible=k===kind;Object.assign(bikeParts,BIKES[kind].parts);
+  const st=BIKE_STATS[kind];BK.TRV[0]=st.trv[0];BK.TRV[1]=st.trv[1];PH.POWER=st.power;CRASH_IMPACT=st.crash;}
 function mergeChildren(grp){ // merge the rigid parts of each moving group by material: far fewer draw calls
   const byMat=new Map();
   for(const ch of [...grp.children]){if(!ch.isMesh||Array.isArray(ch.material))continue;const k=ch.material.uuid;if(!byMat.has(k))byMat.set(k,{mat:ch.material,list:[]});byMat.get(k).list.push(ch);}
@@ -1824,7 +2111,7 @@ function mergeChildren(grp){ // merge the rigid parts of each moving group by ma
 }
 mergeChildren(bikeBody);
 // the moving bike doesn't go into the cached shadow map; a soft contact shadow sits under it instead
-bikeRoot.traverse(o=>{o.castShadow=false;});bikeBody.children.forEach(ch=>{if(ch.isGroup&&ch.children.some(m=>m.isMesh&&m.material&&m.material.colorWrite===false))ch.visible=false;});
+bikeRoot.traverse(o=>{o.castShadow=false;});
 const blob=(()=>{const c=mkCanvas(128,128),g=c.getContext('2d');const gr=g.createRadialGradient(64,64,4,64,64,62);gr.addColorStop(0,'rgba(0,0,0,0.62)');gr.addColorStop(0.55,'rgba(0,0,0,0.32)');gr.addColorStop(1,'rgba(0,0,0,0)');g.fillStyle=gr;g.fillRect(0,0,128,128);
   const t=new THREE.CanvasTexture(c);const m=new THREE.Mesh(new THREE.PlaneGeometry(1,1),new THREE.MeshBasicMaterial({map:t,transparent:true,depthWrite:false,polygonOffset:true,polygonOffsetFactor:-6,polygonOffsetUnits:-6,fog:true}));
   m.geometry.rotateX(-Math.PI/2);m.renderOrder=2;scene.add(m);return m;})();
@@ -1856,9 +2143,9 @@ function updateBlob(){const b=bike;if(!bikeRoot.visible){blob.visible=false;retu
   const k=clamp(1-h/3,0,1);blob.scale.set(0.95+h*0.3,1,2.0+h*0.3);blob.material.opacity=k;}
 function mergeGeoms(list){
   const parts=list.map(g=>g.index?g.toNonIndexed():g);let n=0;parts.forEach(g=>n+=g.attributes.position.count);
-  const pos=new Float32Array(n*3),nor=new Float32Array(n*3);let o=0;
-  for(const g of parts){pos.set(g.attributes.position.array,o*3);nor.set(g.attributes.normal.array,o*3);o+=g.attributes.position.count;}
-  const G2=new THREE.BufferGeometry();G2.setAttribute('position',new THREE.BufferAttribute(pos,3));G2.setAttribute('normal',new THREE.BufferAttribute(nor,3));return G2;
+  const pos=new Float32Array(n*3),nor=new Float32Array(n*3);const hasUV=parts.every(g=>g.attributes.uv);const uv=hasUV?new Float32Array(n*2):null;let o=0;
+  for(const g of parts){pos.set(g.attributes.position.array,o*3);nor.set(g.attributes.normal.array,o*3);if(uv)uv.set(g.attributes.uv.array,o*2);o+=g.attributes.position.count;}
+  const G2=new THREE.BufferGeometry();G2.setAttribute('position',new THREE.BufferAttribute(pos,3));G2.setAttribute('normal',new THREE.BufferAttribute(nor,3));if(uv)G2.setAttribute('uv',new THREE.BufferAttribute(uv,2));return G2;
 }
 
 // ---------- physics ----------
@@ -1940,7 +2227,7 @@ function physStep(dt){
     const za=(b.fw[i]*nu-Fc[i])/PH.MC-(aMain+alpha*sg*BK.H2);b.zv[i]+=za*dt;b.zv[i]=clamp(b.zv[i],-8,8);b.z[i]+=b.zv[i]*dt;}
   b.chatter=lerp(b.chatter,chat,0.05);
   b.vel.x+=ax*dt;b.vel.y+=ay*dt;b.vel.z+=az*dt;
-  const L=locate(b.pos.x,b.pos.z);
+  GH_PREF=b.cur;GH_S=b.curS;const L=prefLocate(b.pos.x,b.pos.z,LOC,LOCP);
   let crr=0.13,mu=0.8;b.surf='forest';
   if(L.t&&L.over<0.5&&L.ad<L.t.w+0.2){const S=SURF[surfType(L.t,L.s)];crr=S.crr;mu=S.mu;b.surf=S.name;}
   else if(L.t&&L.over<0.5&&L.ad<L.t.w+L.t.sw){crr=0.07;mu=0.95;b.surf='edge';}
@@ -2062,7 +2349,7 @@ function respawnNear(){
 function routeName(r){return r.map(id=>NET.byId[id].def.name).join(' → ');}
 function hardest(r){let best='green';for(const id of r){const d=NET.byId[id].def.diff;if(DIFF[d].rank>DIFF[best].rank)best=d;}return best;}
 function startRun(tr){run.active=true;run.route=[tr.id];run.t=0;run.air=0;run.top=0;run.crashes=0;run.startSeg=tr;updateRunChip();setHint(false);toast(tr.def.name,'Timer running');audio.beep();}
-function cancelRun(){run.active=false;run.route=[];$('runChip').hidden=true;}
+function cancelRun(){run.active=false;run.route=[];$('runChip').hidden=true;if(typeof CR!=='undefined'&&CR.active){CR.active=false;$('btnRestart').hidden=true;}}
 function updateRunChip(){const tr=bike.cur||run.startSeg;if(!tr)return;$('runSym').innerHTML=SYMSVG[DIFF[tr.def.diff].symbol];$('runName').textContent=tr.def.name;$('runChip').hidden=!run.active;
   $('runChip').style.setProperty('--c',tr.def.diff==='blue'?'#1f63c8':tr.def.diff==='green'?'#1f9d4a':'#f5f6ef');}
 function setHint(on){$('hint').hidden=!on;}
@@ -2091,7 +2378,7 @@ function checkTrees(){
 let wasAir=false,airTime=0;const LC={};
 function trackSegment(L){
   const b=bike;
-  if(!(L.t&&L.ad<L.t.w+1&&L.over<0.5)){if(run.active){b.offTimer+=STEP;if(b.offTimer>25){toast('Run cancelled','Too long off the trail');cancelRun();}}return;}
+  if(!(L.t&&L.ad<L.t.w+1&&L.over<0.5)){if(run.active){b.offTimer+=STEP;if(b.offTimer>25){if(CR.active){careerRestart('Too long off the trail');return;}toast('Run cancelled','Too long off the trail');cancelRun();}}return;}
   b.offTimer=0;b.lastTrail=L.t;b.lastS=L.s;let nt=L.t,ns=L.s;const cur=b.cur;
   if(cur&&nt!==cur){const P=locateOn(cur,b.pos.x,b.pos.z,b.curS,LC);
     if(P.ad<cur.w+0.6&&P.over<0.5){nt=cur;ns=P.s;} // still on the trail we were riding: overlap near a junction
@@ -2099,10 +2386,11 @@ function trackSegment(L){
   if(nt!==cur){
     if(cur&&nt.from===cur.to){b.stray=0;if(run.active)run.route.push(nt.id);}
     else if(cur&&nt.from===cur.from){b.stray=0;if(run.active)run.route[run.route.length-1]=nt.id;}
-    else if(run.active){b.stray=(b.stray||0)+STEP;if(b.stray<2.5){b.curS=locateOn(cur,b.pos.x,b.pos.z,b.curS,LC).s;return;}toast('Run cancelled','You left the marked route');cancelRun();}
+    else if(run.active){b.stray=(b.stray||0)+STEP;if(b.stray<2.5){b.curS=locateOn(cur,b.pos.x,b.pos.z,b.curS,LC).s;return;}if(CR.active){careerRestart('You left the trail');return;}toast('Run cancelled','You left the marked route');cancelRun();}
     b.cur=nt;updateRunChip();
   }else b.stray=0;
   b.curS=ns;
+  if(careerCheck(nt,ns))return;
   if(ns>12)setHint(false);
   const i=Math.round(ns);
   if(!run.active&&NODE[nt.from].top&&ns>9&&ns<40&&hf.x*nt.tx[i]+hf.z*nt.tz[i]>0)startRun(nt);
@@ -2117,7 +2405,7 @@ function gameStep(dt){
   if(!inAir&&wasAir&&airTime>0.12){if(airTime>0.45)airFlash(airTime);if(run.active)run.air+=airTime;}
   wasAir=inAir;
   if(b.land&&!b.land.done){b.land.done=true;const a=b.land.air;if(a>0.25)padRumble(Math.min(1,0.2+a*0.35+b.impact*0.06),0.35,110+Math.min(a,2)*90);}
-  if(b.impact>6.5)return crash('Landed too hard');
+  if(b.impact>CRASH_IMPACT)return crash('Landed too hard');
   { // over the bars: nose far below the ground you're on (a steep landing lets you point down further than flat ground)
     const hx=-Math.sin(b.yaw),hz=-Math.cos(b.yaw);const gS=Math.atan((groundH(b.pos.x+hx*0.62,b.pos.z+hz*0.62)-groundH(b.pos.x-hx*0.62,b.pos.z-hz*0.62))/1.24);
     if(b.pitch<Math.max(-1.5,Math.min(-1.15,gS-0.5)))return crash('Over the bars');}
@@ -2138,7 +2426,7 @@ function updateBikeVisual(){
   const b=bike;
   bikeRoot.position.copy(b.pos);bikeRoot.rotation.set(b.pitch,b.yaw,0,'YXZ');leanPivot.rotation.z=-b.lean*0.8;
   bikeBody.position.y=0.63+(b.z[0]+b.z[1])/2;bikeBody.rotation.x=Math.atan((b.z[0]-b.z[1])/(2*BK.H2));
-  bikeParts.lowers.position.y=-(0.56-b.comp[0]*0.95);bikeParts.steer.rotation.y=-b.steer;bikeParts.frontWheel.rotation.x=-b.spin[0];
+  bikeParts.lowers.position.y=-(bikeParts.forkL-b.comp[0]*0.95);bikeParts.steer.rotation.y=-b.steer;bikeParts.frontWheel.rotation.x=-b.spin[0];
   const er=BK.EMAX[1]-b.comp[1];bikeParts.rearWheel.position.set(0,-er,0.62);bikeParts.rearWheel.rotation.x=-b.spin[1];
   const sw=bikeParts.swing;sw.rotation.x=Math.atan2(-er-sw.position.y,0.62-sw.position.z);
   if(state==='crash'){const t=clamp(crashT/0.6,0,1),e=t*t*(3-2*t);leanPivot.rotation.z=-b.lean*0.8-(b.lean>0?1:-1)*1.3*e;} // down it goes, onto the side you were leaning
@@ -2549,7 +2837,7 @@ function pollPad(inAir){
 }
 // menus: move between buttons with the d-pad or stick, X to press, O to go back
 function padOverlay(){
-  for(const id of ['guide','mapView','pause','finish','menu']){const el=$(id);if(el&&!el.hidden)return el;}
+  for(const id of ['guide','mapView','careerDone','career','garage','pause','finish','menu']){const el=$(id);if(el&&!el.hidden)return el;}
   return null;}
 function padMenu(root,g,edge,lx,ly){
   const now=performance.now();let dx=0,dy=0;
@@ -2565,7 +2853,7 @@ function padMenu(root,g,edge,lx,ly){
         const along=dx?ex*dx:ey*dy,across=dx?Math.abs(ey):Math.abs(ex);if(along<=4)continue;const sc=along+across*2.2;if(sc<bs){bs=sc;best=b;}}
       if(best)padFocus(best);}}
   if(edge(BTN.X)){if(cur)cur.click();else if(items[0])padFocus(items[0]);}
-  if(edge(BTN.O)){if(root.id==='guide')$('btnGuideClose').click();else if(root.id==='mapView')$('btnMapClose').click();else if(root.id==='pause')togglePause();}
+  if(edge(BTN.O)){if(root.id==='guide')$('btnGuideClose').click();else if(root.id==='mapView')$('btnMapClose').click();else if(root.id==='pause')togglePause();else if(root.id==='career')$('btnCareerClose').click();else if(root.id==='garage')$('btnGarageClose').click();}
   if(edge(BTN.OPT)&&root.id==='pause')togglePause();
 }
 function padFocus(el){try{el.focus({preventScroll:false});}catch(_){el.focus();}document.querySelectorAll('.pad-focus').forEach(e=>e.classList.remove('pad-focus'));el.classList.add('pad-focus');}
@@ -2699,7 +2987,139 @@ function applyCamMode(){const tp=thirdPerson();RIDER.g.visible=tp;
   if(typeof setToggles==='function'&&$('tCam'))$('tCam').querySelector('b').textContent=tp?'Third person':'First person';
   document.querySelectorAll('#segCam button').forEach(bt=>bt.setAttribute('aria-checked',String(+bt.dataset.v===(settings.cam|0))));}
 function toggleCam(){settings.cam=thirdPerson()?0:1;applyCamMode();saveSettings();if(state==='ride'&&typeof toast==='function')toast(thirdPerson()?'Third person':'First person','',900);}
-applyCamMode();
+
+
+// ===================================================================
+//  Garage (which bike, and the colours of bike and rider) and Career mode
+// ===================================================================
+const LOOKS={
+  frame:{label:'Frame',items:[['teal','Glacier teal',0x2a8a93],['black','Stealth black',0x1d1f23],['white','Chalk white',0xe8e8e4],['green','Forest green',0x2f7d4a],['red','Fire red',0xc2312b],['orange','Sunset orange',0xe8762c],
+    ['blue','Electric blue',0x2459d8],['purple','Huckleberry',0x6b3fa0],['gold','Gold rush',0xcf9f3e],['raw','Raw alloy',0x9ca3aa],['pink','Salmonberry',0xe0508f]]},
+  fork:{label:'Fork',items:[['gold','Gold',0xe0ad4c],['black','Black',0x2a2c30],['silver','Silver',0xc4c8cc],['red','Red',0xc2312b],['blue','Blue',0x2f63d0]]},
+  rim:{label:'Rims',items:[['black','Black',0x34363a],['silver','Silver',0xb8bcc0],['gold','Gold',0xcf9f3e],['red','Red',0xc2312b]]},
+  jersey:{label:'Jersey',items:[['slate','Slate',0x364a5c],['red','Red',0xb83a32],['white','White',0xe6e4de],['green','Moss',0x2d6e45],['orange','Orange',0xe07a2c],['yellow','Yellow',0xe8c23a],
+    ['pink','Pink',0xd9558d],['black','Black',0x202226],['sky','Sky',0x4a9ad8],['purple','Huckleberry',0x6b3fa0]]},
+  stripe:{label:'Stripe',items:[['gold','Gold',0xf3c13a],['white','White',0xeeeeee],['red','Red',0xd0342c],['green','Green',0x49b36a],['cyan','Cyan',0x39c2d0]]},
+  pants:{label:'Pants',items:[['black','Black',0x2a2c30],['grey','Grey',0x6b6f75],['navy','Navy',0x263a5a],['olive','Olive',0x55603a],['tan','Tan',0xb49a74]]},
+  helmet:{label:'Helmet',items:[['white','White',0xe8e4d8],['black','Black',0x25272b],['red','Red',0xc4352d],['orange','Orange',0xe57a2a],['blue','Blue',0x2f63d0],['yellow','Yellow',0xe7c33a],
+    ['green','Green',0x2f8a50],['gold','Gold',0xd4a53c]]},
+};
+const LOOK_FREE={frame:['teal','black','white','green'],fork:['gold','black'],rim:['black'],jersey:['slate','red','white'],stripe:['gold','white'],pants:['black','grey'],helmet:['white','black']};
+// one reward for every trail finished in Career, in order
+const REWARDS=[['frame','red'],['jersey','green'],['helmet','red'],['rim','silver'],['frame','orange'],['fork','silver'],['jersey','orange'],['stripe','red'],['frame','blue'],['pants','navy'],
+  ['helmet','orange'],['jersey','yellow'],['rim','gold'],['frame','purple'],['fork','red'],['stripe','green'],['jersey','pink'],['helmet','blue'],['pants','olive'],['frame','gold'],
+  ['jersey','black'],['rim','red'],['helmet','yellow'],['jersey','purple'],['frame','raw'],['stripe','cyan'],['fork','blue'],['jersey','sky'],['pants','tan'],['helmet','green'],['frame','pink'],['helmet','gold']];
+const CAREER=[
+  {lvl:'green',title:'Green circle',sub:'First turns on the easy flow',ids:['salal','fern','fernL','fernB']},
+  {lvl:'blue',title:'Blue square',sub:'Flow, berms and tables',ids:['kingU','kingM','kingL','kingB','hemlock','salmon','coho','cohoL']},
+  {lvl:'blue',title:'Blue square',sub:'Loam, bridges and the long traverses',ids:['cedarU','cedarB','cedarM','cedarL','cedarX','hl1','hl2','ll1','ll2','ll3','side']},
+  {lvl:'black',title:'Black diamond',sub:'Roots, rock and big air',ids:['deadfall','root','air','slab','spur']},
+  {lvl:'dbl',title:'Double black',sub:'The steepest and the biggest',ids:['widowU','chute','freefall','freefallL']}];
+CAREER.forEach(l=>l.ids=l.ids.filter(id=>NET.byId[id]));
+const CAREER_IDS=CAREER.flatMap(l=>l.ids);
+const CKEY='singletrack.career.v1';const careerSave=Object.assign({done:{}},store.get(CKEY,{}));if(!careerSave.done)careerSave.done={};
+function careerDoneCount(){return CAREER_IDS.filter(id=>careerSave.done[id]!=null).length;}
+function eventOpen(i){return i===0||careerSave.done[CAREER_IDS[i]]!=null||careerSave.done[CAREER_IDS[i-1]]!=null;}
+function lookUnlockIndex(cat,id){if(LOOK_FREE[cat].includes(id))return -1;return REWARDS.findIndex(r=>r[0]===cat&&r[1]===id);}
+function lookUnlocked(cat,id){const k=lookUnlockIndex(cat,id);return k<0||k<careerDoneCount();}
+function lookItem(cat,id){return LOOKS[cat].items.find(x=>x[0]===id)||LOOKS[cat].items[0];}
+const hex6=c=>'#'+c.toString(16).padStart(6,'0');
+
+// ---------- applying the looks ----------
+function currentLook(){const L=Object.assign({frame:'teal',fork:'gold',rim:'black',jersey:'slate',stripe:'gold',pants:'black',helmet:'white'},settings.look||{});
+  for(const c in L)if(!LOOKS[c]||!lookUnlocked(c,L[c]))L[c]=(LOOK_FREE[c]||[L[c]])[0];return L;}
+function applyLooks(){const L=currentLook(),M=BIKE_MATS,R=RIDER.M;const c=k=>col(lookItem(k,L[k])[2]);
+  M.frame.color.copy(c('frame'));M.fork.color.copy(c('fork'));M.rim.color.copy(c('rim'));
+  M.sleeve.color.copy(c('jersey'));R.jersey.color.copy(c('jersey'));M.cuff.color.copy(c('stripe'));R.stripe.color.copy(c('stripe'));M.decal.color.copy(c('stripe'));
+  R.pants.color.copy(c('pants'));R.helmet.color.copy(c('helmet'));}
+
+// ---------- garage ----------
+let garTab='bike',garAng=0.9,garDrag=null,garPrevState='menu';
+function showGarage(){garPrevState=state;$('menu').hidden=true;$('garage').hidden=false;state='garage';placeBike(SPAWN.x,SPAWN.z,0.45,0,0);bike.cur=null;
+  RIDER.g.visible=true;bikeBody.traverse(o=>{if(o.isMesh&&bikeParts.fpMats.includes(o.material))o.visible=false;});renderGarage();
+  setTimeout(()=>{try{$('btnGarageClose').focus({preventScroll:true});}catch(e){}},30);}
+function closeGarage(){$('garage').hidden=true;camera.clearViewOffset();applyCamMode();saveSettings();state='menu';$('menu').hidden=false;refreshMenu();setTimeout(()=>{try{$('btnGarage').focus({preventScroll:true});}catch(e){}},30);}
+function updateGarageCam(dt){if(!garDrag)garAng+=dt*0.22*(reduceMotion?0:1);const b=bike;const R=2.75;
+  camera.position.set(b.pos.x+Math.sin(garAng)*R,b.pos.y+0.75,b.pos.z+Math.cos(garAng)*R);camera.lookAt(b.pos.x,b.pos.y+0.32,b.pos.z);camera.rotation.z=0;
+  const wide=innerWidth>innerHeight*1.15;if(wide)camera.setViewOffset(innerWidth,innerHeight,innerWidth*0.2,0,innerWidth,innerHeight);else camera.setViewOffset(innerWidth,innerHeight,0,innerHeight*0.2,innerWidth,innerHeight);
+  const f=wide?44:52;if(camera.fov!==f){camera.fov=f;camera.updateProjectionMatrix();}}
+function swatchRow(cat){
+  const L=currentLook();const items=LOOKS[cat].items.map(([id,name,c])=>{const ok=lookUnlocked(cat,id);const k=lookUnlockIndex(cat,id);
+    const lock=ok?'':`<svg viewBox="0 0 20 20" aria-hidden="true"><rect x="5" y="9" width="10" height="8" rx="1.5" fill="currentColor"/><path d="M7 9V7a3 3 0 0 1 6 0v2" fill="none" stroke="currentColor" stroke-width="2"/></svg>`;
+    return `<button class="swatch${ok?'':' locked'}" data-cat="${cat}" data-id="${id}" data-k="${k}" style="--c:${hex6(c)}" aria-pressed="${L[cat]===id}" aria-label="${name}${ok?'':' (locked)'}" title="${name}">${lock}</button>`;}).join('');
+  return `<div class="gar-row"><span class="opt-l">${LOOKS[cat].label} <small>${lookItem(cat,L[cat])[1]}</small></span><div class="swatches">${items}</div></div>`;}
+function renderGarage(){
+  document.querySelectorAll('#garTabs button').forEach(b=>{b.setAttribute('aria-selected',String(b.dataset.t===garTab));b.setAttribute('aria-checked',String(b.dataset.t===garTab));});
+  const bk=settings.bike||'trail';let h='';
+  if(garTab==='bike'){
+    h+=`<div class="bike-pick"><button class="bike-card" data-bike="trail" aria-pressed="${bk==='trail'}"><b>Trail bike</b><span>150 mm of travel. Light, quick to pedal, easy to throw around.</span></button>
+      <button class="bike-card" data-bike="dh" aria-pressed="${bk==='dh'}"><b>Downhill bike</b><span>200 mm, dual crown and a coil shock. Soaks up big landings, slower to pedal.</span></button></div>`;
+    h+=swatchRow('frame')+swatchRow('fork')+swatchRow('rim');
+  }else h+=swatchRow('jersey')+swatchRow('stripe')+swatchRow('pants')+swatchRow('helmet');
+  h+=`<p class="gar-note">${careerDoneCount()} of ${REWARDS.length} colours won. Finish trails in Career to unlock the rest.</p>`;
+  $('garBody').innerHTML=h;
+  $('garBody').querySelectorAll('.bike-card').forEach(b=>b.onclick=()=>{settings.bike=b.dataset.bike;setBikeModel(settings.bike);saveSettings();renderGarage();refocus(b.dataset.bike,'[data-bike]');});
+  $('garBody').querySelectorAll('.swatch').forEach(b=>b.onclick=()=>{const cat=b.dataset.cat,id=b.dataset.id;
+    if(b.classList.contains('locked')){const k=+b.dataset.k;const ev=CAREER_IDS[k];toast('Locked',ev?'Finish '+NET.byId[ev].def.name+' in Career ('+(k+1)+' of '+CAREER_IDS.length+')':'Keep riding Career',2200);return;}
+    settings.look=Object.assign({},currentLook(),{[cat]:id});applyLooks();saveSettings();renderGarage();refocus(id,`[data-cat="${cat}"][data-id="${id}"]`);});
+}
+function refocus(_,sel){const el=$('garBody').querySelector(sel);if(el&&PAD.active)padFocus(el);}
+$('garTabs').querySelectorAll('button').forEach(b=>b.onclick=()=>{garTab=b.dataset.t;renderGarage();});
+$('btnGarage').onclick=()=>{audio.init();showGarage();};$('btnGarageClose').onclick=closeGarage;
+(()=>{const cv=$('gl');cv.addEventListener('pointerdown',e=>{if(state==='garage'){garDrag={x:e.clientX,a:garAng};}});
+  addEventListener('pointermove',e=>{if(garDrag)garAng=garDrag.a-(e.clientX-garDrag.x)*0.008;});addEventListener('pointerup',()=>{garDrag=null;});})();
+
+// ---------- career ----------
+const CR={active:false,idx:-1,seg:null};
+function showCareer(){$('menu').hidden=true;$('careerDone').hidden=true;$('career').hidden=false;renderCareer();state=state==='garage'?'menu':state;
+  setTimeout(()=>{const nx=$('crList').querySelector('.cr-ev.next')||$('btnCareerClose');try{nx.focus({preventScroll:false});nx.scrollIntoView({block:'center'});}catch(e){}},40);}
+function closeCareer(){$('career').hidden=true;$('menu').hidden=false;refreshMenu();setTimeout(()=>{try{$('btnCareer').focus({preventScroll:true});}catch(e){}},30);}
+function renderCareer(){
+  const n=careerDoneCount();$('crProg').textContent=n===CAREER_IDS.length?`All ${n} trails done. You finished the Career.`:`${n} of ${CAREER_IDS.length} trails done. Each one unlocks a new colour in the Garage.`;
+  let h='',i=0;const nextI=CAREER_IDS.findIndex(id=>careerSave.done[id]==null);
+  for(const L of CAREER){h+=`<h3 class="cr-lvl" style="--c:${DIFF[L.lvl].color==='#000000'?'#f5f6ef':DIFF[L.lvl].color}">${SYMSVG[DIFF[L.lvl].symbol]}<span>${L.title}</span><small>${L.sub}</small></h3><div class="cr-grid">`;
+    for(const id of L.ids){const tr=NET.byId[id],done=careerSave.done[id],open=eventOpen(i),rw=REWARDS[i];const it=rw?lookItem(rw[0],rw[1]):null;
+      const st=done!=null?`<span class="cr-st done">✓ ${fmtTime(done)}</span>`:open?`<span class="cr-st go">Ride</span>`:`<span class="cr-st lock"><svg viewBox="0 0 20 20" aria-hidden="true"><rect x="5" y="9" width="10" height="8" rx="1.5" fill="currentColor"/><path d="M7 9V7a3 3 0 0 1 6 0v2" fill="none" stroke="currentColor" stroke-width="2"/></svg></span>`;
+      h+=`<button class="cr-ev${i===nextI?' next':''}${open?'':' locked'}" data-i="${i}" ${open?'':'aria-disabled="true"'}><span class="cr-n">${i+1}</span><span class="cr-nm"><b>${tr.def.name}</b><small>${(tr.len/1000).toFixed(1)} km · ${tr.def.desc}</small></span>${st}${it?`<span class="cr-rw" style="--c:${hex6(it[2])}" title="Unlocks ${it[1]} ${LOOKS[rw[0]].label.toLowerCase()}"></span>`:''}</button>`;i++;}
+    h+='</div>';}
+  $('crList').innerHTML=h;
+  $('crList').querySelectorAll('.cr-ev').forEach(b=>b.onclick=()=>{const k=+b.dataset.i;if(!eventOpen(k)){toast('Locked','Finish '+NET.byId[CAREER_IDS[k-1]].def.name+' first',1800);return;}startCareerEvent(k);});
+}
+function startCareerEvent(i){
+  const id=CAREER_IDS[i],tr=NET.byId[id];audio.init();
+  ['career','careerDone','menu','finish','pause','garage'].forEach(x=>$(x).hidden=true);paused=false;camera.clearViewOffset();applyCamMode();
+  fade(true);setTimeout(()=>{
+    const s=NODE[tr.from].top?2:5;const p={};trailPoint(tr,s,p);const g=(sampleA(tr.base,s+1,1)-sampleA(tr.base,s-1,1))/2;
+    placeBike(p.x,p.z,yawOf(p),NODE[tr.from].top?0:Math.min(5,tr.vd[Math.round(s)]*0.6),Math.atan(g));bike.cur=tr;bike.curS=s;bike.finNote=true;
+    CR.active=true;CR.idx=i;CR.seg=tr;
+    run.active=true;run.route=[id];run.t=0;run.air=0;run.top=0;run.crashes=0;run.startSeg=tr;updateRunChip();setHint(false);JX.node=null;renderJunctionHUD();
+    state='ride';showRideUI();$('btnRestart').hidden=false;fade(false);toast(tr.def.name,'Career '+(i+1)+' of '+CAREER_IDS.length+': ride to the end',2000);audio.beep();},320);
+}
+function careerRestart(why){toast('Trail restarted',why,1600);startCareerEvent(CR.idx);}
+function careerCheck(nt,ns){ // true when the career trail has just been finished
+  if(!CR.active)return false;const seg=CR.seg;
+  if((nt===seg&&ns>seg.len-12)||(nt!==seg&&nt.from===seg.to)){careerComplete();return true;}
+  return false;}
+function careerComplete(){
+  const t=run.t,id=CR.seg.id,i=CR.idx;const before=careerDoneCount(),prev=careerSave.done[id];const isBest=prev==null||t<prev;if(isBest)careerSave.done[id]=t;store.set(CKEY,careerSave);
+  const after=careerDoneCount();const tr=CR.seg;CR.active=false;run.active=false;$('runChip').hidden=true;$('btnRestart').hidden=true;
+  $('cdKick').textContent=`Career · trail ${i+1} of ${CAREER_IDS.length}`;$('cdCard').style.setProperty('--c',tr.def.diff==='blue'?'#1f63c8':tr.def.diff==='green'?'#1f9d4a':'#f5f6ef');
+  $('cdTitle').innerHTML=SYMSVG[DIFF[tr.def.diff].symbol];$('cdTitle').append(document.createTextNode(tr.def.name));$('cdTime').textContent=fmtTime(t);
+  $('cdBest').textContent=prev==null?'Trail complete':isBest?'New best, down from '+fmtTime(prev):'Your best here is '+fmtTime(prev);$('cdBest').classList.toggle('new',isBest);
+  const rw=after>before?REWARDS[after-1]:null;$('cdReward').hidden=!rw;
+  if(rw){const it=lookItem(rw[0],rw[1]);$('cdReward').style.setProperty('--c',hex6(it[2]));$('cdRewardName').textContent=`${it[1]} ${LOOKS[rw[0]].label.toLowerCase()}`;}
+  const nextI=CAREER_IDS.findIndex(x=>careerSave.done[x]==null);$('btnCdNext').hidden=nextI<0;$('btnCdNext').textContent=nextI<0?'':'Next: '+NET.byId[CAREER_IDS[nextI]].def.name;
+  $('cdAll').hidden=!(after===CAREER_IDS.length&&before<after);
+  state='finish';$('careerDone').hidden=false;$('touch').hidden=true;JX.node=null;renderJunctionHUD();audio.finish();
+  setTimeout(()=>{try{($('btnCdNext').hidden?$('btnCdCareer'):$('btnCdNext')).focus({preventScroll:true});}catch(e){}},50);
+}
+$('btnCareer').onclick=()=>{audio.init();showCareer();};$('btnCareerClose').onclick=closeCareer;
+$('btnCdNext').onclick=()=>{const k=CAREER_IDS.findIndex(x=>careerSave.done[x]==null);if(k>=0)startCareerEvent(k);};
+$('btnCdAgain').onclick=()=>startCareerEvent(CR.idx);
+$('btnCdCareer').onclick=()=>{$('careerDone').hidden=true;$('hud').hidden=true;state='menu';showCareer();};
+$('btnRestart').onclick=()=>{if(CR.idx>=0)startCareerEvent(CR.idx);};
+
+setBikeModel(settings.bike||'trail');applyLooks();applyCamMode();
 
 // ===================================================================
 //  UI: trail map, minimap, junction chooser, menus, main loop, boot
@@ -2843,7 +3263,7 @@ function setGuideTab(t){document.querySelectorAll('#guideTabs button').forEach(b
 document.querySelectorAll('#guideTabs button').forEach(b=>b.onclick=()=>setGuideTab(b.dataset.t));
 $('btnGuide').onclick=showGuide;$('btnPauseGuide').onclick=showGuide;
 $('btnGuideClose').onclick=()=>{$('guide').hidden=true;try{guideReturn&&guideReturn.focus({preventScroll:true});}catch(e){}};
-$('btnMenu').onclick=()=>{paused=false;liftRide.on=false;$('liftHud').hidden=true;$('speed').hidden=false;$('pause').hidden=true;$('hud').hidden=true;$('touch').hidden=true;cancelRun();state='menu';fade(false);audio.silence();refreshMenu();$('menu').hidden=false;JX.node=null;renderJunctionHUD();};
+$('btnMenu').onclick=()=>{$('btnRestart').hidden=true;paused=false;liftRide.on=false;$('liftHud').hidden=true;$('speed').hidden=false;$('pause').hidden=true;$('hud').hidden=true;$('touch').hidden=true;cancelRun();state='menu';fade(false);audio.silence();refreshMenu();$('menu').hidden=false;JX.node=null;renderJunctionHUD();};
 $('btnFinTop').onclick=()=>{startLift();};
 $('btnFinSkip').onclick=()=>{$('finish').hidden=true;showRideUI();respawnTop();state='ride';};
 $('btnFinAgain').onclick=()=>{const tr=lastRoute?NET.byId[lastRoute[0]]:TR[0];$('finish').hidden=true;showRideUI();const p={};trailPoint(tr,1,p);placeBike(p.x,p.z,yawOf(p),0,0);cancelRun();setHint(false);state='ride';};
@@ -2903,6 +3323,7 @@ function frame(now){
   if(state==='loading')return;
   readInput(dt);
   if(state==='menu')updateMenuCam(dt);
+  else if(state==='garage'){updateBikeVisual();updateGarageCam(dt);}
   else if(!paused){
     if(state==='ride'){acc+=dt;let n=0;while(acc>=STEP&&n<14){if(input.auto)input.auto(STEP);gameStep(STEP);acc-=STEP;n++;if(state!=='ride')break;}if(n>=14)acc=0;updateJunction();checkLiftBoarding();}
     else if(state==='lift')updateLift(dt);
@@ -2935,11 +3356,12 @@ async function boot(){
   woodMat=new THREE.MeshStandardMaterial({color:col(0x5c3a22),roughness:0.85});postMat=new THREE.MeshStandardMaterial({color:col(0x3b2a1c),roughness:0.9});
   await step('Shaping the mountain',20);buildSky();buildTerrainHeights();
   await step('Shaping the mountain',34);buildTerrainMesh();buildFar();
-  await step('Cutting the trails',46);TR.forEach(buildRibbon);buildBridges();
+  await step('Cutting the trails',46);TR.forEach(buildRibbon);buildBridges();buildRoots();planAprons();
   await step('Growing the forest',58);buildTemplates();
   await step('Planting trees',70);buildVegetation();vegBuilt=true;
   await step('Putting up the signs',86);
   mapImg=drawTrailMap(900,true);
+  addAprons();
   for(const tr of TR){if(NODE[tr.from].top){addTrailheadSign(tr);addGate(tr,9,'Start',false);}if(NODE[tr.to].fin)addGate(tr,tr.len-11,'Finish',true);addMarkers(tr);}
   for(const id in NODE)addJunctionSigns(NODE[id]);buildMarkers();
   addStartArea(mapImg);
