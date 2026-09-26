@@ -2714,9 +2714,12 @@ const audio=(()=>{
     V.skidF=filt('bandpass',1150,1.4);V.skidG=gain();chain(loop(V.white),[filt('highpass',400),V.skidF,V.skidG]);
     V.sprayS=loop(V.grit,1.7);V.sprayF=filt('bandpass',3000,0.8);V.sprayG=gain();chain(V.sprayS,[V.sprayF,V.sprayG]);
     // freewheel: the pawls clicking over the ratchet ring, a metallic buzz that rises with wheel speed
-    V.hub=AC.createOscillator();V.hub.type='sawtooth';V.hub2=AC.createOscillator();V.hub2.type='square';
-    V.hubHP=filt('highpass',1500,0.7);V.hubF=filt('bandpass',3900,3.2);V.hubF2=filt('bandpass',6400,4);V.hubG=gain();
-    V.hub.connect(V.hubHP);V.hub2.connect(V.hubHP);V.hubHP.connect(V.hubF);V.hubHP.connect(V.hubF2);V.hubF.connect(V.hubG);V.hubF2.connect(V.hubG);V.hubG.connect(sfx);V.hub.start();V.hub2.start();
+    // freewheel: the pawls snapping over the ratchet ring. A train of sharp clicks (as fast as the wheel turns them) rings the hub shell,
+    // so it ticks when you roll slowly and blurs into a low purr at speed
+    { const N=360,re=new Float32Array(N+1),im=new Float32Array(N+1);for(let k=1;k<=N;k++)re[k]=0.02;V.hubWave=AC.createPeriodicWave(re,im,{disableNormalization:true});}
+    V.hub=AC.createOscillator();V.hub.setPeriodicWave(V.hubWave);V.hub.frequency.value=10;V.hubG=gain();
+    for(const [f,q,a] of [[1850,5,1],[3100,7,0.6],[520,1.6,0.5]]){const bp=filt('bandpass',f,q),g=gain(a);V.hub.connect(bp);bp.connect(g);g.connect(V.hubG);}
+    V.hubG.connect(sfx);V.hub.start();
     V.chainF=filt('bandpass',1500,2.6);V.chainG=gain();chain(loop(V.white),[V.chainF,V.chainG]);
     V.brkF=filt('bandpass',4300,1.4);V.brkG=gain();chain(loop(V.white),[V.brkF,V.brkG]);
     V.sq=AC.createOscillator();V.sq.type='triangle';V.sq.frequency.value=2750;const lfo=AC.createOscillator();lfo.frequency.value=6.5;const lg=gain(35);lfo.connect(lg);lg.connect(V.sq.frequency);V.sqG=gain();chain(V.sq,[filt('bandpass',2800,6),V.sqG]);V.sq.start();lfo.start();
@@ -2796,9 +2799,9 @@ const audio=(()=>{
     V.sprayG.gain.setTargetAtTime(carve*0.25*Math.min(1,sp/10),t,0.05);
     if(carve>0.25){bermOn=true;bermPeak=Math.max(bermPeak,carve);}else if(bermOn&&carve<0.08){bermOn=false;if(bermPeak>0.35)roost(bermPeak);bermPeak=0;}
     // freewheel buzz whenever the wheel turns and you're not pedalling, on the ground or in the air
-    const wsp=Math.abs(st.vf),coasting=(riding||st.crash)&&!st.pedal&&wsp>0.7;const clk=clamp(wsp/(2*Math.PI*BK.RW)*72,15,1400);
-    V.hub.frequency.setTargetAtTime(clk,t,0.04);V.hub2.frequency.setTargetAtTime(clk*1.004,t,0.04);
-    V.hubG.gain.setTargetAtTime(coasting?Math.min(0.2,0.075+wsp*0.007)*(st.air?1.3:1):0,t,coasting?0.04:0.025);
+    const wsp=Math.abs(st.vf),coasting=(riding||st.crash)&&!st.pedal&&wsp>0.7;const clk=clamp(wsp/(2*Math.PI*BK.RW)*12,3,110); // 12 clicks a turn: about 80 a second flat out
+    V.hub.frequency.setTargetAtTime(clk,t,0.05);
+    V.hubG.gain.setTargetAtTime(coasting?Math.min(1,0.0085*clk)*(st.air?1.3:1):0,t,coasting?0.04:0.025);
     V.knob.frequency.setTargetAtTime(clamp(sp/0.052,12,900),t,0.05);V.knobF.frequency.setTargetAtTime(clamp(180+sp*38,180,900),t,0.08);
     V.knobG.gain.setTargetAtTime(gnd&&surf!=='wood'?Math.min(0.09,sp*0.007)*(surf==='rock'?1.3:1):0,t,0.05);
     // suspension: a squish on a hard compression, a clunk when it tops out
