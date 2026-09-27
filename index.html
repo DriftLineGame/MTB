@@ -1,4 +1,14 @@
-<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#faf9f5;color:#141413}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Single Track">
+<meta name="theme-color" content="#16261b">
+<meta name="description" content="A first-person mountain bike game: fourteen trails and a chairlift on one coastal BC mountain.">
 <title>Single Track</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -98,6 +108,22 @@ button:focus-visible,button.pad-focus:focus{outline:3px solid var(--hi);outline-
 #toast.on{opacity:1}#toast small{display:block;font-family:var(--body);font-weight:600;font-size:15px;margin-top:4px}
 #air{position:absolute;left:50%;top:calc(env(safe-area-inset-top,0px) + 58px);transform:translateX(-50%);font-family:var(--disp);font-weight:700;font-size:22px;color:var(--hi);text-shadow:0 1px 8px rgba(0,0,0,.6);opacity:0;transition:opacity .3s}
 #air.on{opacity:1}
+.beta-tag{display:inline-block;vertical-align:top;margin-top:.12em;font-size:.26em;letter-spacing:.06em;text-transform:uppercase;background:var(--hi);color:var(--hi-ink);padding:.15em .45em;border-radius:6px;text-shadow:none}
+/* e-bike battery */
+#ebat{position:absolute;left:calc(env(safe-area-inset-left,0px) + 14px);top:50%;transform:translateY(-50%);width:70px;padding:10px 0 9px;background:var(--panel);border-radius:10px;
+  display:flex;flex-direction:column;align-items:center;gap:6px;font-family:var(--disp);font-weight:700;--bc:#7fd36b}
+#ebat svg{width:20px;height:20px;display:block;fill:var(--bc)}
+.eb-bar{position:relative;width:20px;height:clamp(110px,24vh,190px);border-radius:6px;border:2px solid rgba(245,246,239,.55);overflow:hidden;background:rgba(0,0,0,.35)}
+.eb-bar i{position:absolute;left:0;right:0;bottom:0;height:100%;background:var(--bc);transition:height .08s linear}
+#ebPct{font-size:17px;line-height:1;font-variant-numeric:tabular-nums}
+#ebLbl{font-size:12px;line-height:1;color:var(--soft);text-transform:uppercase;letter-spacing:.04em}
+#ebat.boost{box-shadow:0 0 0 2px var(--bc),0 0 18px var(--bc)}
+#ebat.low #ebLbl{color:#ff9a6a}
+.charge-btn{position:fixed;z-index:12;left:calc(env(safe-area-inset-left,0px) + 14px);top:calc(50% + clamp(110px,24vh,190px)/2 + 52px);width:70px;padding:8px 0 7px;border:2px solid #6fc3ff;border-radius:10px;
+  background:rgba(17,32,22,.8);color:#f5f6ef;display:flex;flex-direction:column;align-items:center;gap:3px;font-family:var(--disp);font-weight:700;font-size:15px;touch-action:none}
+.charge-btn svg{width:22px;height:22px;color:#6fc3ff}
+.charge-btn.on{background:#6fc3ff;color:#0d1a24}.charge-btn.on svg{color:#0d1a24}
+#ebat.charging{box-shadow:0 0 0 2px #6fc3ff,0 0 18px #6fc3ff}
 #liftHud{position:absolute;left:50%;bottom:calc(env(safe-area-inset-bottom,0px) + 18px);transform:translateX(-50%);width:min(420px,calc(100vw - 32px))}
 .lift-card{background:var(--panel);padding:10px 14px 12px;border-top:3px solid var(--hi);pointer-events:auto}
 .lift-row{display:flex;justify-content:space-between;align-items:center;gap:12px}
@@ -122,6 +148,8 @@ button:focus-visible,button.pad-focus:focus{outline:3px solid var(--hi);outline-
 .pbtn{width:var(--pb);height:var(--pb);border-radius:50%;border:2px solid rgba(245,246,239,.42);background:rgba(17,32,22,.48);display:grid;place-items:center;font-family:var(--disp);font-weight:700;font-size:calc(var(--pb)*.18);line-height:1;touch-action:none;padding:0}
 .pbtn *{pointer-events:none}
 .pbtn svg{width:calc(var(--pb)*.34);height:calc(var(--pb)*.34);display:block;margin:0 auto 2px}
+.pbtn.trick{width:calc(var(--pb)*.82);height:calc(var(--pb)*.82);justify-self:center;visibility:hidden;background:rgba(243,193,58,.3);border-color:var(--hi);font-size:calc(var(--pb)*.16)}
+#touch.air .pbtn.trick{visibility:visible}
 .pbtn.on{background:rgba(243,193,58,.88);color:var(--hi-ink);border-color:var(--hi)}
 @media (max-height:420px){#touch{--pb:calc(72px*var(--cs));--sb:calc(120px*var(--cs));--edge:16px}}
 
@@ -186,7 +214,7 @@ dl.keys dt{font-family:var(--disp);font-weight:700;font-size:16px;color:var(--hi
 .swatch{width:44px;height:44px;border-radius:50%;border:0;background:var(--c);box-shadow:inset 0 -6px 10px rgba(0,0,0,.25);display:grid;place-items:center;color:#fff;position:relative}
 .swatch[aria-pressed="true"]{outline:3px solid var(--hi);outline-offset:3px}
 .swatch.locked{opacity:.5;filter:grayscale(.35)}.swatch.locked svg{width:18px;height:18px;filter:drop-shadow(0 1px 2px rgba(0,0,0,.6))}
-.bike-pick{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:0 0 16px}
+.bike-pick{display:grid;grid-template-columns:repeat(auto-fit,minmax(125px,1fr));gap:8px;margin:0 0 16px}
 .bike-card{border:0;border-radius:8px;padding:12px;text-align:left;background:rgba(245,246,239,.08);color:var(--ink)}
 .bike-card b{display:block;font-family:var(--disp);font-size:20px;margin-bottom:3px}.bike-card span{font-size:13.5px;color:var(--soft)}
 .bike-card[aria-pressed="true"]{outline:3px solid var(--hi);background:rgba(242,193,58,.14)}
@@ -234,6 +262,8 @@ dl.keys dt{font-family:var(--disp);font-weight:700;font-size:16px;color:var(--hi
 })();
 </script>
 
+</head>
+<body>
 <canvas id="gl" aria-label="Mountain bike game view"></canvas>
 <div id="vig"></div>
 
@@ -336,6 +366,9 @@ dl.keys dt{font-family:var(--disp);font-weight:700;font-size:16px;color:var(--hi
       <li><b>Junctions.</b> Trails split and join. Signs and buttons show where each line goes. Your time follows the lines you ride.</li>
       <li><b>Traverses.</b> Highline, Long Haul and Sidewinder cut across the mountain. At a junction you can turn onto the trail they meet. Everywhere else they bridge over it, or drop over it, so you can keep going.</li>
       <li><b>Career.</b> Every trail and link in order, from green to double black. You start at the top of each one; reach the end and it's done. Each trail you finish unlocks a colour in the Garage.</li>
+      <li><b>E-moto.</b> The electric dirt bike in the Garage. Pedal becomes Gas: a throttle with three times the e-bike's pull. The battery lasts about 100 seconds flat out and charges while you brake with the wheels rolling, 1% a second. Or tap Charge under the battery (E on a keyboard, L3 on a controller): you stop and it fills from empty to full in 30 seconds. You can't ride while it charges; tap Stop to ride on early.</li>
+      <li><b>Flips.</b> In the air a Flip button appears above Pedal. Tap it for a backflip, or hold the stick forward while you tap it for a front flip. Keyboard: F (hold W for a front flip). Controller: ○ (stick forward for a front flip). You can also tap forward or back three times quickly. It always goes, but on a small jump you'll land halfway round and crash, so save it for the big ones.</li>
+      <li><b>E-bike.</b> Pick it in the Garage. Pedalling on the e-bike boosts you at double power, shown by the battery on the left of the screen. A full battery gives 20 seconds of full boost. Coast or brake and it charges back up in 20 seconds. Run it flat and it has to charge fully before it boosts again.</li>
       <li><b>Garage.</b> Pick the trail bike or the downhill bike (more travel and takes bigger landings, but slower to pedal), then colours for the frame, fork, rims and the rider's kit.</li>
       <li><b>Chairlift.</b> Finish a run and choose Ride the chairlift, or roll into the loading area in the meadow. Two minutes to the top, drag to look around, skip any time.</li>
       <li><b>Steering assist.</b> Off, you steer everything. Light helps round berms. Full follows the trail and sets jump speed.</li>
@@ -357,6 +390,7 @@ dl.keys dt{font-family:var(--disp);font-weight:700;font-size:16px;color:var(--hi
   <div id="speed"><b id="spd">0</b><span>km/h</span><em id="jspd" hidden></em></div>
   <div id="jx" hidden><p id="jxTitle"></p><div id="jxList"></div></div>
   <div id="air"></div>
+  <div id="ebat" hidden aria-label="E-bike battery"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M13.5 2 4 13.5h6.2L9 22l10-12.2h-6.4z"/></svg><div class="eb-bar"><i id="ebFill"></i></div><span id="ebPct">100%</span><span id="ebLbl">Boost</span></div>
   <div id="liftHud" hidden><div class="lift-card"><div class="lift-row"><b>Chairlift</b><span><span id="liftTime">2:00</span> to the top</span></div><div id="liftBar"><i></i></div>
     <div class="lift-row"><span class="lift-tip">Drag to look around</span><button class="btn" id="btnLiftSkip">Skip to the top</button></div></div></div>
   <div id="tilt" hidden aria-hidden="true"><svg viewBox="0 0 140 70"><line id="tiltGround" x1="-30" y1="46" x2="170" y2="46"/><g id="tiltBike"><circle cx="46" cy="40" r="10"/><circle cx="94" cy="40" r="10"/><path d="M46 40 62 26 86 26 94 40 M62 26 70 40 86 26 M84 20 88 26"/></g></svg><span id="tiltTxt">Match the landing</span></div>
@@ -366,6 +400,7 @@ dl.keys dt{font-family:var(--disp);font-weight:700;font-size:16px;color:var(--hi
 <div id="touch" hidden>
   <div id="stickZone"><div id="stickBase" class="idle"><div id="stickKnob"></div></div></div>
   <div id="pedals">
+    <button class="pbtn trick" id="btnTrick" aria-label="Flip"><span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 14a7 7 0 1 1 3 5.7" fill="none" stroke="currentColor" stroke-width="2.8" stroke-linecap="round"/><path d="M3.2 9.6 5 14l4.3-1.9" fill="none" stroke="currentColor" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"/></svg>Flip</span></button>
     <button class="pbtn" id="btnPedal" aria-label="Pedal"><span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 16 12 7 20 16" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"/></svg>Pedal</span></button>
     <button class="pbtn" id="btnBrake" aria-label="Brake"><span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 8 12 17 20 8" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"/></svg>Brake</span></button>
   </div>
@@ -440,6 +475,7 @@ dl.keys dt{font-family:var(--disp);font-weight:700;font-size:16px;color:var(--hi
     <p class="gar-tip">Drag the bike to spin it round.</p>
   </div>
 </div>
+<button id="btnCharge" class="charge-btn" hidden aria-label="Charge the battery"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 2v5M15 2v5M6 7h12v4a6 6 0 0 1-12 0zM12 17v5" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg><span id="chargeTxt">Charge</span></button>
 <div id="fade"></div>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
@@ -2100,11 +2136,11 @@ const bikeParts={};
 const ROTOR_MAT=new THREE.MeshStandardMaterial({color:0xc9ccd0,metalness:0.55,roughness:0.3,side:THREE.DoubleSide});
 const BIKE_MATS=(()=>{const std=(c,r,m)=>new THREE.MeshStandardMaterial({color:col(c),roughness:r,metalness:m});
   const gloss=(c,r,m)=>new THREE.MeshPhysicalMaterial({color:col(c),roughness:r,metalness:m,clearcoat:1,clearcoatRoughness:0.1});
-  return {frame:gloss(0x2a8a93,0.38,0.25),chain:std(0x55585c,0.4,0.6),alloy:std(0x1b1c1e,0.35,0.5),black:std(0x2e3034,0.5,0.1),fork:gloss(0xe0ad4c,0.22,0.55),tire:std(0x242424,0.95,0),rim:std(0x34363a,0.45,0.15),gum:std(0xa9814f,0.85,0),
+  return {batt:std(0x1c1e21,0.45,0.35),led:new THREE.MeshBasicMaterial({color:0x5cf08a}),frame:gloss(0x2a8a93,0.38,0.25),plate:std(0xeeeeea,0.5,0.05),chain:std(0x55585c,0.4,0.6),alloy:std(0x1b1c1e,0.35,0.5),black:std(0x2e3034,0.5,0.1),fork:gloss(0xe0ad4c,0.22,0.55),tire:std(0x242424,0.95,0),rim:std(0x34363a,0.45,0.15),gum:std(0xa9814f,0.85,0),
     steel:std(0xb9bcbf,0.35,0.3),grip:std(0x151515,0.9,0),glove:std(0x2c2f33,0.85,0),cuff:std(0xf3c13a,0.7,0),sleeve:std(0x364a5c,0.9,0),decal:std(0xf3c13a,0.5,0.1),
     spring:std(0xe2622a,0.4,0.3),caliper:std(0x333333,0.4,0.3)};})();
 // two bikes: the trail bike, and a downhill bike with a dual-crown fork, a coil shock, a slacker head angle and fatter tyres
-function buildBikeModel(dh){
+function buildBikeModel(dh,eb,moto){
   const M=BIKE_MATS,mFrame=M.frame,mBlack=M.black,mGold=M.fork,mTire=M.tire,mRim=M.rim,mGum=M.gum,mSteel=M.steel,mGrip=M.grip,mGlove=M.glove,mCuff=M.cuff,mSleeve=M.sleeve,mDecal=M.decal;
   const G0=new THREE.Group();bikeBody.add(G0);const P={};
   const up=new V3(0,1,0);
@@ -2177,12 +2213,16 @@ function buildBikeModel(dh){
   const ring=new THREE.Mesh(new THREE.TorusGeometry(0.085,0.007,6,32),mSteel);ring.rotation.y=Math.PI/2;ring.position.x=0.052;crank.add(ring);
   const spider=new THREE.Mesh(new THREE.CylinderGeometry(0.035,0.035,0.012,10),mBlack);spider.rotation.z=Math.PI/2;spider.position.x=0.05;crank.add(spider);
   const axle=new THREE.Mesh(new THREE.CylinderGeometry(0.018,0.018,0.15,10),mBlack);axle.rotation.z=Math.PI/2;crank.add(axle);
-  for(const sx of [-1,1]){const arm=new THREE.Mesh(new THREE.BoxGeometry(0.022,0.03,0.18),mBlack);arm.position.set(sx*0.072,0,sx*-0.075);crank.add(arm);}
+  if(!moto)for(const sx of [-1,1]){const arm=new THREE.Mesh(new THREE.BoxGeometry(0.022,0.03,0.18),mBlack);arm.position.set(sx*0.072,0,sx*-0.075);crank.add(arm);}
   { // chainring teeth and a narrow-wide ring look
     const teeth=[];for(let i=0;i<32;i++){const a=i/32*Math.PI*2;const g=new THREE.BoxGeometry(0.006,0.01,0.008);g.translate(0,0.094,0);g.rotateX(a);g.translate(0.052,0,0);teeth.push(g);}
     crank.add(new THREE.Mesh(mergeGeoms(teeth),mSteel));}
   // flat pedals with pins, thin concave platforms
-  P.pedals=[-1,1].map(sx=>{const p=new THREE.Group();const parts=[];
+  if(moto)P.pedals=[-1,1].map(sx=>{const p=new THREE.Group(); // footpegs, not pedals
+    const peg=new THREE.Mesh(new THREE.CylinderGeometry(0.016,0.016,0.1,10),M.alloy);peg.rotation.z=Math.PI/2;peg.position.x=sx*0.04;p.add(peg);
+    const teeth=[];for(let k=0;k<5;k++){const g=new THREE.BoxGeometry(0.006,0.01,0.034);g.translate(sx*(0.004+k*0.018),0.016,0);teeth.push(g);}p.add(new THREE.Mesh(mergeGeoms(teeth),mSteel));
+    const mount=new THREE.Mesh(new THREE.BoxGeometry(0.03,0.05,0.04),mBlack);mount.position.set(-sx*0.012,0.02,0);p.add(mount);G0.add(p);p.userData.sx=sx;return p;});
+  else P.pedals=[-1,1].map(sx=>{const p=new THREE.Group();const parts=[];
     for(const z of [-0.045,0.045]){const g=new THREE.BoxGeometry(0.1,0.02,0.012);g.translate(sx*0.05,0,z);parts.push(g);}
     for(const x of [0.005,0.095]){const g=new THREE.BoxGeometry(0.01,0.016,0.1);g.translate(sx*x,0,0);parts.push(g);}
     const body=new THREE.Mesh(mergeGeoms(parts),M.alloy);p.add(body);
@@ -2264,13 +2304,39 @@ function buildBikeModel(dh){
   const fw=wheel();fw.position.set(0,0,-0.044);lowers.add(fw);P.frontWheel=fw;
   { const ax=new THREE.Mesh(new THREE.CylinderGeometry(0.009,0.009,0.15,10),M.alloy);ax.rotation.z=Math.PI/2;ax.position.set(0,0,-0.044);lowers.add(ax);
     const lev=new THREE.Mesh(new THREE.BoxGeometry(0.01,0.012,0.06),M.alloy);lev.position.set(0.08,0,-0.07);lowers.add(lev);}
+  if(moto){ // electric dirt bike: a big battery filling the frame, a chunkier motor, a number plate and a front fender
+    const tank=new THREE.Mesh(new THREE.BoxGeometry(0.11,0.2,0.3),M.batt);tank.position.set(0,0.13,-0.1);tank.rotation.x=-0.5;G0.add(tank);
+    for(const sx of [-1,1]){const stripe=new THREE.Mesh(new THREE.BoxGeometry(0.003,0.05,0.26),mDecal);stripe.position.set(sx*0.056,0.15,-0.1);stripe.rotation.x=-0.5;G0.add(stripe);}
+    const mot=new THREE.Mesh(new THREE.CylinderGeometry(0.1,0.1,0.13,24),M.batt);mot.rotation.z=Math.PI/2;mot.position.copy(BB).add(new V3(0,0.05,-0.06));G0.add(mot);
+    const plate=new THREE.Mesh(new THREE.BoxGeometry(0.2,0.16,0.012),M.plate);plate.position.set(0,-0.05,-0.065);plate.rotation.x=-0.25;P.bars.add(plate);
+    const num=new THREE.Mesh(new THREE.BoxGeometry(0.1,0.08,0.004),mDecal);num.position.set(0,-0.05,-0.073);num.rotation.x=-0.25;P.bars.add(num);
+    const fend=new THREE.Mesh(new THREE.BoxGeometry(0.1,0.012,0.4),M.plate);fend.position.set(0,0.42,-0.05);fend.rotation.x=-hAng+0.18;P.lowers.add(fend);}
+  if(eb){ // e-bike: a battery wrapped round the down tube, a motor at the cranks, and a little display on the bars
+    const a=new V3(0,0.215,-0.315),d=new V3().subVectors(BB,a);const L=d.length();d.normalize();
+    const bat=new THREE.Mesh(new THREE.BoxGeometry(0.092,L*0.62,0.1),M.batt);bat.position.copy(a).addScaledVector(d,L*0.45);bat.quaternion.setFromUnitVectors(up,d);G0.add(bat);
+    for(const sx of [-1,1]){const led=new THREE.Mesh(new THREE.BoxGeometry(0.004,L*0.4,0.016),M.led);led.position.copy(bat.position).add(new V3(sx*0.047,0,0));led.quaternion.copy(bat.quaternion);G0.add(led);}
+    const mot=new THREE.Mesh(new THREE.CylinderGeometry(0.078,0.078,0.11,22),M.batt);mot.rotation.z=Math.PI/2;mot.position.copy(BB).add(new V3(0,0.03,-0.035));G0.add(mot);
+    const cap=new THREE.Mesh(new THREE.CylinderGeometry(0.05,0.05,0.114,18),M.alloy);cap.rotation.z=Math.PI/2;cap.position.copy(mot.position);G0.add(cap);
+    const disp=new THREE.Mesh(new THREE.BoxGeometry(0.06,0.012,0.04),M.batt);disp.position.set(-0.08,0.028,0.0);P.bars.add(disp);
+    const scr=new THREE.Mesh(new THREE.BoxGeometry(0.048,0.003,0.03),M.led);scr.position.set(-0.08,0.035,0.0);P.bars.add(scr);}
   return {group:G0,parts:P};
 }
-const BIKES={trail:buildBikeModel(false),dh:buildBikeModel(true)};
+const BIKES={trail:buildBikeModel(false),dh:buildBikeModel(true),ebike:buildBikeModel(true,true),moto:buildBikeModel(true,true,true)};
 // how each bike rides: travel, pedalling power, and how hard a landing it takes before you crash
-const BIKE_STATS={trail:{trv:[0.16,0.15],power:520,crash:6.5},dh:{trv:[0.2,0.2],power:465,crash:8.2}};
+const BIKE_STATS={trail:{trv:[0.16,0.15],power:520,crash:6.5},dh:{trv:[0.2,0.2],power:465,crash:8.2},ebike:{trv:[0.2,0.2],power:465,crash:8.2,e:true},moto:{trv:[0.22,0.22],power:465,crash:8.5,e:true,moto:true}};
+// e-bike battery: 20 s of full boost from full; stop pedalling (or brake) and it charges back up in 20 s. Run it flat and it has to charge right up before it boosts again
+const EB={on:false,moto:false,kind:null,charge:1,locked:false,boosting:false,regen:false,T:20};
+// electric dirt bike: no pedalling, a throttle with three times the e-bike's pull. Its battery lasts five times as long (100 s flat out) and only charges while braking, 1% a second
+const MOTO={P:2800,F:1100,vmax:30,T:100,regen:0.01};
+// plug-in charge (e-moto): stop, and the battery fills from empty to full in 30 s. No riding until it's done or you stop it
+EB.charging=false;EB.chargeT=30;
+function toggleCharge(){if(!EB.moto||state!=='ride')return;
+  if(EB.charging){EB.charging=false;toast('Charging stopped',Math.round(EB.charge*100)+'% battery',1200);return;}
+  if(EB.charge>=0.999){toast('Battery full','',900);return;}
+  EB.charging=true;toast('Charging','Stopping to plug in. Tap Stop to ride on',1600);}
 let CRASH_IMPACT=6.5;
-function setBikeModel(kind){if(!BIKES[kind])kind='trail';for(const k in BIKES)BIKES[k].group.visible=k===kind;Object.assign(bikeParts,BIKES[kind].parts);
+function setBikeModel(kind){if(!BIKES[kind])kind='trail';EB.on=!!BIKE_STATS[kind].e;EB.moto=!!BIKE_STATS[kind].moto;if(EB.kind!==kind){EB.kind=kind;EB.charge=1;EB.locked=false;}
+  { const b=document.getElementById('btnPedal');const sp=b&&b.querySelector('span');if(sp&&sp.lastChild)sp.lastChild.textContent=EB.moto?'Gas':'Pedal';if(b)b.setAttribute('aria-label',EB.moto?'Throttle':'Pedal');}for(const k in BIKES)BIKES[k].group.visible=k===kind;Object.assign(bikeParts,BIKES[kind].parts);
   const st=BIKE_STATS[kind];BK.TRV[0]=st.trv[0];BK.TRV[1]=st.trv[1];PH.POWER=st.power;CRASH_IMPACT=st.crash;}
 function mergeChildren(grp){ // merge the rigid parts of each moving group by material: far fewer draw calls
   if(grp.userData.noMerge)return;
@@ -2353,7 +2419,7 @@ function predictLandSlope(b){ // where this flight comes down, and the slope of 
   for(let i=0;i<60;i++){vy-=G*0.05;x+=vx*0.05;y+=vy*0.05;z+=vz*0.05;if(vy<0&&y<=groundH(x,z))return Math.atan((groundH(x+hx*0.8,z+hz*0.8)-groundH(x-hx*0.8,z-hz*0.8))/1.6);}
   return Math.atan2(b.vel.y,h);}
 function physStep(dt){
-  const b=bike;if(!(input.steer===input.steer))input.steer=0;const cy=Math.cos(b.yaw),sy=Math.sin(b.yaw),cp=Math.cos(b.pitch),sp=Math.sin(b.pitch);
+  const b=bike;if(!(input.steer===input.steer))input.steer=0;if(EB.charging){input.pedal=false;input.pedalAmt=null;input.brake=true;input.brakeAmt=1;input.steer=0;input.lean=0;}const cy=Math.cos(b.yaw),sy=Math.sin(b.yaw),cp=Math.cos(b.pitch),sp=Math.sin(b.pitch);
   fwd.set(-sy*cp,sp,-cy*cp);upv.set(sy*sp,cp,cy*sp);hf.set(-sy,0,-cy);
   let ax=0,ay=-G,az=0,torque=0;b.impact=0;let anyContact=false;nAvg.set(0,0,0);let N=0,chat=0;
   const Fc=[0,0];
@@ -2413,7 +2479,10 @@ function physStep(dt){
     const vf=b.vel.dot(fDir),vl=b.vel.dot(lDir);b.vf=vf;
     // grip follows the average tyre load, so a wheel skipping over a rock doesn't instantly lose the line
     b.Ngrip=lerp(b.Ngrip||N,N,0.25);const Ng=b.Ngrip;
-    if(pAmt>0){const Fp=Math.min(430,PH.POWER/Math.max(vf,1.2))*clamp((16.5-vf)/4,0,1)*pAmt;Flong+=Fp;b.vel.addScaledVector(fDir,Fp/PH.M*dt);}
+    const boost=EB.on&&pAmt>0&&!EB.locked&&EB.charge>0;EB.boosting=boost;
+    if(EB.moto){if(boost){const wh=clamp((b.pitch-Math.atan2(b.vel.y,Math.max(1,Math.abs(vf)))-0.25)/0.3,0,1); /* wheelie control: ease off as the front comes up */const Fp=Math.min(MOTO.F,MOTO.P/Math.max(vf,1.2))*clamp((MOTO.vmax-vf)/4,0,1)*pAmt*(1-0.85*wh);Flong+=Fp;b.vel.addScaledVector(fDir,Fp/PH.M*dt);}}
+    else 
+    if(pAmt>0){const Fp=boost?Math.min(860,2*PH.POWER/Math.max(vf,1.2))*clamp((22-vf)/4,0,1)*pAmt:Math.min(430,PH.POWER/Math.max(vf,1.2))*clamp((16.5-vf)/4,0,1)*pAmt;Flong+=Fp;b.vel.addScaledVector(fDir,Fp/PH.M*dt);}
     if(bAmt>0){
       if(vf>0.25){const want=Math.min(0.78*Ng,820)*bAmt;const lim=mu*Ng*0.72;let Fb=Math.min(want,lim);
         if(b.fw[1]<0.12*N)Fb*=0.55; /* rear going light: ease off like a rider would instead of going over the bars */if(want>lim*0.98&&vf>2)b.skid=clamp((want-lim)/300+0.3,0,1);
@@ -2444,17 +2513,27 @@ function physStep(dt){
     b.air+=dt;b.steer*=1-dt*2;b.yaw+=-input.steer*0.9*dt;b.lean*=1-dt*2;b.slip*=0.9;b.latA=0;b.Ngrip=0;
     const hs=Math.hypot(b.vel.x,b.vel.z);b.vf=hs*(b.vel.x*hf.x+b.vel.z*hf.z>=0?1:-1);
   }
+  EB.regen=false;
+  if(EB.moto){if(pAmt>0&&anyContact&&EB.charge>0)EB.charge=Math.max(0,EB.charge-pAmt*dt/MOTO.T);
+    if(bAmt>0&&anyContact&&b.vf>1){EB.charge=Math.min(1,EB.charge+MOTO.regen*dt);EB.regen=true;}}
+  else if(EB.on){if(pAmt>0&&!EB.locked&&anyContact){EB.charge=Math.max(0,EB.charge-pAmt*dt/EB.T);if(EB.charge<=0)EB.locked=true;}
+    else if(pAmt===0){EB.charge=Math.min(1,EB.charge+dt/EB.T);if(EB.charge>=1)EB.locked=false;}}
+  if(!EB.on||!anyContact||pAmt===0)EB.boosting=false;
   // braking pitches you forward; on steep ground riders drop their hips back, which shortens that lever
-  const steepDown=clamp(-Math.sin(b.pitch)/0.3,0,1);torque+=Flong*(Flong<0?0.55-0.25*steepDown:0.55);
+  const steepDown=clamp(-Math.sin(b.pitch)/0.3,0,1);torque+=Flong*(Flong<0?0.55-0.25*steepDown:EB.moto&&EB.boosting?0.12:0.55); // on the e-moto the rider sits forward over the bars, so the throttle doesn't flip you
   if(anyContact){b.pw+=(torque/PH.I)*dt;b.pw*=1-dt*2.5;if(b.contact[1]&&!b.contact[0])dropPull(b);}
   else{ // in the air: the rider levels the bike toward the landing (strongly with assist), and can push the bars forward or pull back
     const hs=Math.hypot(b.vel.x,b.vel.z);const traj=Math.atan2(b.vel.y,Math.max(hs,1));
     b.predT=(b.predT||0)-1;if(b.predT<=0||b.landSlope==null){b.predT=8;b.landSlope=predictLandSlope(b);}const gAng=b.landSlope;
-    b.gAng=gAng;const target=traj*0.3+gAng*0.7;const ln=clamp(input.lean||0,-1,1);
+    b.gAng=gAng;const target=traj*0.3+gAng*0.7;const ln=FL.active?0:clamp(input.lean||0,-1,1);
     const K=[5,12,26][settings.assist|0]*(1-0.85*Math.abs(ln));
     b.pw+=((target-b.pitch)*K-b.pw*(3+0.1*K)-ln*7.5)*dt+torque/PH.I*dt*0.3;}
   b.pitch+=b.pw*dt;
   const sp2=b.vel.length();if(sp2>0.01)b.vel.multiplyScalar(Math.max(0,1-0.5*1.2*PH.CDA/PH.M*sp2*dt));
+  if(EB.charging){ // brought to a stop, held there, and charging
+    if(!EB.moto){EB.charging=false;}
+    else if(anyContact&&b.vel.length()<1.2){b.vel.x=0;b.vel.z=0;if(b.vel.y>0)b.vel.y=0;b.pw*=0.9;
+      EB.charge=Math.min(1,EB.charge+dt/EB.chargeT);if(EB.charge>=1){EB.charging=false;toast('Fully charged','Ride on',1500);}}}
   b.pos.addScaledVector(b.vel,dt);
   b.spin[0]+=b.vf/BK.RW*dt;b.spin[1]+=b.vf/BK.RW*(b.skid>0.5?0.2:1)*dt;
   return L;
@@ -2500,7 +2579,7 @@ function placeBike(x,z,yaw,speed,pitch){
   const b=bike;b.yaw=yaw;b.pitch=pitch||0;b.pw=0;b.steer=0;b.lean=0;b.air=0;b.slip=0;b.impact=0;
   const h=Math.max(groundH(x,z),groundH(x-Math.sin(yaw)*0.62,z-Math.cos(yaw)*0.62),groundH(x+Math.sin(yaw)*0.62,z+Math.cos(yaw)*0.62));
   b.pos.set(x,h+BK.RW+0.27,z);b.vel.set(-Math.sin(yaw)*speed,0,-Math.cos(yaw)*speed);b.comp=[0,0];b.cprev=[0,0];b.z=[0,0];b.zv=[0,0];b.land=null;b.Ngrip=0;b.predT=0;b.landSlope=null;
-  const L=locate(x,z);b.cur=L.t&&L.dist<L.t.w+2?L.t:null;b.curS=L.s;wasAir=false;camState.init=false;chase.init=false;if(typeof riderReset==='function')riderReset();
+  EB.boosting=false;EB.charging=false;flipReset();const L=locate(x,z);b.cur=L.t&&L.dist<L.t.w+2?L.t:null;b.curS=L.s;wasAir=false;camState.init=false;chase.init=false;if(typeof riderReset==='function')riderReset();
 }
 function respawnTop(){if(typeof liftRide!=='undefined'&&liftRide.on){liftRide.on=false;$('liftHud').hidden=true;$('speed').hidden=false;}placeBike(SPAWN.x,SPAWN.z,0,0,0);bike.finNote=false;cancelRun();setHint(true);JX.node=null;renderJunctionHUD();}
 function safeS(tr,s){
@@ -2521,12 +2600,12 @@ function respawnNear(){
 }
 function routeName(r){return r.map(id=>NET.byId[id].def.name).join(' → ');}
 function hardest(r){let best='green';for(const id of r){const d=NET.byId[id].def.diff;if(DIFF[d].rank>DIFF[best].rank)best=d;}return best;}
-function startRun(tr){run.active=true;run.route=[tr.id];run.t=0;run.air=0;run.top=0;run.crashes=0;run.startSeg=tr;updateRunChip();setHint(false);toast(tr.def.name,'Timer running');audio.beep();}
+function startRun(tr){run.active=true;run.route=[tr.id];run.t=0;run.air=0;run.top=0;run.crashes=0;run.flips=0;run.startSeg=tr;updateRunChip();setHint(false);toast(tr.def.name,'Timer running');audio.beep();}
 function cancelRun(){run.active=false;run.route=[];$('runChip').hidden=true;if(typeof CR!=='undefined'&&CR.active){CR.active=false;$('btnRestart').hidden=true;}}
 function updateRunChip(){const tr=bike.cur||run.startSeg;if(!tr)return;$('runSym').innerHTML=SYMSVG[DIFF[tr.def.diff].symbol];$('runName').textContent=tr.def.name;$('runChip').hidden=!run.active;
   $('runChip').style.setProperty('--c',tr.def.diff==='blue'?'#1f63c8':tr.def.diff==='green'?'#1f9d4a':'#f5f6ef');}
 function setHint(on){$('hint').hidden=!on;}
-function crash(reason){if(state!=='ride')return;state='crash';padRumble(1,1,380);crashT=0;stats.crashes++;if(run.active)run.crashes++;EV.crash=1;toast('Crashed',reason,1500);
+function crash(reason){if(state!=='ride')return;flipReset();EB.charging=false;state='crash';padRumble(1,1,380);crashT=0;stats.crashes++;if(run.active)run.crashes++;EV.crash=1;toast('Crashed',reason,1500);
   camState.cv.set(bike.vel.x*0.6,2.2,bike.vel.z*0.6);
   const rp=stats.repeat;if(rp&&rp.tr===bike.cur&&Math.abs(rp.s-bike.curS)<35)rp.n++;else stats.repeat={tr:bike.cur,s:bike.curS,n:1};
   stats.lastCrash={reason,trail:bike.cur&&bike.cur.id,s:bike.curS,v:bike.vel.length(),impact:bike.impact,pitch:bike.pitch};
@@ -2548,7 +2627,7 @@ function finishRun(){
   $('finTitle').innerHTML=SYMSVG[DIFF[hd].symbol];$('finTitle').append(document.createTextNode(run.route.length>1?'Run complete':NET.byId[run.route[0]].def.name));
   $('finRoute').textContent=routeName(run.route);$('finTime').textContent=fmtTime(t);
   const bestEl=$('finBest');bestEl.textContent=isBest?(prev?'New best on this line, down from '+fmtTime(prev):'First run on this line, saved as your best'):'Your best on this line is '+fmtTime(prev);bestEl.classList.toggle('new',isBest);
-  $('finStats').textContent=`Top speed ${Math.round(run.top*3.6)} km/h. ${run.air.toFixed(1)} s in the air. ${run.crashes} crash${run.crashes===1?'':'es'}.`;
+  $('finStats').textContent=`Top speed ${Math.round(run.top*3.6)} km/h. ${run.air.toFixed(1)} s in the air. ${run.flips?run.flips+' flip'+(run.flips===1?'':'s')+'. ':''}${run.crashes} crash${run.crashes===1?'':'es'}.`;
   state='finish';$('finish').hidden=false;$('touch').hidden=true;run.active=false;$('runChip').hidden=true;JX.node=null;renderJunctionHUD();refreshMenu();audio.finish();
   setTimeout(()=>{try{$('btnFinTop').focus({preventScroll:true});}catch(e){}},50);
 }
@@ -2596,6 +2675,25 @@ function trackSegment(L){
   if(run.active&&NODE[nt.to].fin&&ns>nt.len-12){finishRun();return;}
   if(!run.active&&NODE[nt.to].fin&&ns>nt.len-12&&!b.finNote){b.finNote=true;toast('Bottom of the mountain','Roll to the chairlift, or pause to ride it up',2800);}
 }
+// ---------- flips: triple-tap forward (front flip) or back (backflip) in the air, big jumps only ----------
+const FLIP_AIR=1.2; // seconds of flight the jump has to give (the biggest jumps on the hill give about 1.4 s)
+const FL={active:false,dir:0,t:0,dur:1,ang:0,taps:[],prev:0};
+function flightLeft(){const b=bike;let x=b.pos.x,y=b.pos.y-0.64,z=b.pos.z,vx=b.vel.x,vy=b.vel.y,vz=b.vel.z;const h=0.02;
+  for(let t=0;t<4;t+=h){vy-=G*h;x+=vx*h;y+=vy*h;z+=vz*h;if(vy<0&&y<=groundH(x,z))return t;}return 4;}
+function flipInput(){ // counts taps on "forward" and "back" (stick, W/S, or the controller stick)
+  const l=input.lean||0;const d=l>0.55?1:l<-0.55?-1:Math.abs(l)<0.3?0:FL.prev;
+  if(d&&d!==FL.prev){const now=performance.now();FL.taps=FL.taps.filter(q=>q.d===d&&now-q.t<900);FL.taps.push({d,t:now});
+    if(FL.taps.length>=3){FL.taps=[];tryFlip(d);}}
+  FL.prev=d;}
+// d>0 front flip, d<0 backflip. It always goes: as quick as it can be (0.6 s) if the jump is short, and on a small jump you land halfway round
+function tryFlip(d){const b=bike;if(state!=='ride'||FL.active||b.contact[0]||b.contact[1])return;
+  const rem=flightLeft();
+  FL.active=true;FL.dir=d>0?-1:1;FL.t=0;FL.dur=clamp(rem-0.12,0.6,1.0);FL.ang=0;EV.takeoff=Math.max(EV.takeoff,9);}
+function flipButton(){tryFlip((input.lean||0)>0.4?1:-1);}
+function flipReset(){FL.active=false;FL.ang=0;FL.t=0;FL.taps=[];}
+function flipStep(dt,inAir){if(!FL.active)return;FL.t+=dt;const p=Math.min(1,FL.t/FL.dur);FL.ang=FL.dir*2*Math.PI*p*p*(3-2*p);
+  if(p>=1||(!inAir&&p>=0.85)){const name=FL.dir>0?'Backflip':'Front flip';flipReset();if(run.active)run.flips=(run.flips||0)+1;toast(name,'Clean!',1300);return;}
+  if(!inAir){flipReset();crash('Landed mid flip');}}
 function gameStep(dt){
   const L=physStep(dt);const b=bike;const sp=b.vel.length();
   const inAir=!b.contact[0]&&!b.contact[1];
@@ -2604,6 +2702,7 @@ function gameStep(dt){
   if(!inAir&&wasAir&&airTime>0.12){if(airTime>0.45)airFlash(airTime);if(run.active)run.air+=airTime;}
   wasAir=inAir;
   if(b.land&&!b.land.done){b.land.done=true;const a=b.land.air;if(a>0.25)padRumble(Math.min(1,0.2+a*0.35+b.impact*0.06),0.35,110+Math.min(a,2)*90);}
+  flipStep(dt,inAir);if(state!=='ride')return;
   if(b.impact>CRASH_IMPACT)return crash('Landed too hard');
   { // over the bars: nose far below the ground you're on (a steep landing lets you point down further than flat ground)
     const hx=-Math.sin(b.yaw),hz=-Math.cos(b.yaw);const gS=Math.atan((groundH(b.pos.x+hx*0.62,b.pos.z+hz*0.62)-groundH(b.pos.x-hx*0.62,b.pos.z-hz*0.62))/1.24);
@@ -2623,7 +2722,7 @@ const eyeAnchor=new THREE.Object3D();eyeAnchor.position.set(CAM.eye.x,CAM.eye.y+
 function baseFov(){const a=window.innerWidth/window.innerHeight;return a<1?102:a<1.6?90:86;}
 function updateBikeVisual(){
   const b=bike;
-  bikeRoot.position.copy(b.pos);bikeRoot.rotation.set(b.pitch,b.yaw,0,'YXZ');leanPivot.rotation.z=-b.lean*0.8;
+  bikeRoot.position.copy(b.pos);bikeRoot.rotation.set(b.pitch+FL.ang,b.yaw,0,'YXZ');leanPivot.rotation.z=-b.lean*0.8;
   bikeBody.position.y=0.63+(b.z[0]+b.z[1])/2;bikeBody.rotation.x=Math.atan((b.z[0]-b.z[1])/(2*BK.H2));
   bikeParts.lowers.position.y=-(bikeParts.forkL-b.comp[0]*0.95);bikeParts.steer.rotation.y=-b.steer;bikeParts.frontWheel.rotation.x=-b.spin[0];
   const er=BK.EMAX[1]-b.comp[1];bikeParts.rearWheel.position.set(0,-er,0.62);bikeParts.rearWheel.rotation.x=-b.spin[1];
@@ -2645,7 +2744,7 @@ function updateCamera(dt){
   camState.pitch=lerp(camState.pitch,b.pitch,1-Math.exp(-dt*12));
   camera.position.set(eyeW.x,camState.eyeY,eyeW.z);
   const sh=reduceMotion?0:Math.min(0.012,b.chatter*0.0009)*(b.surf==='dirt'?1:1.5);
-  camera.rotation.set(camState.pitch*0.95-CAM.tilt+(Math.random()-0.5)*sh,b.yaw+(Math.random()-0.5)*sh,-b.lean*0.6);
+  camera.rotation.set(camState.pitch*0.95-CAM.tilt+FL.ang+(Math.random()-0.5)*sh,b.yaw+(Math.random()-0.5)*sh,-b.lean*0.6);
   const f=baseFov()+Math.min(6,b.vel.length()*0.4);if(Math.abs(f-camera.fov)>0.05){camera.fov=lerp(camera.fov,f,1-Math.exp(-dt*3));camera.updateProjectionMatrix();}
 }
 let menuT=0;
@@ -2658,7 +2757,7 @@ function updateMenuCam(dt){
 
 // ---------- input ----------
 addEventListener('keydown',e=>{const k=e.key.toLowerCase();input.keys[k]=true;
-  if(state==='ride'){if(k==='r')respawnNear();if(k==='t')respawnTop();}
+  if(state==='ride'&&k==='e'&&!e.repeat)toggleCharge();if(state==='ride'){if(k==='r')respawnNear();if(k==='t')respawnTop();if(k==='f'&&!e.repeat)tryFlip(input.keys['w']||input.keys['arrowup']?1:-1);}
   if(k==='c'&&(state==='ride'||state==='crash'||state==='menu'))toggleCam();
   if((k==='escape'||k==='p')&&(state==='ride'||state==='crash'||state==='lift'))togglePause();
   if(['arrowup','arrowdown','arrowleft','arrowright',' '].includes(k)&&state!=='menu')e.preventDefault();});
@@ -2680,6 +2779,7 @@ const touchState={stickId:null,sx:0,sy:0,val:0,valY:0,pedalId:null,brakeId:null}
   const hold=(el,key)=>{el.addEventListener('pointerdown',e=>{touchState[key]=e.pointerId;try{el.setPointerCapture(e.pointerId);}catch(_){}el.classList.add('on');e.preventDefault();});
     const up=e=>{if(touchState[key]===e.pointerId){touchState[key]=null;el.classList.remove('on');}};el.addEventListener('pointerup',up);el.addEventListener('pointercancel',up);el.addEventListener('lostpointercapture',up);};
   hold($('btnPedal'),'pedalId');hold($('btnBrake'),'brakeId');
+  $('btnTrick').addEventListener('pointerdown',e=>{e.preventDefault();e.stopPropagation();flipButton();});
   document.addEventListener('contextmenu',e=>e.preventDefault());
 })();
 function readInput(dt){
@@ -2696,6 +2796,7 @@ function readInput(dt){
   input.pedalAmt=null;input.brakeAmt=null;
   if(typeof pollPad==='function')pollPad(inAir);
   assistJumpSpeed();
+  if(EB.charging){input.pedal=false;input.pedalAmt=null;input.brake=true;input.brakeAmt=1;input.steer=0;input.lean=0;}
 }
 // the next real jump ahead on the trail you're riding, and the approach speed it was built for
 function jumpKey(f){return f.type==='bigdrop'?f.a-1.5:f.s0;} // where the approach speed stops mattering
@@ -2750,6 +2851,9 @@ const audio=(()=>{
     V.hub=AC.createOscillator();V.hub.setPeriodicWave(V.hubWave);V.hub.frequency.value=10;V.hubG=gain();
     for(const [f,q,a] of [[1850,5,1],[3100,7,0.6],[520,1.6,0.5]]){const bp=filt('bandpass',f,q),g=gain(a);V.hub.connect(bp);bp.connect(g);g.connect(V.hubG);}
     V.hubG.connect(sfx);V.hub.start();
+    // e-bike motor: a gear whine that climbs with speed while it's boosting
+    V.mot=AC.createOscillator();V.mot.type='sawtooth';V.mot2=AC.createOscillator();V.mot2.type='triangle';V.motF=filt('bandpass',900,1.4);V.motG=gain();
+    V.mot.connect(V.motF);V.mot2.connect(V.motF);V.motF.connect(V.motG);V.motG.connect(sfx);V.mot.start();V.mot2.start();
     V.chainF=filt('bandpass',1500,2.6);V.chainG=gain();chain(loop(V.white),[V.chainF,V.chainG]);
     V.brkF=filt('bandpass',4300,1.4);V.brkG=gain();chain(loop(V.white),[V.brkF,V.brkG]);
     V.sq=AC.createOscillator();V.sq.type='triangle';V.sq.frequency.value=2750;const lfo=AC.createOscillator();lfo.frequency.value=6.5;const lg=gain(35);lfo.connect(lg);lg.connect(V.sq.frequency);V.sqG=gain();chain(V.sq,[filt('bandpass',2800,6),V.sqG]);V.sq.start();lfo.start();
@@ -2829,8 +2933,10 @@ const audio=(()=>{
     V.sprayG.gain.setTargetAtTime(carve*0.25*Math.min(1,sp/10),t,0.05);
     if(carve>0.25){bermOn=true;bermPeak=Math.max(bermPeak,carve);}else if(bermOn&&carve<0.08){bermOn=false;if(bermPeak>0.35)roost(bermPeak);bermPeak=0;}
     // freewheel buzz whenever the wheel turns and you're not pedalling, on the ground or in the air
-    const wsp=Math.abs(st.vf),coasting=(riding||st.crash)&&!st.pedal&&wsp>0.7;const clk=clamp(wsp/(2*Math.PI*BK.RW)*12,3,110); // 12 clicks a turn: about 80 a second flat out
+    const wsp=Math.abs(st.vf),coasting=(riding||st.crash)&&!st.pedal&&wsp>0.7&&!(typeof EB!=='undefined'&&EB.moto);const clk=clamp(wsp/(2*Math.PI*BK.RW)*12,3,110); // 12 clicks a turn: about 80 a second flat out
     V.hub.frequency.setTargetAtTime(clk,t,0.05);
+    { const mo=typeof EB!=='undefined'&&EB.moto,mf=mo?60+wsp*42:90+wsp*26,on=typeof EB!=='undefined'&&EB.boosting&&riding;V.mot.frequency.setTargetAtTime(mf,t,0.08);V.mot2.frequency.setTargetAtTime(mf*3.02,t,0.08);V.motF.frequency.setTargetAtTime((mo?700:500)+wsp*(mo?90:70),t,0.1);
+      V.motG.gain.setTargetAtTime(on?(mo?0.09+Math.min(0.08,wsp*0.004):0.05+Math.min(0.05,wsp*0.004)):0,t,on?0.1:0.06);}
     V.hubG.gain.setTargetAtTime(coasting?Math.min(1,0.0085*clk)*(st.air?1.3:1):0,t,coasting?0.04:0.025);
     V.knob.frequency.setTargetAtTime(clamp(sp/0.052,12,900),t,0.05);V.knobF.frequency.setTargetAtTime(clamp(180+sp*38,180,900),t,0.08);
     V.knobG.gain.setTargetAtTime(gnd&&surf!=='wood'?Math.min(0.09,sp*0.007)*(surf==='rock'?1.3:1):0,t,0.05);
@@ -2862,7 +2968,7 @@ const audio=(()=>{
   // chairlift: the rumble of the chair's grip rolling over a tower's sheaves, and a steady breeze up high
   function liftClack(){if(!AC)return;const t=AC.currentTime;for(let i=0;i<8;i++){const tt=t+i*0.075+R2()*0.01;clank(tt,380+R2()*120,0.05,0.12);thump(tt,120,60,0.06,0.06);}burst(t,V.brown,'lowpass',500,0.7,0.12,0.8,0.05,1,sfx);}
   function setOn(on){if(master)master.gain.setTargetAtTime(on?0.9:0,AC.currentTime,0.05);}
-  function silence(){if(!AC)return;const t=AC.currentTime;for(const k of ['rollG','gritG','clkG','windG','skidG','sprayG','hubG','chainG','brkG','sqG','knobG'])V[k]&&V[k].gain.setTargetAtTime(0,t,0.05);}
+  function silence(){if(!AC)return;const t=AC.currentTime;for(const k of ['rollG','gritG','clkG','windG','skidG','sprayG','hubG','chainG','brkG','sqG','knobG','motG'])V[k]&&V[k].gain.setTargetAtTime(0,t,0.05);}
   return {init,resume,update,beep,finish,setOn,silence,liftClack,get ctx(){return AC;}};
 })();
 // open (or re-open) the sound on every tap, click or key: covers the first tap anywhere, and iOS suspending audio later
@@ -3056,6 +3162,8 @@ function pollPad(inAir){
       if(l2>0.04){input.brake=true;input.brakeAmt=val(BTN.L2)>0.04?Math.max(val(BTN.L2),on(BTN.SQ)?1:0):1;}}
     if(edge(BTN.OPT))togglePause();
     if(edge(BTN.TRI)&&state==='ride')respawnNear();
+    if(edge(BTN.O)&&state==='ride')tryFlip(ly<-0.4?1:-1);
+    if(edge(BTN.L3)&&state==='ride')toggleCharge();
     if(edge(BTN.SHARE))showMap(true);
     if(edge(BTN.UP))toggleCam();
     if(JX.node&&(edge(BTN.L1)||edge(BTN.LEFT)||edge(BTN.R1)||edge(BTN.RIGHT))){const dir=edge(BTN.L1)||edge(BTN.LEFT)?-1:1;JX.choice=clamp(JX.choice+dir,0,JX.node.out.length-1);renderJunctionHUD();}
@@ -3136,12 +3244,12 @@ function updateRider(){
   const R=RIDER,b=bike,P=R.P,Q=riderPts,now=performance.now();const dt=R.fixDt||Math.min(0.1,(now-(R.last||now))/1000);R.last=now;
   const riding=state==='ride'&&!paused,ground=b.contact[0]||b.contact[1],sp=b.vel.length();
   // cranks: turn while you pedal, settle level (your good foot forward) while you coast
-  const pedalling=riding&&input.pedal&&ground;
+  const pedalling=riding&&input.pedal&&ground&&!EB.moto;
   if(pedalling)R.phi+=clamp(sp/BK.RW*0.36,5,11)*dt*(input.pedalAmt==null?1:0.5+0.5*input.pedalAmt);
   else if(riding||state==='crash'){const tgt=Math.round(R.phi/Math.PI)*Math.PI;R.phi+=clamp(tgt-R.phi,-6*dt,6*dt);}
   const phi=R.phi;bikeParts.crank.rotation.x=-phi;
   const BBy=-0.28,BBz=0.16,CR=0.17;
-  for(const pd of bikeParts.pedals){const sx=pd.userData.sx,s=sx>0?1:-1;pd.position.set(sx*0.085,BBy-s*CR*Math.sin(phi),BBz-s*CR*Math.cos(phi));}
+  for(const pd of bikeParts.pedals){const sx=pd.userData.sx,s=sx>0?1:-1;if(EB.moto)pd.position.set(sx*0.09,BBy+0.04,BBz+0.05);else pd.position.set(sx*0.085,BBy-s*CR*Math.sin(phi),BBz-s*CR*Math.cos(phi));}
   if(!R.g.visible)return;
   if(RAG.on){ragStep(dt);ragPose(dt);return;}
   bikeRoot.updateMatrixWorld(true);
@@ -3150,7 +3258,9 @@ function updateRider(){
   let hz=0.36+0.03*aggr,hy=0.47-0.06*aggr,ta=0.86+0.16*aggr;
   if(pedalling){hz-=0.1;hy+=0.01-0.03*Math.abs(Math.cos(phi));ta-=0.12;}
   if(braking){hz+=0.07;hy-=0.04;ta+=0.05;}
+  if(EB.moto&&riding&&input.pedal&&ground){hz-=0.06;ta+=0.08;} // on the gas: weight forward to keep the front down
   if(air){hy+=0.05;hz-=0.07*lean;ta+=0.1*lean-0.04;}
+  if(FL.active){const k=Math.sin(Math.PI*Math.min(1,FL.t/FL.dur));hy-=0.12*k;ta+=0.35*k;} // tuck in tight through a flip
   // landings: the legs and arms soak it up. A kick on touchdown (bigger for more air and a harder hit) drives a springy squat that bottoms out and pushes back up
   if(b.land&&b.land!==R.lastLand){R.lastLand=b.land;const a=b.land.air||0;if(a>0.18)R.abv+=Math.min(9,2.5+a*7+(b.impact||0)*0.5);}
   const sq=(b.comp[0]+b.comp[1])*0.5;R.abv+=(-95*R.ab-7*R.abv)*dt;R.ab+=R.abv*dt;if(R.ab<0){R.ab=0;if(R.abv<0)R.abv*=-0.2;}if(R.ab>1){R.ab=1;R.abv=Math.min(R.abv,0);}
@@ -3286,14 +3396,14 @@ function updateChaseCam(dt){
   let hx=fx,hz=fz;if(hs>1.5&&state==='ride'){const w=clamp((hs-1.5)/3,0,0.6);hx=lerp(fx,b.vel.x/hs,w);hz=lerp(fz,b.vel.z/hs,w);}
   if(!chase.init){chase.dir.set(hx,0,hz).normalize();}
   const kd=state==='crash'?0:1-Math.exp(-dt*3.2);chase.dir.x=lerp(chase.dir.x,hx,kd);chase.dir.z=lerp(chase.dir.z,hz,kd);chase.dir.normalize();
-  const D0=3.3+Math.min(1.3,hs*0.07),H=1.25+Math.min(0.35,hs*0.02);
+  const D0=(3.3+Math.min(1.3,hs*0.07))*(FL.active?0.8:1),H=1.25+Math.min(0.35,hs*0.02);
   // pull in closer when a tree or bush would sit between you and the camera (quick to pull in, slow to ease back out)
   const cl=camClear(b.pos.x,b.pos.z,-chase.dir.x,-chase.dir.z,D0,b.pos.y+H);chase.k=chase.init?(cl<chase.k?lerp(chase.k,cl,1-Math.exp(-dt*14)):lerp(chase.k,cl,1-Math.exp(-dt*1.5))):cl;
   const D=D0*chase.k;const tx=b.pos.x-chase.dir.x*D,tz=b.pos.z-chase.dir.z*D;
   let ty=b.pos.y+H+(1-chase.k)*0.7; /* pulled in close: look over the rider's shoulders */const gh=Math.max(groundH(tx,tz),groundH(lerp(tx,b.pos.x,0.5),lerp(tz,b.pos.z,0.5))-0.2)+0.75;if(ty<gh)ty=gh;
   if(!chase.init){chase.pos.set(tx,ty,tz);chase.init=true;}
   if(state==='crash'){chase.pos.y=Math.max(chase.pos.y,groundH(chase.pos.x,chase.pos.z)+0.6);}
-  else{const kp=1-Math.exp(-dt*8),ky=1-Math.exp(-dt*(b.air>0.2?3.5:7));chase.pos.x=lerp(chase.pos.x,tx,kp);chase.pos.z=lerp(chase.pos.z,tz,kp);chase.pos.y=lerp(chase.pos.y,ty,ky);
+  else{const kp=1-Math.exp(-dt*(FL.active?14:8)),ky=1-Math.exp(-dt*(b.air>0.2?3.5:7));chase.pos.x=lerp(chase.pos.x,tx,kp);chase.pos.z=lerp(chase.pos.z,tz,kp);chase.pos.y=lerp(chase.pos.y,ty,ky);
     chase.pos.y=Math.max(chase.pos.y,groundH(chase.pos.x,chase.pos.z)+0.55);}
   camGuard(chase.pos);chase.pos.y=Math.max(chase.pos.y,groundH(chase.pos.x,chase.pos.z)+0.5);
   camera.position.copy(chase.pos);
@@ -3374,7 +3484,9 @@ function renderGarage(){
   const bk=settings.bike||'trail';let h='';
   if(garTab==='bike'){
     h+=`<div class="bike-pick"><button class="bike-card" data-bike="trail" aria-pressed="${bk==='trail'}"><b>Trail bike</b><span>150 mm of travel. Light, quick to pedal, easy to throw around.</span></button>
-      <button class="bike-card" data-bike="dh" aria-pressed="${bk==='dh'}"><b>Downhill bike</b><span>200 mm, dual crown and a coil shock. Soaks up big landings, slower to pedal.</span></button></div>`;
+      <button class="bike-card" data-bike="dh" aria-pressed="${bk==='dh'}"><b>Downhill bike</b><span>200 mm, dual crown and a coil shock. Soaks up big landings, slower to pedal.</span></button>
+      <button class="bike-card" data-bike="ebike" aria-pressed="${bk==='ebike'}"><b>E-bike</b><span>The downhill bike with a motor. Double pedal power for 20 seconds, then coast to recharge.</span></button>
+      <button class="bike-card" data-bike="moto" aria-pressed="${bk==='moto'}"><b>E-moto</b><span>Electric dirt bike. No pedalling, just throttle, three times the e-bike's pull. Big battery that only charges when you brake.</span></button></div>`;
     h+=swatchRow('frame')+swatchRow('fork')+swatchRow('rim');
   }else h+=swatchRow('jersey')+swatchRow('stripe')+swatchRow('pants')+swatchRow('helmet');
   h+=`<p class="gar-note">${careerDoneCount()} of ${REWARDS.length} colours won. Finish trails in Career to unlock the rest.</p>`;
@@ -3413,7 +3525,7 @@ function startCareerEvent(i){
     const s=NODE[tr.from].top?2:5;const p={};trailPoint(tr,s,p);const g=(sampleA(tr.base,s+1,1)-sampleA(tr.base,s-1,1))/2;
     placeBike(p.x,p.z,yawOf(p),NODE[tr.from].top?0:Math.min(5,tr.vd[Math.round(s)]*0.6),Math.atan(g));bike.cur=tr;bike.curS=s;bike.finNote=true;
     CR.active=true;CR.idx=i;CR.seg=tr;
-    run.active=true;run.route=[id];run.t=0;run.air=0;run.top=0;run.crashes=0;run.startSeg=tr;updateRunChip();setHint(false);JX.node=null;renderJunctionHUD();
+    run.active=true;run.route=[id];run.t=0;run.air=0;run.top=0;run.crashes=0;run.flips=0;run.startSeg=tr;updateRunChip();setHint(false);JX.node=null;renderJunctionHUD();
     state='ride';showRideUI();$('btnRestart').hidden=false;fade(false);toast(tr.def.name,'Career '+(i+1)+' of '+CAREER_IDS.length+': ride to the end',2000);audio.beep();},320);
 }
 function careerRestart(why){toast('Trail restarted',why,1600);startCareerEvent(CR.idx);}
@@ -3596,7 +3708,7 @@ function predictLanding(){const b=bike;let x=b.pos.x,y=b.pos.y-0.9,z=b.pos.z,vx=
   for(let i=0;i<70;i++){vy-=G*0.04;x+=vx*0.04;y+=vy*0.04;z+=vz*0.04;const g=groundH(x,z);if(y<=g&&vy<0)return Math.atan((groundH(x+hx*0.8,z+hz*0.8)-groundH(x-hx*0.8,z-hz*0.8))/1.6);}
   return b.gAng||0;}
 function updateTiltGauge(){
-  const b=bike;const air=state==='ride'&&!paused&&!b.contact[0]&&!b.contact[1]&&b.air>0.22&&b.vel.y<3;
+  const b=bike;const air=!FL.active&&state==='ride'&&!paused&&!b.contact[0]&&!b.contact[1]&&b.air>0.22&&b.vel.y<3;
   if(!air){if(tiltShown){tiltEl.hidden=true;tiltShown=false;}return;}
   tiltLand=b.landSlope!=null?b.landSlope:predictLanding();
   const err=b.pitch-tiltLand,ae=Math.abs(err);
@@ -3627,6 +3739,17 @@ function updateShadowsAndCulling(fp){
   else if(lastFull||Math.abs(wrapA(yaw-cullYaw))>0.06||cullPos.distanceToSquared(camera.position)>6.25){cullNear(camera,false);cullYaw=yaw;cullPos.copy(camera.position);lastFull=false;}
 }
 
+// ---------- e-bike battery gauge ----------
+let ebShown=false,ebLast='';
+function updateEbat(){const el=$('ebat');const show=EB.on&&(state==='ride'||state==='crash')&&!paused;
+  if(show!==ebShown){el.hidden=!show;ebShown=show;}
+  const cb=$('btnCharge'),cShow=show&&EB.moto&&state==='ride';if(cb.hidden===cShow)cb.hidden=!cShow;
+  if(cShow){cb.classList.toggle('on',EB.charging);const ct=EB.charging?'Stop':'Charge';if($('chargeTxt').textContent!==ct)$('chargeTxt').textContent=ct;}
+  if(!show)return;
+  const c=EB.charge,pct=Math.round(c*100);const col=EB.charging||EB.moto&&EB.regen?'#6fc3ff':EB.locked||(EB.moto&&c<=0)?'#ff7a5c':c>0.5?'#7fd36b':c>0.2?'#f3c13a':'#ff7a5c';
+  const lbl=EB.moto?(EB.charging?Math.ceil((1-c)*EB.chargeT)+' s':c<=0?'Empty':EB.regen?'Regen':EB.boosting?'Gas':'Battery'):EB.locked?'Charging':EB.boosting?'Boost':c<1?'Ready':'Full';const key=pct+lbl+col;if(key===ebLast)return;ebLast=key;
+  $('ebFill').style.height=(c*100).toFixed(1)+'%';$('ebPct').textContent=pct+'%';$('ebLbl').textContent=lbl;el.style.setProperty('--bc',col);
+  el.classList.toggle('boost',EB.boosting);el.classList.toggle('low',!EB.charging&&(EB.locked||(EB.moto&&c<=0)));el.classList.toggle('charging',EB.charging);}
 // ---------- main loop ----------
 const STEP=1/240;let acc=0,lastT=performance.now(),hudT=0,mapT=0,lodT=0,perfT=0,perfN=0,perfSum=0,skyT=0;
 function resize(){renderer.setSize(window.innerWidth,window.innerHeight,false);camera.aspect=window.innerWidth/window.innerHeight;camera.updateProjectionMatrix();}
@@ -3638,11 +3761,14 @@ function adaptQuality(dt){ // lower the render resolution if frames get slow, ra
   let np=pr;if(avg>0.022&&pr>0.75)np=Math.max(0.75,pr-0.2);else if(avg<0.0135&&pr<PR_MAX())np=Math.min(PR_MAX(),pr+0.1);
   if(np!==pr){pr=np;renderer.setPixelRatio(pr);resize();}
 }
+$('btnCharge').addEventListener('pointerdown',e=>{e.preventDefault();e.stopPropagation();toggleCharge();});
+let touchAir=false;
 function frame(now){
   requestAnimationFrame(frame);
   const dt=Math.min((now-lastT)/1000,0.1);lastT=now;
   if(state==='loading')return;
-  readInput(dt);
+  readInput(dt);if(state==='ride'&&!paused)flipInput();
+  { const inAir=state==='ride'&&!paused&&!bike.contact[0]&&!bike.contact[1]&&bike.air>0.08&&!FL.active;if(inAir!==touchAir){touchAir=inAir;$('touch').classList.toggle('air',inAir);}}
   if(state==='menu')updateMenuCam(dt);
   else if(state==='garage'){updateBikeVisual();updateGarageCam(dt);}
   else if(!paused){
@@ -3664,6 +3790,7 @@ function frame(now){
   hudT-=dt;if(hudT<=0&&state!=='menu'){hudT=0.07;$('spd').textContent=Math.round(bike.vel.length()*3.6);updateJumpSpeed();
     if(run.active){$('runTime').textContent=fmtTime(run.t);if(bike.cur)$('runBar').firstElementChild.style.width=(bike.curS/bike.cur.len*100).toFixed(1)+'%';}}
   mapT-=dt;if(mapT<=0&&state!=='menu'){mapT=0.066;drawMinimap();}
+  updateEbat();
   renderer.render(scene,camera);
 }
 
@@ -3694,7 +3821,7 @@ async function boot(){
   $('loading').hidden=true;$('menu').hidden=false;state='menu';
   setTimeout(()=>{try{$('btnStart').focus({preventScroll:true});}catch(e){}},30);
 }
-window.__setBike=setBikeModel;window.__st={TREESX:TREES,SOL,RIDER,RAG,crash,crashStep,get crashT(){return crashT;},set crashT(v){crashT=v;},CAMT,VSK:()=>VS,chase,bike,input,TR,NET,NODE,locate,groundH,settings,run,stats,camera,CAM,JX,trailPoint,yawOf,respawnOnTrail,respawnTop,placeBike,treeCount:()=>TREES.x.length,LIFT,liftRide,startLift,endLift,updateLift,updateLOD,checkLiftBoarding,
+window.__setBike=setBikeModel;window.__st={toggleCharge,FL,tryFlip,flightLeft,EB,TREESX:TREES,SOL,RIDER,RAG,crash,crashStep,get crashT(){return crashT;},set crashT(v){crashT=v;},CAMT,VSK:()=>VS,chase,bike,input,TR,NET,NODE,locate,groundH,settings,run,stats,camera,CAM,JX,trailPoint,yawOf,respawnOnTrail,respawnTop,placeBike,treeCount:()=>TREES.x.length,LIFT,liftRide,startLift,endLift,updateLift,updateLOD,checkLiftBoarding,
   get state(){return state;},set state(v){state=v;},get paused(){return paused;},set paused(v){paused=v;}};
 requestAnimationFrame(frame);
 const start=()=>{boot().catch(err=>{$('loadMsg').textContent='';const e=$('loadErr');e.hidden=false;e.textContent='Something went wrong while building the mountain. Reload the page to try again.';console.error(err);});};
@@ -3703,4 +3830,5 @@ if(window.claude&&window.claude.hot&&window.claude.hot.ready)window.claude.hot.r
 requestAnimationFrame(()=>requestAnimationFrame(()=>setTimeout(__singleTrackMain,40)));
 </script>
 
-</body></html>
+</body>
+</html>
